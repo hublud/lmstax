@@ -56,8 +56,17 @@ export default function CoursesPage() {
           return;
         }
 
-        // Fetch categories (or mock if not available)
-        setFetchedCategories(mockCategories.map((c: any) => ({ id: c.id, name: c.name })));
+        // Fetch categories from Supabase, fallback to mock if empty
+        const { data: cats, error: catsErr } = await supabase
+          .from("categories")
+          .select("*")
+          .order("name");
+          
+        if (cats && cats.length > 0 && !catsErr) {
+          setFetchedCategories(cats);
+        } else {
+          setFetchedCategories(mockCategories.map((c: any) => ({ id: c.id, name: c.name })));
+        }
         
         // Fetch courses from Supabase
         const { data, error } = await supabase
@@ -66,7 +75,7 @@ export default function CoursesPage() {
           .eq("status", "published");
 
         if (error) {
-          console.error("Error fetching live courses:", error);
+          console.error("Supabase error fetching live courses:", error.message);
         }
 
         const liveCourses = data || [];
@@ -75,9 +84,11 @@ export default function CoursesPage() {
           let parsedContent: any = {};
           try {
             if (c.content) {
-              parsedContent = JSON.parse(c.content);
+              parsedContent = typeof c.content === 'string' ? JSON.parse(c.content) : c.content;
             }
-          } catch(e) {}
+          } catch(e) {
+            console.warn("Could not parse course content JSON for course:", c.id);
+          }
 
           return {
             ...c,
@@ -97,8 +108,8 @@ export default function CoursesPage() {
         });
         setFetchedCourses(mapped);
 
-      } catch (err) {
-        console.error("Error setting mock courses data:", err);
+      } catch (err: any) {
+        console.error("Fatal error in courses fetchData:", err.message || err);
       } finally {
         setIsLoading(false);
       }
