@@ -71,7 +71,7 @@ export default function CoursesPage() {
         // Fetch courses from Supabase
         const { data, error } = await supabase
           .from("courses")
-          .select("*, users(full_name)")
+          .select("*")
           .eq("status", "published");
 
         if (error) {
