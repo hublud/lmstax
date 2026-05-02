@@ -38,8 +38,6 @@ export const getSupabase = () => {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        storageKey: "taxng-auth-token",
-        // Pass shared cookie options if used with @supabase/ssr helpers elsewhere
       },
     });
   } catch (e) {
