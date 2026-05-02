@@ -1,10 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Recursive proxy to handle any level of supabase calls during build (e.g., supabase.auth.getSession())
+// Recursive proxy to handle any level of supabase calls during build
 const createSilentProxy = (): any => {
   const proxy: any = new Proxy(() => proxy, {
     get: (target, prop) => {
-      if (prop === 'then') return undefined; // Avoid breaking async/await
+      if (prop === 'then') return undefined;
       return proxy;
     },
     apply: () => ({ data: null, error: null, count: 0 })
@@ -12,15 +12,24 @@ const createSilentProxy = (): any => {
   return proxy;
 };
 
+// Shared cookie options for SSO between taxnigeria.com and academy.taxnigeria.com
+export const getCookieOptions = () => {
+  const isProd = process.env.NODE_ENV === "production";
+  return {
+    domain: isProd ? ".taxnigeria.com" : undefined, // Shared domain in prod, localhost in dev
+    path: "/",
+    sameSite: "lax" as const,
+    secure: isProd,
+  };
+};
+
 // Helper to get supabase client safely
 export const getSupabase = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   
-  if (!url || !key || url === "undefined") {
-    if (typeof window === "undefined") {
-      return createSilentProxy();
-    }
+  if (!url || !key || url === "undefined" || url === "null") {
+    if (typeof window === "undefined") return createSilentProxy();
     return null as any;
   }
 
@@ -29,10 +38,11 @@ export const getSupabase = () => {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
+        storageKey: "taxng-auth-token",
+        // Pass shared cookie options if used with @supabase/ssr helpers elsewhere
       },
     });
   } catch (e) {
-    console.warn("Supabase initialization failed, using silent proxy.");
     return createSilentProxy();
   }
 };

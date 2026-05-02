@@ -1,7 +1,9 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { getCookieOptions } from './lib/supabase'
 
 export async function proxy(request: NextRequest) {
+  const sharedOptions = getCookieOptions();
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -17,38 +19,20 @@ export async function proxy(request: NextRequest) {
           return request.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
+          const mergedOptions = { ...options, ...sharedOptions };
+          request.cookies.set({ name, value, ...mergedOptions })
           response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
+            request: { headers: request.headers },
           })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
+          response.cookies.set({ name, value, ...mergedOptions })
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+          const mergedOptions = { ...options, ...sharedOptions };
+          request.cookies.set({ name, value: '', ...mergedOptions })
           response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
+            request: { headers: request.headers },
           })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+          response.cookies.set({ name, value: '', ...mergedOptions })
         },
       },
     }
@@ -56,9 +40,30 @@ export async function proxy(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Protect Admin routes only (LMS browsing is now handled by app logic)
+  // 1. If trying to access Admin routes, must be logged in
   if (request.nextUrl.pathname.startsWith('/admin') && !user) {
     return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  // 2. Role Guard: If logged in, check for 'taxexpert' tier for all LMS routes
+  // Except for public routes like login, auth callback, and pricing (if hosted here)
+  const publicPaths = ['/login', '/auth/callback', '/pricing', '/about', '/contact'];
+  const isPublicPath = publicPaths.some(path => request.nextUrl.pathname.startsWith(path));
+
+  if (user && !isPublicPath) {
+    // Fetch user profile tier
+    const { data: profile } = await supabase
+      .from("users")
+      .select("subscription_tier")
+      .eq("auth_id", user.id) // Using auth_id as per previous context
+      .maybeSingle();
+
+    const allowedTiers = ["taxexpert", "admin", "teacher", "staff"];
+    const userTier = profile?.subscription_tier?.toLowerCase();
+
+    if (!userTier || !allowedTiers.includes(userTier)) {
+      return NextResponse.redirect(new URL('https://taxnigeria.com/pricing', request.url))
+    }
   }
 
   return response
@@ -66,6 +71,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
