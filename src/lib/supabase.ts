@@ -1,17 +1,25 @@
 import { createClient } from "@supabase/supabase-js";
 
+// Recursive proxy to handle any level of supabase calls during build (e.g., supabase.auth.getSession())
+const createSilentProxy = (): any => {
+  const proxy: any = new Proxy(() => proxy, {
+    get: (target, prop) => {
+      if (prop === 'then') return undefined; // Avoid breaking async/await
+      return proxy;
+    },
+    apply: () => ({ data: null, error: null, count: 0 })
+  });
+  return proxy;
+};
+
 // Helper to get supabase client safely
 export const getSupabase = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   
-  // Return a dummy client or null during build if variables are missing
-  if (!url || !key) {
+  if (!url || !key || url === "undefined") {
     if (typeof window === "undefined") {
-      // Return a proxy that catches calls during build time
-      return new Proxy({}, {
-        get: () => () => ({ data: null, error: null })
-      }) as any;
+      return createSilentProxy();
     }
     return null as any;
   }
@@ -22,6 +30,18 @@ export const getSupabase = () => {
       autoRefreshToken: true,
     },
   });
+};
+
+// Helper for Admin/Service Role tasks
+export const getSupabaseAdmin = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!url || !key || url === "undefined") {
+    return createSilentProxy();
+  }
+
+  return createClient(url, key);
 };
 
 export const supabase = getSupabase();

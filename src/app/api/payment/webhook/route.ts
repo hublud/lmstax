@@ -1,17 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (!supabaseUrl || !supabaseServiceKey) {
-      console.warn("Supabase Admin credentials missing during webhook execution.");
-      return NextResponse.json({ error: "Configuration missing" }, { status: 500 });
-    }
-
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+    const supabaseAdmin = getSupabaseAdmin();
 
     const body = await req.json();
     console.log("PayUnit Webhook received:", body);
