@@ -135,31 +135,21 @@ function DashboardContent() {
 
         setUser(authUser);
 
+        // Fetch user profile and subscription from the 'users' table
         const { data: profileData, error: profileError } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", authUser.id)
-          .maybeSingle();
-
-        if (profileError) {
-          console.warn("Profile fetch issue:", profileError.message);
-        }
-        
-        // Check subscription for modal
-        const { data: userData, error: userError } = await supabase
           .from("users")
-          .select("subscription_tier, role")
+          .select("*")
           .eq("auth_id", authUser.id)
           .maybeSingle();
 
-        if (userError) {
-          console.warn("User data fetch issue:", userError.message);
+        if (profileError) {
+          console.warn("User data fetch issue:", profileError.message);
         }
 
-        const isTaxExpert = userData?.subscription_tier === "TaxExpert" || userData?.subscription_tier === "taxexpert";
-        const isStaff = userData?.role === "admin" || userData?.role === "teacher" || profileData?.role === "teacher";
+        const isTaxExpert = profileData?.subscription_tier?.toLowerCase() === "taxexpert";
+        const isStaff = ["admin", "teacher", "staff"].includes(profileData?.role?.toLowerCase() || "");
 
-        if (userData && !isTaxExpert && !isStaff) {
+        if (profileData && !isTaxExpert && !isStaff) {
           setShowSubModal(true);
         }
 
