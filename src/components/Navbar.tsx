@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Menu,
   X,
   Search,
-  BookOpen,
   GraduationCap,
+  LayoutDashboard,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import LogoSVG from "./LogoSVG";
+import { supabase } from "@/lib/supabase";
 
 
 const navLinks = [
@@ -26,6 +26,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   const isHome = pathname === "/";
   const needsDarkText = !isHome || isScrolled || isMobileOpen;
@@ -33,14 +34,30 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    // Check initial user session
+    const checkUser = async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      setUser(authUser);
+    };
+    checkUser();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Do not render the global Navbar in the admin panel, student dashboard, or course player
   if (
     pathname?.includes("/admin") ||
     pathname?.includes("/dashboard") ||
-    pathname?.includes("/courses/")
+    pathname?.includes("/courses/") && pathname?.includes("/learn")
   ) {
     return null;
   }
@@ -116,18 +133,27 @@ export default function Navbar() {
               <Search className="w-5 h-5" />
             </button>
 
-            <Link
-              href="/login"
-              className={`py-2.5 px-5 text-sm font-semibold transition-all ${
-                needsDarkText ? "btn-outline" : "text-white hover:text-white/80"
-              }`}
-            >
-              Login
-            </Link>
-            <Link href="https://www.taxnigeria.com/pricing" className="btn-primary py-2.5 px-5 text-sm">
-              <GraduationCap className="w-4 h-4" />
-              Get Started
-            </Link>
+            {user ? (
+              <Link href="/dashboard" className="btn-primary py-2.5 px-6 text-sm flex items-center gap-2">
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className={`py-2.5 px-5 text-sm font-semibold transition-all ${
+                    needsDarkText ? "btn-outline" : "text-white hover:text-white/80"
+                  }`}
+                >
+                  Login
+                </Link>
+                <Link href="https://www.taxnigeria.com/pricing" className="btn-primary py-2.5 px-5 text-sm">
+                  <GraduationCap className="w-4 h-4" />
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -170,21 +196,34 @@ export default function Navbar() {
               <svg className="w-3.5 h-3.5 ml-auto opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
             </a>
             <div className="pt-4 space-y-3 border-t border-[var(--border)]">
-              <Link
-                href="/login"
-                onClick={() => setIsMobileOpen(false)}
-                className="btn-outline w-full justify-center"
-              >
-                Login
-              </Link>
-              <Link
-                href="https://www.taxnigeria.com/pricing"
-                onClick={() => setIsMobileOpen(false)}
-                className="btn-primary w-full justify-center"
-              >
-                <GraduationCap className="w-4 h-4" />
-                Get Started
-              </Link>
+              {user ? (
+                <Link
+                  href="/dashboard"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="btn-primary w-full justify-center"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  Dashboard
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMobileOpen(false)}
+                    className="btn-outline w-full justify-center"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="https://www.taxnigeria.com/pricing"
+                    onClick={() => setIsMobileOpen(false)}
+                    className="btn-primary w-full justify-center"
+                  >
+                    <GraduationCap className="w-4 h-4" />
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
