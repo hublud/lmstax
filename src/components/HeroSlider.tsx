@@ -10,7 +10,6 @@ import {
   TrendingUp,
   Users,
   Star,
-  Play,
   CheckCircle,
 } from "lucide-react";
 import { heroSlides } from "@/lib/mockData";
@@ -31,10 +30,10 @@ export default function HeroSlider() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      goTo((current + 1) % heroSlides.length);
+      setCurrent((prev) => (prev + 1) % heroSlides.length);
     }, 5500);
     return () => clearInterval(timer);
-  }, [current, goTo]);
+  }, []);
 
   const slide = heroSlides[current];
 
@@ -92,18 +91,20 @@ export default function HeroSlider() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10 sm:mb-14">
-              <Link href="/signup" className="btn-accent text-base px-8 py-3.5 w-full sm:w-auto">
+              <Link href="https://www.taxnigeria.com/pricing" className="btn-accent text-base px-8 py-3.5 w-full sm:w-auto">
                 {slide.ctaPrimary}
               </Link>
-              <Link href="/courses" className="btn-outline-white text-base px-8 py-3.5 w-full sm:w-auto">
-                <BookOpen className="w-4 h-4 flex-shrink-0" />
-                {slide.ctaSecondary}
-              </Link>
+              {slide.ctaSecondary && (
+                <Link href="/courses" className="btn-outline-white text-base px-8 py-3.5 w-full sm:w-auto">
+                  <BookOpen className="w-4 h-4 flex-shrink-0" />
+                  {slide.ctaSecondary}
+                </Link>
+              )}
             </div>
 
             {/* Stats row */}
             <div className="flex items-center justify-center lg:justify-start gap-x-6 sm:gap-x-10 gap-y-4 pt-8 border-t border-white/15">
-              {[slide.stat1, slide.stat2, slide.stat3].map((stat, i) => (
+              {[slide.stat1, slide.stat2, slide.stat3].map((stat) => (
                 <div key={stat.label} className="text-center lg:text-left">
                   <p
                     className="text-xl sm:text-2xl font-bold"
@@ -111,17 +112,18 @@ export default function HeroSlider() {
                   >
                     {stat.value}
                   </p>
-                  <p className="text-[10px] sm:text-xs text-green-200 mt-1 uppercase tracking-wider font-semibold">{stat.label}</p>
+                  <p className="text-[10px] sm:text-xs text-green-200 mt-1 uppercase tracking-wider font-semibold">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-
-          {/* ── RIGHT COLUMN – contained visual panel ── */}
+          {/* ── RIGHT COLUMN – course progress panel ── */}
           <div className="hidden lg:flex flex-col gap-4">
 
-            {/* Top card – Progress tracker */}
+            {/* Top card – Tax Module Progress */}
             <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-5">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -130,20 +132,20 @@ export default function HeroSlider() {
                   </div>
                   <div>
                     <p className="text-white font-semibold text-sm">Course Progress</p>
-                    <p className="text-green-300 text-xs">Web Development Bootcamp</p>
+                    <p className="text-green-300 text-xs">Tax Filing & Compliance Masterclass</p>
                   </div>
                 </div>
-                <span className="text-[var(--accent)] font-bold text-sm">72%</span>
+                <span className="text-[var(--accent)] font-bold text-sm">68%</span>
               </div>
               <div className="space-y-3">
                 {[
-                  { label: "HTML & CSS", pct: 100 },
-                  { label: "JavaScript", pct: 85 },
-                  { label: "React.js", pct: 68 },
-                  { label: "Node.js", pct: 42 },
+                  { label: "Tax Foundations", pct: 100 },
+                  { label: "PIT & PAYE", pct: 90 },
+                  { label: "Corporate Tax", pct: 75 },
+                  { label: "VAT & Indirect", pct: 48 },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-3">
-                    <span className="text-green-200 text-xs w-24 flex-shrink-0">{item.label}</span>
+                    <span className="text-green-200 text-xs w-28 flex-shrink-0">{item.label}</span>
                     <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full"
@@ -161,7 +163,7 @@ export default function HeroSlider() {
 
             {/* Bottom row – two smaller cards */}
             <div className="grid grid-cols-2 gap-4">
-              {/* Students card */}
+              {/* Learners card */}
               <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-8 h-8 rounded-xl bg-[var(--accent)]/20 flex items-center justify-center">
@@ -170,7 +172,7 @@ export default function HeroSlider() {
                   <span className="text-white text-xs font-medium">Active Learners</span>
                 </div>
                 <div className="flex -space-x-2 mb-2">
-                  {["🧑‍💻", "👩‍🎓", "🧑‍🏫", "👩‍💼"].map((emoji, i) => (
+                  {["👩‍💼", "🧑‍💻", "👩‍🎓", "🧑‍⚖️"].map((emoji, i) => (
                     <div
                       key={i}
                       className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] border-2 border-[#1a6b3c] flex items-center justify-center text-xs"
@@ -179,7 +181,7 @@ export default function HeroSlider() {
                     </div>
                   ))}
                 </div>
-                <p className="text-white font-bold text-lg">500K+</p>
+                <p className="text-white font-bold text-lg">25K+</p>
                 <p className="text-green-300 text-xs">Students enrolled</p>
               </div>
 
@@ -192,7 +194,7 @@ export default function HeroSlider() {
                   <span className="text-white text-xs font-medium">Top Rated</span>
                 </div>
                 <div className="flex items-end gap-1 mb-1">
-                  <span className="text-white font-bold text-3xl leading-none">4.9</span>
+                  <span className="text-white font-bold text-3xl leading-none">4.8</span>
                   <span className="text-green-300 text-xs mb-1">/5.0</span>
                 </div>
                 <div className="flex gap-0.5 mb-2">
@@ -200,7 +202,7 @@ export default function HeroSlider() {
                     <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <p className="text-green-300 text-xs">50K+ reviews</p>
+                <p className="text-green-300 text-xs">10K+ reviews</p>
               </div>
             </div>
 
@@ -211,7 +213,7 @@ export default function HeroSlider() {
               </div>
               <div>
                 <p className="text-white font-semibold text-sm">🎉 Certificate Earned!</p>
-                <p className="text-green-200 text-xs">Web Development Pro – just now</p>
+                <p className="text-green-200 text-xs">Tax Filing & Compliance Pro – just now</p>
               </div>
               <div className="ml-auto">
                 <CheckCircle className="w-5 h-5 text-green-400" />

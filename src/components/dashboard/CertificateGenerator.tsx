@@ -4,6 +4,8 @@ import React, { useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 import { Download } from "lucide-react";
+import LogoSVG from "../LogoSVG";
+
 
 interface CertificateGeneratorProps {
   studentName: string;
@@ -42,7 +44,7 @@ export default function CertificateGenerator({
       const pdfHeight = pdf.internal.pageSize.getHeight(); // 210mm
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Gizami_Certificate_${courseTitle.replace(/\s+/g, "_")}.pdf`);
+      pdf.save(`TaxNG_Certificate_${courseTitle.replace(/\s+/g, "_")}.pdf`);
     } catch (error: any) {
       console.error("Certificate error:", error);
       alert("Download failed: " + (error.message || String(error)));
@@ -147,12 +149,8 @@ export default function CertificateGenerator({
           {/* Content wrapper */}
           <div style={{ padding: "56px 80px 0", textAlign: "center" }}>
             {/* Logo */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo-gizami.png"
-              alt="Gizami"
-              style={{ height: 52, marginBottom: 24, objectFit: "contain" }}
-            />
+            <LogoSVG className="h-14 w-auto mb-6 mx-auto" />
+
 
             {/* Title */}
             <div
@@ -267,7 +265,7 @@ export default function CertificateGenerator({
                 }}
               />
               <div style={{ fontWeight: 700, fontSize: 13, color: "#d97706", letterSpacing: "0.1em" }}>
-                GIZAMI
+                TAXNG
               </div>
               <div style={{ fontSize: 10, color: "#f59e0b", fontStyle: "italic" }}>Certified</div>
             </div>
@@ -295,7 +293,7 @@ export default function CertificateGenerator({
                   opacity: 0.5,
                 }}
               >
-                Gizami Team
+                TaxNG Team
               </div>
               <div style={{ fontWeight: 700, color: "#1f2937", fontSize: 15 }}>{instructorName}</div>
               <div style={{ fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 4 }}>

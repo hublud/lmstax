@@ -56,9 +56,9 @@ export default function AdminStudentsPage() {
     try {
       // Fetch users with the role 'student' alongside their enrollments and corresponding courses (for price)
       const { data, error } = await supabase
-        .from("profiles")
+        .from("users")
         .select(`
-          id,
+          user_id,
           full_name,
           avatar_url,
           updated_at,
@@ -68,7 +68,7 @@ export default function AdminStudentsPage() {
             courses ( price )
           )
         `)
-        .eq("role", "student");
+        .eq("role", "user");
 
       if (error) throw error;
 
@@ -98,7 +98,7 @@ export default function AdminStudentsPage() {
           const status = lastSeenDate >= thirtyDaysAgo ? "active" : "inactive";
 
           return {
-            id: profile.id,
+            id: profile.user_id,
             name: profile.full_name || "Unknown Student",
             email: "student@example.com", // Since we can't easily fetch auth.users email from unprivileged clients, use placeholder or implement RPC
             avatar: profile.avatar_url || "/avatars/placeholder.jpg",
@@ -125,9 +125,9 @@ export default function AdminStudentsPage() {
     setIsUpdating(userId);
     try {
       const { error } = await supabase
-        .from("profiles")
+        .from("users")
         .update({ role: newRole })
-        .eq("id", userId);
+        .eq("user_id", userId);
 
       if (error) throw error;
       

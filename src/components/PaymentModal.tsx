@@ -13,7 +13,7 @@ interface PaymentModalProps {
 
 const GATEWAYS = [
   {
-    id: "CM_ORANGE",
+    id: "ORANGECAMEROON",
     name: "Orange Money",
     color: "#ff6600",
     bg: "#fff3eb",
@@ -21,7 +21,7 @@ const GATEWAYS = [
     hint: "Ex: 690 000 000",
   },
   {
-    id: "CM_MTN",
+    id: "MTNCAMEROON",
     name: "MTN MoMo",
     color: "#ffcc00",
     bg: "#fffbe6",
@@ -37,7 +37,7 @@ export default function PaymentModal({
   userId,
   onClose,
 }: PaymentModalProps) {
-  const [gateway, setGateway] = useState("CM_ORANGE");
+  const [gateway, setGateway] = useState("ORANGECAMEROON");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -67,10 +67,18 @@ export default function PaymentModal({
         }),
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get("content-type");
+      let data: any;
+
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error("Unable to process payment request. The server returned an invalid response.");
+      }
 
       if (!res.ok || !data.success) {
-        setError(data.error || "Payment initiation failed. Please try again.");
+        setError(data.error || "Payment initiation failed. Please check your credentials.");
         return;
       }
 

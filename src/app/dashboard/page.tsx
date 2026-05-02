@@ -4,11 +4,12 @@ import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { enrolledCourses as mockEnrolledCourses } from "@/lib/mockData";
 import {
   BookOpen,
   TrendingUp,
   User,
+  Users,
   Bell,
   Settings,
   LogOut,
@@ -33,15 +34,29 @@ import {
   MessageSquare,
   Menu,
   X,
+  DollarSign,
 } from "lucide-react";
 import { enrolledCourses } from "@/lib/mockData";
 import CertificateGenerator from "@/components/dashboard/CertificateGenerator";
+import LogoSVG from "@/components/LogoSVG";
+import { supabase } from "@/lib/supabase";
+import SubscriptionModal from "@/components/SubscriptionModal";
 
-const navItems = [
+
+const studentNavItems = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "courses", label: "My Courses", icon: BookOpen },
   { id: "progress", label: "Progress", icon: TrendingUp },
   { id: "certificates", label: "Certificates", icon: Award },
+  { id: "profile", label: "Profile", icon: User },
+  { id: "settings", label: "Settings", icon: Settings },
+];
+
+const teacherNavItems = [
+  { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "teaching", label: "My Courses", icon: BookOpen },
+  { id: "students", label: "Students", icon: Users },
+  { id: "analytics", label: "Analytics", icon: BarChart3 },
   { id: "profile", label: "Profile", icon: User },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -86,7 +101,9 @@ function DashboardContent() {
   }, [searchParams]);
   const [profile, setProfile] = useState<any>(null);
   const [enrollments, setEnrollments] = useState<any[]>([]);
+  const [teachingCourses, setTeachingCourses] = useState<any[]>([]);
   const [certificates, setCertificates] = useState<any[]>([]);
+  const [showSubModal, setShowSubModal] = useState(false);
 
   const [profileForm, setProfileForm] = useState({
     name: "",
@@ -118,71 +135,75 @@ function DashboardContent() {
 
         setUser(authUser);
 
-        // Fetch profile
-        const { data: prof } = await supabase
+        const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", authUser.id)
-          .single();
-        
-        if (prof) {
-          // Auto-redirect admins to the admin panel if they land here
-          if (prof.role === "admin") {
-            router.push("/admin");
-            return;
-          }
+          .maybeSingle();
 
-          setProfile(prof);
-          setProfileForm(prev => ({
-            ...prev,
-            name: prof.full_name || "",
-            email: authUser.email || "",
-            bio: prof.bio || "",
-          }));
+        if (profileError) {
+          console.warn("Profile fetch issue:", profileError.message);
+        }
+        
+        // Check subscription for modal
+        const { data: userData, error: userError } = await supabase
+          .from("users")
+          .select("subscription_tier, role")
+          .eq("auth_id", authUser.id)
+          .maybeSingle();
+
+        if (userError) {
+          console.warn("User data fetch issue:", userError.message);
         }
 
-        // Fetch enrollments with course details and instructor name
-        const { data: enrols } = await supabase
-          .from("enrollments")
-          .select(`
-            *,
-            courses (
-              *,
-              instructor:instructor_id(full_name)
-            )
-          `)
-          .eq("user_id", authUser.id);
-        
-        if (enrols) {
-          // Map to match the expected UI structure
-          const mapped = enrols.map((e: any) => ({
-            id: e.courses.id,
-            title: e.courses.title,
-            instructor: e.courses.instructor?.full_name || "Gizami Instructor", // Default
-            category: "Technology", // Placeholder or fetch actual
-            progress: e.progress || 0,
-            completedLessons: Math.round(((e.progress || 0) / 100) * (e.courses.lessons_count || 10)),
-            totalLessons: e.courses.lessons_count,
-            image: e.courses.image_url,
-            lastAccessed: "Recently",
-            nextLesson: "Lesson 1"
-          }));
-          setEnrollments(mapped);
+        const isTaxExpert = userData?.subscription_tier === "TaxExpert" || userData?.subscription_tier === "taxexpert";
+        const isStaff = userData?.role === "admin" || userData?.role === "teacher" || profileData?.role === "teacher";
 
-          // Populate certificates for completed courses
-          const completedEnrols = enrols.filter((e: any) => e.progress >= 100);
-          const mappedCerts = completedEnrols.map((e: any) => ({
-            id: e.courses.id,
-            title: e.courses.title,
-            date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-            instructor: e.courses.instructor?.full_name || "Gizami Instructor",
-            image: e.courses.image_url || "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80",
-            studentName: prof?.full_name || authUser.email?.split("@")[0] || "Student"
-          }));
-          setCertificates(mappedCerts);
+        if (userData && !isTaxExpert && !isStaff) {
+          setShowSubModal(true);
         }
-      } catch (err) {
-        console.error("Error fetching dashboard data:", err);
+
+        setProfile(profileData || { full_name: authUser.email?.split('@')[0], role: "student" });
+        setProfileForm({
+          name: profileData?.full_name || authUser.email?.split('@')[0] || "",
+          email: authUser.email || "",
+          bio: profileData?.bio || "",
+          location: profileData?.location || "Lagos, Nigeria",
+          website: profileData?.website || "",
+          twitter: profileData?.twitter || "",
+        });
+
+        // Fetch teaching data if role is teacher
+        if (isStaff && (profileData?.role === "teacher" || userData?.role === "teacher")) {
+          const { data: coursesTaught } = await supabase
+            .from("courses")
+            .select("*, enrollments(count)")
+            .eq("created_by", authUser.id);
+          setTeachingCourses(coursesTaught || []);
+        }
+
+        // Still using mock data for enrollments/certificates for students
+        const mapped = mockEnrolledCourses.map((c: any) => ({
+          ...c,
+          completedLessons: Math.round((c.progress / 100) * 12),
+          totalLessons: 12,
+          lastAccessed: "2 hours ago",
+          nextLesson: "Module 2: Practical Exercises"
+        }));
+        setEnrollments(mapped);
+
+        const mappedCerts = mapped.filter(c => c.progress >= 100).map(c => ({
+          id: c.id,
+          title: c.title,
+          date: "Oct 24, 2024",
+          instructor: c.instructor,
+          image: c.image,
+          studentName: profileData.full_name
+        }));
+        setCertificates(mappedCerts);
+
+      } catch (err: any) {
+        console.error("Dashboard data fetch error:", err.message || err);
       } finally {
         setIsLoading(false);
       }
@@ -192,7 +213,6 @@ function DashboardContent() {
   }, [router]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
     router.push("/login");
   };
 
@@ -225,6 +245,8 @@ function DashboardContent() {
     });
   }
 
+  const isTeacher = profile?.role === "teacher";
+  const navItems = isTeacher ? teacherNavItems : studentNavItems;
   const tabLabel = navItems.find((n) => n.id === activeTab)?.label || "Dashboard";
 
   return (
@@ -243,14 +265,9 @@ function DashboardContent() {
           {/* Logo */}
           <div className="p-6 border-b border-[var(--border)] flex items-center justify-between">
             <Link href="/" className="block">
-              <Image 
-                src="/logo-gizami.png" 
-                alt="Gizami" 
-                width={120} 
-                height={40} 
-                className="h-10 w-auto object-contain" 
-              />
+              <LogoSVG className="h-10 w-auto" />
             </Link>
+
             <button
               className="lg:hidden text-gray-500 hover:text-gray-800"
               onClick={() => setIsSidebarOpen(false)}
@@ -291,12 +308,17 @@ function DashboardContent() {
               >
                 <item.icon className="w-4 h-4 flex-shrink-0" />
                 {item.label}
-                {item.id === "courses" && (
+                {item.id === "courses" && !isTeacher && (
                   <span className={`ml-auto text-xs px-1.5 py-0.5 rounded-full font-bold ${activeTab === item.id ? "bg-white/20 text-white" : "bg-[var(--primary)]/10 text-[var(--primary)]"}`}>
                     {enrollments.length}
                   </span>
                 )}
-                {item.id === "certificates" && (
+                {item.id === "teaching" && isTeacher && (
+                  <span className={`ml-auto text-xs px-1.5 py-0.5 rounded-full font-bold ${activeTab === item.id ? "bg-white/20 text-white" : "bg-[var(--primary)]/10 text-[var(--primary)]"}`}>
+                    {teachingCourses.length}
+                  </span>
+                )}
+                {item.id === "certificates" && !isTeacher && (
                   <span className={`ml-auto text-xs px-1.5 py-0.5 rounded-full font-bold ${activeTab === item.id ? "bg-white/20 text-white" : "bg-purple-100 text-purple-600"}`}>
                     {certificates.length}
                   </span>
@@ -345,14 +367,9 @@ function DashboardContent() {
             
             {/* Logo on mobile only */}
             <Link href="/" className="lg:hidden flex-shrink-0 mr-1 sm:mr-2">
-              <Image 
-                src="/logo-gizami.png" 
-                alt="Gizami" 
-                width={100} 
-                height={35} 
-                className="h-6 sm:h-7 w-auto object-contain"
-              />
+              <LogoSVG className="h-6 sm:h-7 w-auto" />
             </Link>
+
 
             <div className="min-w-0 border-l border-gray-200 pl-2 sm:pl-3 lg:border-none lg:p-0">
               <h1 className="font-bold text-gray-800 capitalize text-sm sm:text-base truncate leading-tight">{tabLabel}</h1>
@@ -379,10 +396,47 @@ function DashboardContent() {
               <div className="animate-spin w-8 h-8 border-4 border-[var(--primary)] border-t-transparent rounded-full shadow-lg" />
             </div>
           ) : (
-          <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-10">
+            <>
+            <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-10">
             {/* ─── OVERVIEW TAB ─── */}
             {activeTab === "overview" && (
               <>
+                {isTeacher ? (
+                  /* Teacher Overview */
+                  <div className="space-y-6 sm:space-y-8">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {[
+                        { label: "Teaching", value: teachingCourses.length, icon: BookOpen, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
+                        { label: "Total Students", value: teachingCourses.reduce((acc, c) => acc + (c.enrollments?.[0]?.count || 0), 0), icon: Users, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
+                        { label: "Avg. Rating", value: (teachingCourses.reduce((acc, c) => acc + (c.rating || 0), 0) / (teachingCourses.length || 1)).toFixed(1), icon: Star, color: "text-amber-500", bg: "bg-amber-100" },
+                        { label: "Earnings", value: "₦0", icon: DollarSign, color: "text-blue-600", bg: "bg-blue-100" },
+                      ].map((stat) => (
+                        <div key={stat.label} className="bg-white rounded-2xl border border-[var(--border)] p-4 sm:p-5 hover:border-[var(--primary)]/30 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                          <div className={`w-10 h-10 sm:w-11 sm:h-11 ${stat.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                            <stat.icon className={`w-5 h-5 sm:w-5.5 sm:h-5.5 ${stat.color}`} />
+                          </div>
+                          <p className="text-2xl sm:text-3xl font-extrabold text-gray-800 leading-none">{stat.value}</p>
+                          <p className="text-[10px] sm:text-xs text-gray-500 mt-2 font-medium uppercase tracking-wider">{stat.label}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="bg-white rounded-3xl border border-[var(--border)] p-8 text-center space-y-4">
+                      <div className="w-20 h-20 bg-[var(--primary)]/10 rounded-full flex items-center justify-center mx-auto">
+                        <GraduationCap className="w-10 h-10 text-[var(--primary)]" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-gray-800">Welcome to your Teacher Dashboard</h2>
+                      <p className="text-gray-500 max-w-md mx-auto">
+                        Manage your courses, track student progress, and view analytics for your educational content.
+                      </p>
+                      <Link href="/admin/courses" className="btn-primary inline-flex py-3 px-8">
+                        Manage My Courses
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  /* Student Overview */
+                  <>
                 {/* Stats */}
                 <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
@@ -523,9 +577,11 @@ function DashboardContent() {
               </div>
             </>
           )}
+        </>
+      )}
 
-          {/* ─── COURSES TAB ─── */}
-          {activeTab === "courses" && (
+          {/* ─── COURSES TAB (Student) ─── */}
+          {activeTab === "courses" && !isTeacher && (
             <div className="space-y-6">
               {/* Header row — stacks on very small screens */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between bg-white p-4 rounded-2xl border border-[var(--border)] shadow-sm">
@@ -591,8 +647,71 @@ function DashboardContent() {
             </div>
           )}
 
-          {/* ─── PROGRESS TAB ─── */}
-          {activeTab === "progress" && (
+          {/* ─── TEACHING TAB (Teacher) ─── */}
+          {activeTab === "teaching" && isTeacher && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-[var(--border)] shadow-sm">
+                <h2 className="font-bold text-gray-800 flex items-center gap-2.5 text-base sm:text-lg">
+                  <BookOpen className="w-5 h-5 text-[var(--primary)] flex-shrink-0" />
+                  My Courses
+                  <span className="text-[10px] bg-[var(--primary)] text-white font-black px-2 py-0.5 rounded-full">{teachingCourses.length}</span>
+                </h2>
+                <Link href="/admin/courses?action=new" className="btn-primary text-xs py-2.5 px-6 shadow-md shadow-[var(--primary)]/20">
+                  Create New Course
+                </Link>
+              </div>
+
+              {teachingCourses.length === 0 ? (
+                <div className="text-center py-20 bg-white rounded-3xl border border-[var(--border)] px-6">
+                  <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="w-8 h-8 text-gray-200" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800">No courses yet</h3>
+                  <p className="text-sm text-gray-500 mt-2 mb-8 max-w-xs mx-auto">Share your expertise! Create your first course today.</p>
+                  <Link href="/admin/courses?action=new" className="btn-primary text-sm py-3 px-8">Start Teaching</Link>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-4">
+                  {teachingCourses.map((course) => (
+                    <div key={course.id} className="bg-white rounded-2xl border border-[var(--border)] p-4 sm:p-5 hover:shadow-xl transition-all group flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+                      <div className="relative w-full sm:w-32 h-40 sm:h-24 rounded-xl overflow-hidden flex-shrink-0 bg-gray-50 shadow-inner">
+                        {course.image_url && <Image src={course.image_url} alt={course.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-base sm:text-lg text-gray-800 leading-tight line-clamp-2">{course.title}</h3>
+                        <div className="flex items-center gap-4 mt-3">
+                           <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                             <Users className="w-3.5 h-3.5" /> {course.enrollments?.[0]?.count || 0} Students
+                           </div>
+                           <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                             <Star className="w-3.5 h-3.5 text-amber-500" /> {course.rating || "No ratings"}
+                           </div>
+                        </div>
+                      </div>
+                      <div className="w-full sm:w-auto flex gap-2">
+                        <Link href={`/admin/courses/${course.id}`} className="btn-outline flex-1 sm:flex-none text-xs py-2 px-4">Edit</Link>
+                        <Link href={`/courses/${course.id}`} className="btn-primary flex-1 sm:flex-none text-xs py-2 px-4">View Page</Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ─── STUDENTS TAB (Teacher) ─── */}
+          {activeTab === "students" && isTeacher && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-3xl border border-[var(--border)] p-12 text-center space-y-4">
+                <Users className="w-12 h-12 text-gray-200 mx-auto" />
+                <h3 className="text-lg font-bold text-gray-800">Student Insights</h3>
+                <p className="text-sm text-gray-500 max-w-sm mx-auto">This section will show a detailed list of students enrolled in your courses and their individual progress.</p>
+              </div>
+            </div>
+          )}
+
+          {/* ─── PROGRESS TAB (Student) ─── */}
+          {activeTab === "progress" && !isTeacher && (
             <div className="space-y-6">
               {/* Weekly Goal */}
               <div className="bg-white rounded-2xl border border-[var(--border)] p-5">
@@ -704,8 +823,8 @@ function DashboardContent() {
             </div>
           )}
 
-          {/* ─── CERTIFICATES TAB ─── */}
-          {activeTab === "certificates" && (
+          {/* ─── CERTIFICATES TAB (Student) ─── */}
+          {activeTab === "certificates" && !isTeacher && (
             <div className="space-y-5">
               <div className="flex items-center justify-between">
                 <h2 className="font-bold text-gray-800 flex items-center gap-2">
@@ -837,7 +956,7 @@ function DashboardContent() {
                 <h2 className="font-bold text-gray-800 mb-1 flex items-center gap-2">
                   <Bell className="w-4 h-4" /> Notification Settings
                 </h2>
-                <p className="text-xs text-gray-500 mb-5">Control how and when Gizami contacts you</p>
+                <p className="text-xs text-gray-500 mb-5">Control how and when TaxNG Academy contacts you</p>
                 <div className="space-y-3">
                   {Object.entries(settingsState).filter(([k]) => ["emailNotifications", "pushNotifications", "weeklyReport"].includes(k)).map(([key, val]) => {
                     const labels: Record<string, { label: string; desc: string }> = {
@@ -910,10 +1029,16 @@ function DashboardContent() {
               </div>
             </div>
           )}
-          </div>
-        )}
+            </div>
+            </>
+          )}
         </main>
       </div>
+
+      <SubscriptionModal 
+        isOpen={showSubModal} 
+        onClose={() => setShowSubModal(false)} 
+      />
     </div>
   );
 }

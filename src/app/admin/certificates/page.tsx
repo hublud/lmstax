@@ -18,15 +18,17 @@ import {
 } from "lucide-react";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { certificateTemplates, CertificateTemplate } from "@/lib/adminMockData";
+import LogoSVG from "@/components/LogoSVG";
+
 
 // ─── Live Certificate Preview component ──────────────────────────────────────
 
 function CertificatePreview({
   template,
-  recipientName = "John Doe",
-  courseName = "Complete Web Development Bootcamp",
-  instructorName = "Sarah Johnson",
-  date = "April 13, 2024",
+  recipientName = "Chukwuma Obi",
+  courseName = "Introduction to Nigerian Taxation",
+  instructorName = "Prof. Emeka Obi",
+  date = "October 24, 2024",
   compact = false,
 }: {
   template: CertificateTemplate;
@@ -41,7 +43,7 @@ function CertificatePreview({
 
   useEffect(() => {
     // Generate cert ID only on client to avoid hydration mismatch
-    setCertId(`GZM-${Math.random().toString(36).slice(2, 10).toUpperCase()}`);
+    setCertId(`TNG-${Math.random().toString(36).slice(2, 10).toUpperCase()}`);
   }, []);
 
   return (
@@ -163,7 +165,7 @@ function CertificatePreview({
               <p className="text-xs font-semibold" style={{ color: isLight ? "#111827" : "white" }}>{instructorName}</p>
               <p className="text-[10px]" style={{ color: isLight ? "#9ca3af" : "rgba(255,255,255,0.5)" }}>Instructor</p>
             </div>
-            <div className="text-center -mb-1">
+            <div className="flex flex-col items-center">
               <div
                 className="flex items-center justify-center mx-auto mb-1.5 px-3 py-1.5 rounded-xl shadow-md"
                 style={{
@@ -173,15 +175,9 @@ function CertificatePreview({
                   boxShadow: `0 2px 12px ${template.accentColor}30`,
                 }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/logo-gizami.png"
-                  alt="Gizami Logo"
-                  className="w-auto h-6 object-contain"
-                  crossOrigin="anonymous"
-                />
+                <LogoSVG className="h-6 w-auto" />
               </div>
-              <p className="text-[9px] font-bold" style={{ color: isLight ? "#6b7280" : "rgba(255,255,255,0.6)" }}>Certified by Gizami</p>
+              <p className="text-[9px] font-bold" style={{ color: isLight ? "#6b7280" : "rgba(255,255,255,0.6)" }}>Certified by TaxNG Academy</p>
             </div>
             <div className="text-right">
               <div className="w-20 h-px mb-1 ml-auto" style={{ background: template.accentColor + "80" }} />
@@ -199,7 +195,7 @@ function CertificatePreview({
             className="text-[9px] mt-4 font-mono opacity-40"
             style={{ color: isLight ? "#111827" : "white" }}
           >
-            CERT-ID: {certId || "GZM-XXXXXXXX"}
+            CERT-ID: {certId || "TNG-XXXXXXXX"}
           </p>
         )}
 
@@ -217,11 +213,11 @@ export default function CertificatesPage() {
   const [editingAccent, setEditingAccent] = useState<string | null>(null);
 
   const [customization, setCustomization] = useState({
-    recipientName: "John Doe",
-    courseName: "Complete Web Development Bootcamp",
-    instructorName: "Sarah Johnson",
-    date: "April 13, 2024",
-    platformName: "Gizami",
+    recipientName: "Chukwuma Obi",
+    courseName: "Introduction to Nigerian Taxation",
+    instructorName: "Prof. Emeka Obi",
+    date: "October 24, 2024",
+    platformName: "TaxNG Academy",
     showCertId: true,
     showInstructorSig: true,
   });

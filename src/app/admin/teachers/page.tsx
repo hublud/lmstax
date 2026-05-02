@@ -58,9 +58,9 @@ export default function AdminTeachersPage() {
     setIsLoading(true);
     try {
       const { data, error } = await supabase
-        .from("profiles")
+        .from("users")
         .select(`
-          id,
+          user_id,
           full_name,
           avatar_url,
           updated_at,
@@ -105,7 +105,7 @@ export default function AdminTeachersPage() {
           const status = lastSeenDate >= thirtyDaysAgo ? "active" : "pending";
 
           return {
-            id: profile.id,
+            id: profile.user_id,
             name: profile.full_name || "Unknown Instructor",
             email: "teacher@example.com", // Placeholder due to lack of auth.users RPC
             avatar: profile.avatar_url || "/avatars/placeholder.jpg",
@@ -132,9 +132,9 @@ export default function AdminTeachersPage() {
     setIsUpdating(userId);
     try {
       const { error } = await supabase
-        .from("profiles")
+        .from("users")
         .update({ role: newRole })
-        .eq("id", userId);
+        .eq("user_id", userId);
 
       if (error) throw error;
       

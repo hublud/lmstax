@@ -3,10 +3,10 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export const metadata: Metadata = {
   title: {
-    default: "Admin Panel | Gizami",
-    template: "%s | Admin – Gizami",
+    default: "Admin Panel | TaxNG Academy",
+    template: "%s | Admin – TaxNG",
   },
-  description: "Gizami LMS Admin Panel",
+  description: "TaxNG Academy Admin Panel",
 };
 
 export default function AdminLayout({

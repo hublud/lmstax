@@ -10,15 +10,18 @@ import {
   Users,
   GraduationCap,
   BarChart3,
-  MessageSquare,
   Settings,
   LogOut,
   ChevronRight,
   Zap,
   Tag,
   Award,
+  Layers,
+  HelpCircle,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import LogoSVG from "../LogoSVG";
+
 
 interface LiveCounts {
   courses: number;
@@ -43,7 +46,7 @@ export default function AdminSidebar() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setAdminUser(user);
-        const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+        const { data: prof } = await supabase.from("users").select("*").eq("auth_id", user.id).single();
         if (prof) setAdminProfile(prof);
       }
 
@@ -53,8 +56,8 @@ export default function AdminSidebar() {
         { count: teachersCount },
       ] = await Promise.all([
         supabase.from("courses").select("*", { count: "exact", head: true }),
-        supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "student"),
-        supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "teacher"),
+        supabase.from("users").select("*", { count: "exact", head: true }).eq("role", "user"),
+        supabase.from("users").select("*", { count: "exact", head: true }).eq("role", "teacher"),
       ]);
 
       setCounts({
@@ -87,6 +90,8 @@ export default function AdminSidebar() {
       items: [
         { href: "/admin/courses", label: "Courses", icon: BookOpen, badge: formatCount(counts.courses) },
         { href: "/admin/courses/create", label: "Create Course", icon: Zap },
+        { href: "/admin/modules", label: "Module Library", icon: Layers },
+        { href: "/admin/quizzes", label: "Quiz Library", icon: HelpCircle },
         { href: "/admin/categories", label: "Categories", icon: Tag },
         { href: "/admin/certificates", label: "Certificates", icon: Award },
       ],
@@ -101,7 +106,6 @@ export default function AdminSidebar() {
     {
       title: "Support",
       items: [
-        { href: "/admin/messages", label: "Messages", icon: MessageSquare, badge: "2", badgeColor: "bg-red-500" },
         { href: "/admin/settings", label: "Settings", icon: Settings },
       ],
     },
@@ -115,13 +119,8 @@ export default function AdminSidebar() {
       {/* Logo */}
       <div className="px-5 py-5 border-b border-white/10">
         <Link href="/" className="flex items-center gap-3 group">
-          <Image
-            src="/logo-gizami.png"
-            alt="Gizami"
-            width={120}
-            height={40}
-            className="h-10 w-auto object-contain bg-white/90 p-1 rounded-lg"
-          />
+          <LogoSVG className="h-8 w-auto" />
+
           <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider border-l border-white/20 pl-3">
             Admin
           </p>
@@ -139,7 +138,7 @@ export default function AdminSidebar() {
               {adminProfile?.full_name || "Admin User"}
             </p>
             <p className="text-xs text-gray-400 truncate">
-              {adminUser?.email || "admin@gizami.com"}
+              {adminUser?.email || "admin@taxnigeria.com"}
             </p>
           </div>
         </div>

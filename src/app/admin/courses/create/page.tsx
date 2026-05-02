@@ -15,6 +15,8 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import AdminHeader from "@/components/admin/AdminHeader";
+import ModulePickerModal from "@/components/admin/ModulePickerModal";
+import { type LibraryModule } from "@/app/admin/modules/page";
 
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -834,6 +836,7 @@ function CreateCoursePageInner() {
 
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<"info" | "curriculum" | "pricing" | "settings">("info");
+  const [showPicker, setShowPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
@@ -947,6 +950,24 @@ function CreateCoursePageInner() {
   const addModule = () => {
     const id = `m${Date.now()}`;
     setModules((prev) => [...prev, { id, title: "New Module", isOpen: true, lessons: [] }]);
+  };
+
+  const addFromLibrary = (libraryModules: LibraryModule[]) => {
+    const copies: Module[] = libraryModules.map(lm => ({
+      id: `m${Date.now()}_${Math.random().toString(36).slice(2)}`,
+      title: lm.title,
+      isOpen: false,
+      fromLibrary: true,
+      lessons: lm.lessons.map(ll => ({
+        id: `l${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        title: ll.title,
+        type: ll.type as "video" | "reading" | "quiz",
+        duration: ll.duration,
+        isFree: ll.isFree,
+        content: { ...ll.content },
+      })),
+    }));
+    setModules(prev => [...prev, ...copies]);
   };
 
   const deleteModule = (id: string) =>
@@ -1285,10 +1306,23 @@ function CreateCoursePageInner() {
                 <p className="text-sm font-medium text-gray-600">
                   {modules.length} modules · {totalLessons} lessons
                 </p>
-                <button onClick={addModule} className="btn-primary text-xs py-2 px-4">
-                  <Plus className="w-3.5 h-3.5" /> Add Module
-                </button>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => setShowPicker(true)} className="btn-outline text-xs py-2 px-3 flex items-center gap-1.5">
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/></svg>
+                    Add from Library
+                  </button>
+                  <button onClick={addModule} className="btn-primary text-xs py-2 px-4">
+                    <Plus className="w-3.5 h-3.5" /> New Module
+                  </button>
+                </div>
               </div>
+
+              {showPicker && (
+                <ModulePickerModal
+                  onClose={() => setShowPicker(false)}
+                  onAdd={addFromLibrary}
+                />
+              )}
 
               {modules.map((module, mIdx) => (
                 <div key={module.id} className="border border-[var(--border)] rounded-2xl overflow-hidden">
@@ -1303,6 +1337,9 @@ function CreateCoursePageInner() {
                     <span className="text-xs font-bold text-gray-400 bg-white border border-gray-200 px-2 py-0.5 rounded-lg flex-shrink-0">
                       Module {mIdx + 1}
                     </span>
+                    {(module as any).fromLibrary && (
+                      <span className="text-[10px] font-bold bg-[var(--primary)]/10 text-[var(--primary)] px-1.5 py-0.5 rounded-md flex-shrink-0">From Library</span>
+                    )}
                     <input
                       value={module.title}
                       onChange={(e) => updateModuleTitle(module.id, e.target.value)}

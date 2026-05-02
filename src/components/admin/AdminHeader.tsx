@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { Bell, Search, Menu, X, GraduationCap, Shield } from "lucide-react";
 import Image from "next/image";
+import LogoSVG from "../LogoSVG";
+
 
 interface AdminHeaderProps {
   title: string;
@@ -64,7 +66,7 @@ export default function AdminHeader({ title, subtitle }: AdminHeaderProps) {
                   {[
                     { text: "New course submitted for review", time: "5 min ago", unread: true },
                     { text: "2 new support tickets opened", time: "1 hour ago", unread: true },
-                    { text: "Revenue milestone: $15M reached", time: "Yesterday", unread: false },
+                    { text: "Revenue milestone: ₦15M reached", time: "Yesterday", unread: false },
                   ].map((n, i) => (
                     <div key={i} className={`px-4 py-3 flex gap-3 hover:bg-gray-50 cursor-pointer ${n.unread ? "bg-[var(--primary)]/5" : ""}`}>
                       {n.unread && <div className="w-2 h-2 bg-[var(--primary)] rounded-full mt-1.5 flex-shrink-0" />}
@@ -99,13 +101,8 @@ export default function AdminHeader({ title, subtitle }: AdminHeaderProps) {
           >
             <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
               <Link href="/" className="flex items-center gap-3">
-                <Image 
-                  src="/logo-gizami.png" 
-                  alt="Gizami" 
-                  width={100} 
-                  height={32} 
-                  className="h-8 w-auto object-contain bg-white/90 p-1 rounded-md" 
-                />
+                <LogoSVG className="h-8 w-auto" />
+
                 <span className="text-[10px] text-gray-400 font-semibold border-l border-white/20 pl-3">Admin</span>
               </Link>
               <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-400 hover:text-white">

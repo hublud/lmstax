@@ -3,90 +3,44 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import LogoSVG from "@/components/LogoSVG";
 import {
   Menu,
   X,
   Search,
-  Bell,
-  ChevronDown,
   BookOpen,
   GraduationCap,
-  User,
-  LogOut,
-  LayoutDashboard,
-  Settings,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import LogoSVG from "./LogoSVG";
+
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/courses", label: "Courses" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Home", external: false },
+  { href: "/courses", label: "Courses", external: false },
+  { href: "/about", label: "About", external: false },
 ];
 
-import { supabase } from "@/lib/supabase";
-import { useRouter, usePathname } from "next/navigation";
+const TAX_AI_HREF = "http://taxnigeria.com/";
 
 export default function Navbar() {
-  const router = useRouter();
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
-  const [mounted, setMounted] = useState(false);
 
   const isHome = pathname === "/";
   const needsDarkText = !isHome || isScrolled || isMobileOpen;
 
-
   useEffect(() => {
-    // Check initial session
-    supabase.auth.getSession().then(({ data: { session } }: any) => {
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      setMounted(true);
-    });
-
-    // Listen for changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      else setProfile(null);
-    });
-
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      subscription.unsubscribe();
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const fetchProfile = async (userId: string) => {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
-    if (data) setProfile(data);
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setIsProfileOpen(false);
-    router.push("/");
-  };
-
-  const isLoggedIn = !!user;
-
-  // Do not render the global Navbar in the admin panel or student dashboard
+  // Do not render the global Navbar in the admin panel, student dashboard, or course player
   if (
-    pathname?.includes("/admin") || 
+    pathname?.includes("/admin") ||
     pathname?.includes("/dashboard") ||
-    pathname?.includes("/courses/") // Hide on course player too
+    pathname?.includes("/courses/")
   ) {
     return null;
   }
@@ -96,26 +50,20 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "glass shadow-lg shadow-black/5"
-          : isMobileOpen 
-            ? "bg-white border-b border-[var(--border)]"
-            : !isHome
-              ? "bg-white/80 backdrop-blur-md border-b border-[var(--border)]"
-              : "bg-transparent"
+          : isMobileOpen
+          ? "bg-white border-b border-[var(--border)]"
+          : !isHome
+          ? "bg-white/80 backdrop-blur-md border-b border-[var(--border)]"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-18 py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center group" aria-label="Gizami Home">
-            <Image 
-              src="/logo-gizami.png" 
-              alt="Gizami" 
-              width={160} 
-              height={56} 
-              className="h-10 w-auto object-contain bg-white/90 p-1 rounded-lg"
-              priority
-            />
+          <Link href="/" className="flex items-center group" aria-label="TaxNG Academy Home">
+            <LogoSVG className="h-10 w-auto" />
           </Link>
+
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
@@ -128,11 +76,31 @@ export default function Navbar() {
                 } hover:text-[var(--primary)]`}
               >
                 {link.label}
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--primary)] rounded-full group-hover:w-full transition-all duration-300 ${
-                  !needsDarkText ? "bg-white" : ""
-                }`} />
+                <span
+                  className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--primary)] rounded-full group-hover:w-full transition-all duration-300 ${
+                    !needsDarkText ? "bg-white" : ""
+                  }`}
+                />
               </Link>
             ))}
+            {/* TAX_NG AI — external link */}
+            <a
+              href={TAX_AI_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-sm font-semibold transition-all relative group flex items-center gap-1.5 ${
+                needsDarkText ? "text-[var(--primary)]" : "text-[#fbbf24]"
+              } hover:opacity-80`}
+            >
+              <span className="inline-flex items-center gap-1">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+                TAX_NG AI
+              </span>
+              <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 rounded-full group-hover:w-full transition-all duration-300 ${
+                needsDarkText ? "bg-[var(--primary)]" : "bg-[#fbbf24]"
+              }`}/>
+            </a>
           </div>
 
           {/* Right side */}
@@ -140,86 +108,26 @@ export default function Navbar() {
             <button
               aria-label="Search"
               className={`p-2 rounded-xl transition-all ${
-                needsDarkText 
-                  ? "text-gray-600 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10" 
+                needsDarkText
+                  ? "text-gray-600 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10"
                   : "text-white/80 hover:text-white hover:bg-white/10"
               }`}
             >
               <Search className="w-5 h-5" />
             </button>
 
-            {mounted && (isLoggedIn ? (
-              <>
-                <button aria-label="Notifications" className="p-2 relative text-gray-600 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-xl transition-all">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[var(--accent)] rounded-full" />
-                </button>
-                <div className="relative">
-                  <button
-                    onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center gap-2 p-1.5 pr-3 rounded-xl border border-[var(--border)] hover:border-[var(--primary)] transition-all bg-white"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white text-xs font-bold">
-                      {profile?.full_name?.charAt(0) || user?.email?.charAt(0)?.toUpperCase()}
-                    </div>
-                    <span className="text-sm font-medium text-gray-700 truncate max-w-[100px]">
-                      {profile?.full_name?.split(' ')[0] || "User"}
-                    </span>
-                    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isProfileOpen ? "rotate-180" : ""}`} />
-                  </button>
-                  {isProfileOpen && (
-                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-[var(--border)] overflow-hidden animate-fade-in">
-                      <div className="p-4 border-b border-[var(--border)] bg-[var(--bg)]">
-                        <p className="font-semibold text-sm text-gray-800 truncate">{profile?.full_name || "New Learner"}</p>
-                        <p className="text-xs text-gray-500 truncate">{user?.email}</p>
-                      </div>
-                      <div className="p-2">
-                        {[
-                          { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-                          { icon: BookOpen, label: "My Courses", href: "/dashboard" },
-                          { icon: User, label: "Profile", href: "/dashboard" },
-                          { icon: Settings, label: "Settings", href: "/dashboard" },
-                        ].map((item) => (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] rounded-xl transition-all"
-                          >
-                            <item.icon className="w-4 h-4" />
-                            {item.label}
-                          </Link>
-                        ))}
-                        <div className="border-t border-[var(--border)] mt-1 pt-1">
-                          <button 
-                            onClick={handleLogout}
-                            className="flex items-center gap-3 px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-all w-full text-left"
-                          >
-                            <LogOut className="w-4 h-4" />
-                            Logout
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <Link 
-                  href="/login" 
-                  className={`py-2.5 px-5 text-sm font-semibold transition-all ${
-                    needsDarkText 
-                      ? "btn-outline" 
-                      : "text-white hover:text-white/80"
-                  }`}
-                >
-                  Login
-                </Link>
-                <Link href="/signup" className="btn-primary py-2.5 px-5 text-sm">
-                  Get Started
-                </Link>
-              </>
-            ))}
+            <Link
+              href="/login"
+              className={`py-2.5 px-5 text-sm font-semibold transition-all ${
+                needsDarkText ? "btn-outline" : "text-white hover:text-white/80"
+              }`}
+            >
+              Login
+            </Link>
+            <Link href="https://www.taxnigeria.com/pricing" className="btn-primary py-2.5 px-5 text-sm">
+              <GraduationCap className="w-4 h-4" />
+              Get Started
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -249,11 +157,32 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {/* TAX_NG AI — mobile */}
+            <a
+              href={TAX_AI_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileOpen(false)}
+              className="flex items-center gap-2 px-4 py-3 text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-xl transition-all font-semibold"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+              TAX_NG AI
+              <svg className="w-3.5 h-3.5 ml-auto opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+            </a>
             <div className="pt-4 space-y-3 border-t border-[var(--border)]">
-              <Link href="/login" onClick={() => setIsMobileOpen(false)} className="btn-outline w-full justify-center">
+              <Link
+                href="/login"
+                onClick={() => setIsMobileOpen(false)}
+                className="btn-outline w-full justify-center"
+              >
                 Login
               </Link>
-              <Link href="/signup" onClick={() => setIsMobileOpen(false)} className="btn-primary w-full justify-center">
+              <Link
+                href="https://www.taxnigeria.com/pricing"
+                onClick={() => setIsMobileOpen(false)}
+                className="btn-primary w-full justify-center"
+              >
+                <GraduationCap className="w-4 h-4" />
                 Get Started
               </Link>
             </div>

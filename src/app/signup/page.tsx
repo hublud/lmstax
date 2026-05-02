@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Eye, EyeOff, ArrowRight, Check } from "lucide-react";
+import LogoSVG from "@/components/LogoSVG";
+
 
 export default function SignupPage() {
   const router = useRouter();
@@ -63,13 +65,14 @@ export default function SignupPage() {
           />
         </div>
         <div className="relative flex flex-col justify-center px-12 text-white">
-
-
+          <Link href="/" className="mb-10 block w-fit">
+            <LogoSVG className="h-14 w-auto" />
+          </Link>
           <h1 className="text-4xl font-extrabold leading-tight mb-4">
             Start Your Learning Journey Today
           </h1>
           <p className="text-green-100 text-lg mb-10">
-            Join 500,000+ learners and gain access to 1000+ expert-led courses.
+            Join 25,000+ learners and gain access to 60+ expert-led tax courses.
           </p>
 
           <div className="space-y-4">
@@ -95,8 +98,11 @@ export default function SignupPage() {
       {/* Right form panel */}
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-
-
+          <div className="lg:hidden mb-8 text-center">
+            <Link href="/" className="inline-block">
+              <LogoSVG className="h-10 w-auto mx-auto" />
+            </Link>
+          </div>
           <div className="bg-white rounded-3xl shadow-2xl p-8 border border-[var(--border)]">
             <div className="mb-8">
               <h2 className="text-2xl font-extrabold text-gray-800">Create your account</h2>
@@ -175,7 +181,7 @@ export default function SignupPage() {
                   required
                 />
                 <label htmlFor="terms" className="text-xs text-gray-500 cursor-pointer leading-relaxed">
-                  I agree to Gizami&apos;s{" "}
+                  I agree to TaxNG Academy&apos;s{" "}
                   <Link href="#" className="text-[var(--primary)] hover:underline">Terms of Service</Link>
                   {" "}and{" "}
                   <Link href="#" className="text-[var(--primary)] hover:underline">Privacy Policy</Link>

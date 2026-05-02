@@ -12,14 +12,15 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("http://localhost:3000"),
   title: {
-    default: "Gizami – Learn Smarter, Grow Faster",
-    template: "%s | Gizami",
+    default: "TaxNG Academy – Bridging the Tax Knowledge Gap",
+    template: "%s | TaxNG Academy",
   },
   description:
-    "Access 1000+ expert-led courses in technology, business, design, and more. Transform your career with Gizami – the #1 rated learning platform.",
-  keywords: ["online learning", "LMS", "courses", "education", "e-learning", "certificates"],
-  authors: [{ name: "Gizami" }],
+    "Learn Nigerian taxation from certified experts. TaxNG Academy offers courses on personal income tax, corporate tax, VAT, compliance, and more — designed for Nigerians.",
+  keywords: ["Nigerian tax", "FIRS", "PAYE", "VAT Nigeria", "corporate tax", "tax compliance", "online tax courses", "e-learning Nigeria", "CITA", "PITA"],
+  authors: [{ name: "TaxNG Academy" }],
   icons: {
     icon: [
       { url: "/favicon-icon.png", type: "image/png" },
@@ -28,10 +29,10 @@ export const metadata: Metadata = {
     shortcut: "/favicon-icon.png",
   },
   openGraph: {
-    title: "Gizami – Learn Smarter, Grow Faster",
-    description: "Access 1000+ expert-led courses and transform your career.",
+    title: "TaxNG Academy – Bridging the Tax Knowledge Gap",
+    description: "Nigeria's #1 tax learning platform. Expert-led courses on PIT, CIT, VAT and compliance.",
     type: "website",
-    images: [{ url: "/logo-gizami.png" }],
+    images: [{ url: "/logo-taxng.png" }],
   },
 };
 

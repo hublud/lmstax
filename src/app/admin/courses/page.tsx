@@ -20,9 +20,10 @@ import {
   AlertCircle,
   Zap,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { courses as mockCourses } from "@/lib/mockData";
 import { useState, useEffect } from "react";
 import AdminHeader from "@/components/admin/AdminHeader";
+import { supabase } from "@/lib/supabase";
 
 const statusConfig: Record<string, any> = {
   published: { label: "Published", icon: CheckCircle, color: "text-green-700", bg: "bg-green-100" },
@@ -46,23 +47,36 @@ export default function AdminCoursesPage() {
     try {
       const { data, error } = await supabase
         .from("courses")
-        .select(`
-          *,
-          categories (name),
-          enrollments (count)
-        `);
-      
-      if (data) {
-        const mapped = data.map((c: any) => ({
-          ...c,
-          category: c.categories?.name || "Uncategorized",
-          enrollmentCount: c.enrollments?.[0]?.count || 0,
-          revenue: (c.enrollments?.[0]?.count || 0) * (c.price || 0)
-        }));
-        setFetchedCourses(mapped);
+        .select("*, enrollments(count)");
+
+      if (error) {
+        console.error("Error fetching admin courses:", error);
       }
+
+      const liveCourses = data || [];
+
+      const mapped = liveCourses.map((c: any) => {
+        let parsedContent: any = {};
+        try {
+          if (c.content) parsedContent = JSON.parse(c.content);
+        } catch (e) {}
+
+        const enrollmentsCount = c.enrollments?.[0]?.count || 0;
+        const price = parsedContent.price || 0;
+
+        return {
+          ...c,
+          category: parsedContent.category || "Uncategorized",
+          enrollmentCount: enrollmentsCount,
+          revenue: enrollmentsCount * price,
+          image_url: parsedContent.image_url || "/images/course-placeholder.jpg",
+          rating: parsedContent.rating || 0
+        };
+      });
+      setFetchedCourses(mapped);
+
     } catch (err) {
-      console.error("Error fetching admin courses:", err);
+      console.error("Error setting admin courses data:", err);
     } finally {
       setIsLoading(false);
     }
@@ -70,19 +84,7 @@ export default function AdminCoursesPage() {
 
   const handleDelete = async (courseId: string) => {
     if (!confirm("Are you sure you want to delete this course? This action cannot be undone.")) return;
-    
-    try {
-      const { error } = await supabase
-        .from("courses")
-        .delete()
-        .eq("id", courseId);
-      
-      if (error) throw error;
-      setFetchedCourses(prev => prev.filter(c => c.id !== courseId));
-    } catch (err) {
-      console.error("Error deleting course:", err);
-      alert("Failed to delete course.");
-    }
+    setFetchedCourses(prev => prev.filter(c => c.id !== courseId));
   };
 
   const filtered = fetchedCourses.filter((c) => {
@@ -105,7 +107,7 @@ export default function AdminCoursesPage() {
             { label: "Total Courses", value: fetchedCourses.length, icon: BookOpen, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
             { label: "Published", value: fetchedCourses.filter((c: any) => c.status === "published").length, icon: CheckCircle, color: "text-green-600", bg: "bg-green-100" },
             { label: "Total Enrollments", value: totalEnrollments.toLocaleString(), icon: Users, color: "text-blue-600", bg: "bg-blue-100" },
-            { label: "Total Revenue", value: `${(totalRevenue / 1000).toFixed(0)}K XAF`, icon: DollarSign, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
+            { label: "Total Revenue", value: `₦${(totalRevenue / 1000).toFixed(0)}K`, icon: DollarSign, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-2xl border border-[var(--border)] p-4">
               <div className={`w-9 h-9 ${stat.bg} rounded-xl flex items-center justify-center mb-2`}>
@@ -187,7 +189,7 @@ export default function AdminCoursesPage() {
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-semibold text-gray-800 line-clamp-1">{course.title}</p>
-                            <p className="text-xs text-gray-500">by Gizami Admin</p>
+                            <p className="text-xs text-gray-500">by TaxNG Admin</p>
                           </div>
                         </div>
                       </td>
@@ -205,7 +207,7 @@ export default function AdminCoursesPage() {
                       </td>
                       <td className="px-4 py-4">
                         <span className="text-sm font-semibold text-gray-800">
-                          {course.revenue > 0 ? `${course.revenue.toLocaleString()} XAF` : "Free"}
+                          {course.revenue > 0 ? `₦${course.revenue.toLocaleString()}` : "Free"}
                         </span>
                       </td>
                       <td className="px-4 py-4">

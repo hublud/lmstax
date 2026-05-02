@@ -1,14 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
-import { GraduationCap, Users, BookOpen, Award, Target, Heart, Zap, Globe, ArrowRight } from "lucide-react";
-
-
+import { GraduationCap, Users, BookOpen, Award, Target, Heart, Zap, Globe, ArrowRight, Shield } from "lucide-react";
 
 const values = [
-  { icon: Target, title: "Mission-Driven", desc: "Every decision is guided by our mission to make quality education accessible to everyone worldwide.", color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
-  { icon: Heart, title: "Student First", desc: "We design every feature with students in mind, ensuring an engaging and effective learning experience.", color: "text-rose-500", bg: "bg-rose-100" },
-  { icon: Zap, title: "Innovation", desc: "Constantly evolving our platform with the latest technology to deliver cutting-edge learning tools.", color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
-  { icon: Globe, title: "Global Impact", desc: "Building bridges across borders, connecting learners and instructors from 150+ countries.", color: "text-blue-600", bg: "bg-blue-100" },
+  { icon: Target, title: "Mission-Driven", desc: "Every decision is guided by our mission to make Nigerian tax knowledge accessible, practical, and affordable for every citizen.", color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
+  { icon: Heart, title: "Learner First", desc: "We design every lesson, quiz, and resource with the learner in mind — clear language, real examples, and Nigeria-specific context.", color: "text-rose-500", bg: "bg-rose-100" },
+  { icon: Zap, title: "Always Current", desc: "Our courses are updated after every Finance Act and FIRS circular to reflect the latest tax rates, rules, and compliance requirements.", color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
+  { icon: Globe, title: "Nationwide Impact", desc: "Building tax literacy across all 36 states of Nigeria — from Lagos to Kano, Port Harcourt to Abuja.", color: "text-blue-600", bg: "bg-blue-100" },
 ];
 
 export default function AboutPage() {
@@ -22,11 +19,11 @@ export default function AboutPage() {
             Our Story
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold mb-5 leading-tight">
-            Transforming Lives Through
-            <span className="block text-[var(--accent)]">Quality Education</span>
+            Bridging Nigeria&apos;s
+            <span className="block text-[var(--accent)]">Tax Knowledge Gap</span>
           </h1>
           <p className="text-green-100 text-xl max-w-2xl mx-auto">
-            Gizami was founded in 2020 with a simple belief: everyone deserves access to world-class education, regardless of where they live or their financial situation.
+            TaxNG Academy is the educational arm of Tax Nigeria — built to empower individuals, businesses, and professionals with clear, practical, and accessible tax knowledge rooted in Nigerian law.
           </p>
         </div>
       </div>
@@ -36,10 +33,10 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { icon: Users, value: "500K+", label: "Active Learners", color: "text-[var(--primary)]" },
-              { icon: BookOpen, value: "1,000+", label: "Expert Courses", color: "text-[var(--accent)]" },
-              { icon: Award, value: "200+", label: "Expert Instructors", color: "text-purple-600" },
-              { icon: Globe, value: "150+", label: "Countries Reached", color: "text-blue-600" },
+              { icon: Users, value: "25K+", label: "Active Learners", color: "text-[var(--primary)]" },
+              { icon: BookOpen, value: "60+", label: "Tax Courses", color: "text-[var(--accent)]" },
+              { icon: Award, value: "30+", label: "Expert Educators", color: "text-purple-600" },
+              { icon: Globe, value: "36", label: "States Covered", color: "text-blue-600" },
             ].map((stat) => (
               <div key={stat.label}>
                 <stat.icon className={`w-6 h-6 ${stat.color} mx-auto mb-2`} />
@@ -59,12 +56,12 @@ export default function AboutPage() {
               <Target className="w-3.5 h-3.5" />
               Our Mission
             </div>
-            <h2 className="section-title mb-4">Making Quality Learning Accessible to All</h2>
+            <h2 className="section-title mb-4">Making Nigerian Tax Knowledge Accessible to All</h2>
             <p className="text-gray-600 leading-relaxed mb-5">
-              We believe education is the most powerful tool for changing the world. Gizami was built to break down barriers — financial, geographical, and technical — that prevent people from accessing the skills they need to thrive.
+              Most Nigerians pay taxes without understanding what they pay, why they pay it, or how to comply correctly. TaxNG Academy was created to change that — by making accurate, up-to-date, and affordable tax education available to every Nigerian.
             </p>
             <p className="text-gray-600 leading-relaxed mb-8">
-              From our humble beginnings in a small office in San Francisco, we&apos;ve grown into a global community of 500,000+ learners, 200+ instructors, and partners across 150 countries.
+              From employed individuals navigating PAYE, to entrepreneurs managing VAT, to finance professionals handling CITA returns — we have a course for every tax challenge you face in Nigeria.
             </p>
             <Link href="/courses" className="btn-primary">
               Explore Our Courses
@@ -73,9 +70,10 @@ export default function AboutPage() {
           </div>
           <div className="relative h-80 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/10 rounded-3xl overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <GraduationCap className="w-24 h-24 text-[var(--primary)]/30 mx-auto" />
-                <p className="text-[var(--primary)] font-bold text-xl mt-4">Education for Everyone</p>
+              <div className="text-center px-8">
+                <Shield className="w-20 h-20 text-[var(--primary)]/30 mx-auto mb-4" />
+                <p className="text-[var(--primary)] font-bold text-xl">Nigeria-Specific Tax Education</p>
+                <p className="text-gray-500 text-sm mt-2">Every lesson rooted in Nigerian law</p>
               </div>
             </div>
           </div>
@@ -106,14 +104,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-
       {/* CTA */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] rounded-3xl p-10 text-white text-center">
-            <h2 className="text-3xl font-extrabold mb-3">Ready to Join Our Community?</h2>
-            <p className="text-green-100 mb-6">Start learning today and become part of the Gizami family.</p>
-            <Link href="/signup" className="btn-accent text-base px-8 py-3.5">
+            <h2 className="text-3xl font-extrabold mb-3">Ready to Master Nigerian Taxation?</h2>
+            <p className="text-green-100 mb-6">Start learning today and join thousands of Nigerians bridging the tax knowledge gap with TaxNG Academy.</p>
+            <Link href="/login" className="btn-accent text-base px-8 py-3.5">
               Get Started Free
               <ArrowRight className="w-4 h-4" />
             </Link>

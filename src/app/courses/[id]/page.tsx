@@ -22,8 +22,8 @@ import {
   PlayCircle,
   ArrowLeft,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 import { useEffect } from "react";
+import { courses as mockCourses } from "@/lib/mockData";
 import { useRouter } from "next/navigation";
 import PaymentModal from "@/components/PaymentModal";
 
@@ -45,50 +45,40 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
     const fetchCourseData = async () => {
       setIsLoading(true);
       try {
-        const { data: { user: authUser } } = await supabase.auth.getUser();
-        setUser(authUser);
-
-        // Fetch course details
-        const { data: crs } = await supabase
-          .from("courses")
-          .select("*, categories(name)")
-          .eq("id", id)
-          .single();
+        // Use static mock data for headless version
+        const foundCourse = mockCourses.find(c => c.id === id);
         
-        if (crs) setCourse(crs);
-
-        // Fetch curriculum
-        const { data: mods } = await supabase
-          .from("modules")
-          .select(`
-            *,
-            lessons (*)
-          `)
-          .eq("course_id", id)
-          .order("order", { ascending: true });
-        
-        if (mods) {
-          const sortedMods = mods.map((m: any) => ({
-            ...m,
-            lessons: m.lessons?.sort((a: any, b: any) => a.order - b.order) || []
-          }));
-          setCurriculumData(sortedMods);
-        }
-
-        // Check enrollment
-        if (authUser) {
-          const { data: enrol } = await supabase
-            .from("enrollments")
-            .select("*")
-            .eq("user_id", authUser.id)
-            .eq("course_id", id)
-            .maybeSingle();
+        if (foundCourse) {
+          setCourse(foundCourse);
           
-          if (enrol) setIsEnrolled(true);
+          // Generate a mock curriculum if not present
+          const mockCurriculum = [
+            {
+              id: "m1",
+              title: "Module 1: Getting Started",
+              lessons: [
+                { id: "l1", title: "Introduction to the Course", duration: "10m", is_preview: true },
+                { id: "l2", title: "Understanding the Basics", duration: "25m", is_preview: false },
+              ]
+            },
+            {
+              id: "m2",
+              title: "Module 2: Core Concepts",
+              lessons: [
+                { id: "l3", title: "Nigerian Tax Legal Framework", duration: "45m", is_preview: false },
+                { id: "l4", title: "Practical Compliance Steps", duration: "30m", is_preview: false },
+              ]
+            }
+          ];
+          setCurriculumData(mockCurriculum);
         }
+
+        // Mock user session
+        setUser({ id: "mock-user-123", email: "student@taxnigeria.com" });
+        setIsEnrolled(false); // Default to not enrolled for mock
 
       } catch (err) {
-        console.error("Error fetching course details:", err);
+        console.error("Error setting mock course details:", err);
       } finally {
         setIsLoading(false);
       }
@@ -116,28 +106,13 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
       return;
     }
 
-    // Free course — enroll directly
+    // Free course — enroll directly (mock version)
     setIsEnrolling(true);
-    try {
-      const { error } = await supabase
-        .from("enrollments")
-        .insert({
-          user_id: user.id,
-          course_id: id,
-          progress: 0,
-          status: "active"
-        });
-      
-      if (error) throw error;
-      
+    setTimeout(() => {
       setIsEnrolled(true);
-      router.push(`/courses/${id}/learn`);
-    } catch (err) {
-      console.error("Enrollment error:", err);
-      alert("Failed to enroll. Please try again.");
-    } finally {
       setIsEnrolling(false);
-    }
+      router.push(`/courses/${id}/learn`);
+    }, 1000);
   };
 
   const reviews = [
@@ -249,7 +224,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Created by</p>
-                  <p className="text-white font-medium">Gizami Instructor</p>
+                  <p className="text-white font-medium">TaxNG Instructor</p>
                 </div>
               </div>
 
@@ -493,8 +468,8 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                     <span className="text-3xl font-extrabold text-[var(--primary)]">Free</span>
                   ) : (
                     <>
-                      <span className="text-3xl font-extrabold text-gray-800">{course.price?.toLocaleString()} XAF</span>
-                      <span className="text-lg text-gray-400 line-through">{(Math.round((course.price || 0) * 1.5)).toLocaleString()} XAF</span>
+                      <span className="text-3xl font-extrabold text-gray-800">₦{course.price?.toLocaleString()}</span>
+                      <span className="text-lg text-gray-400 line-through">₦{(Math.round((course.price || 0) * 1.5)).toLocaleString()}</span>
                       <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded-lg">33% OFF</span>
                     </>
                   )}
@@ -515,7 +490,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                   ) : isFree ? (
                     "⚡ Enroll Free"
                   ) : (
-                    `💳 Enroll for ${course.price?.toLocaleString("fr-CM")} XAF`
+                    `💳 Enroll for ₦${course.price?.toLocaleString()}`
                   )}
                 </button>
                 <button className="btn-outline w-full mb-4 text-base py-3.5 justify-center">

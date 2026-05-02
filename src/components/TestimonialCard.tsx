@@ -21,10 +21,10 @@ export default function TestimonialCard() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      goTo((current + 1) % testimonials.length);
+      setCurrent((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [current, goTo]);
+  }, []);
 
   return (
     <div className="relative">

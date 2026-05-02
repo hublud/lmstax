@@ -15,8 +15,8 @@ const getSupabaseAdmin = () => {
 };
 
 const ALLOWED_TEST_EMAILS = [
-  'teacher_test@gizami.com',
-  'student_test@gizami.com',
+  'teacher_test@taxnigeria.com',
+  'student_test@taxnigeria.com',
   'new_student@example.com'
 ];
 
@@ -25,7 +25,7 @@ const ALLOWED_TEST_EMAILS = [
  * Now unified for all authentication flows (Signup/Login) using 6-digit OTP.
  */
 export async function authBypass(email: string, type: 'magiclink' = 'magiclink', metadata?: any) {
-  const isAllowed = ALLOWED_TEST_EMAILS.includes(email) || email.endsWith('@gizami.com');
+  const isAllowed = ALLOWED_TEST_EMAILS.includes(email) || email.endsWith('@taxnigeria.com');
   
   if (!isAllowed) {
     return { error: "This email is not authorized for development bypass." };

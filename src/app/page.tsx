@@ -1,20 +1,21 @@
 "use client";
-
 import { useState, useEffect } from "react";
+
 import Link from "next/link";
-import { ArrowRight, BookOpen, Users, Award, TrendingUp, UserCheck, Lightbulb, Rocket, Check, GraduationCap, Shield, Play } from "lucide-react";
+import { ArrowRight, BookOpen, Users, Award, TrendingUp, UserCheck, Lightbulb, Rocket, Check, GraduationCap, Shield, Crown } from "lucide-react";
 
 import HeroSlider from "@/components/HeroSlider";
 import CourseCard from "@/components/CourseCard";
 import TestimonialCard from "@/components/TestimonialCard";
+import { categories } from "@/lib/mockData";
 import { supabase } from "@/lib/supabase";
 
 const steps = [
   {
     number: "01",
     icon: UserCheck,
-    title: "Sign Up",
-    desc: "Create your free account in seconds. No credit card required.",
+    title: "Create Your Account",
+    desc: "Sign up free in seconds. No payment required to get started with foundational tax courses.",
     color: "from-[var(--primary)] to-[var(--primary-light)]",
     bg: "bg-[var(--primary)]/10",
     iconColor: "text-[var(--primary)]",
@@ -22,8 +23,8 @@ const steps = [
   {
     number: "02",
     icon: BookOpen,
-    title: "Choose a Course",
-    desc: "Browse 1000+ courses across tech, business, design and more.",
+    title: "Pick a Tax Course",
+    desc: "Browse 60+ courses across all six tax categories — from personal income tax to corporate compliance.",
     color: "from-[var(--accent)] to-orange-400",
     bg: "bg-[var(--accent)]/10",
     iconColor: "text-[var(--accent)]",
@@ -31,8 +32,8 @@ const steps = [
   {
     number: "03",
     icon: Rocket,
-    title: "Start Learning",
-    desc: "Learn at your own pace and earn certificates to advance your career.",
+    title: "Learn & Get Certified",
+    desc: "Study at your own pace and earn TaxNG certificates that prove your tax expertise to employers.",
     color: "from-purple-600 to-purple-400",
     bg: "bg-purple-100",
     iconColor: "text-purple-600",
@@ -40,70 +41,53 @@ const steps = [
 ];
 
 const stats = [
-  { icon: BookOpen, value: "1,000+", label: "Expert Courses", color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
-  { icon: Users, value: "500K+", label: "Active Students", color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
-  { icon: Award, value: "150+", label: "Certifications", color: "text-purple-600", bg: "bg-purple-100" },
-  { icon: TrendingUp, value: "98%", label: "Success Rate", color: "text-blue-600", bg: "bg-blue-100" },
+  { icon: BookOpen, value: "60+", label: "Tax Courses", color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
+  { icon: Users, value: "25K+", label: "Active Learners", color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
+  { icon: Award, value: "6", label: "Specialisations", color: "text-purple-600", bg: "bg-purple-100" },
+  { icon: TrendingUp, value: "98%", label: "Compliance Rate", color: "text-blue-600", bg: "bg-blue-100" },
 ];
 
 export default function HomePage() {
   const [featuredCourses, setFeaturedCourses] = useState<any[]>([]);
-  const [fetchedCategories, setFetchedCategories] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchHomeData = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch featured courses (pinned or most popular)
-        const { data: crs } = await supabase
-          .from("courses")
-          .select(`
-            *,
-            categories (name),
-            instructor:profiles!courses_instructor_id_fkey (full_name)
-          `)
-          .eq("status", "published")
-          .limit(8);
-        
-        if (crs) {
-          const mapped = crs.map((c: any) => ({
+    const fetchCourses = async () => {
+      const { data } = await supabase
+        .from("courses")
+        .select("*, users(full_name)")
+        .eq("status", "published")
+        .limit(8);
+
+      if (data) {
+        const mapped = data.map((c: any) => {
+          let parsedContent: any = {};
+          try {
+            if (c.content) parsedContent = JSON.parse(c.content);
+          } catch (e) {}
+
+          return {
+            ...c,
             id: c.id,
             title: c.title,
-            instructor: (c as any).instructor?.full_name || "Gizami Instructor",
-            category: c.categories?.name || "Uncategorized",
-            price: c.price === 0 ? "free" : c.price,
-            rating: c.rating,
-            reviews: c.reviews_count || 0,
-            students: c.students_count || 0,
-            image: c.image_url,
-            badge: c.badge,
-            duration: c.duration,
-            lessons: c.lessons_count || 0,
-            level: c.level,
-            description: c.description
-          }));
-          setFeaturedCourses(mapped);
-        }
-
-        // Fetch categories
-        const { data: cats } = await supabase
-          .from("categories")
-          .select("*")
-          .eq("is_active", true)
-          .limit(12);
-        
-        if (cats) setFetchedCategories(cats);
-
-      } catch (err) {
-        console.error("Error fetching homepage data:", err);
-      } finally {
-        setIsLoading(false);
+            description: c.description,
+            instructor: c.users?.full_name || "TaxNG Instructor",
+            category: parsedContent.category || "General Tax",
+            price: parsedContent.price === 0 ? "free" : (parsedContent.price || 5000),
+            image: parsedContent.image_url || "/images/course-placeholder.jpg",
+            level: (c.difficulty_level || "beginner").charAt(0).toUpperCase() + (c.difficulty_level || "beginner").slice(1),
+            rating: parsedContent.rating || 4.8,
+            reviews: parsedContent.reviews || 120,
+            students: parsedContent.students || 1500,
+            lessons: parsedContent.lessons || 12,
+          };
+        });
+        setFeaturedCourses(mapped);
       }
     };
-
-    fetchHomeData();
+    fetchCourses();
   }, []);
+
+  const fetchedCategories = categories;
 
   return (
     <main>
@@ -139,11 +123,32 @@ export default function HomePage() {
                 Featured Courses
               </div>
               <h2 id="featured-courses-heading" className="section-title">
-                Learn from the Best
+                Learn Tax from Certified Experts
               </h2>
               <p className="section-subtitle mt-3">
-                Discover our curated courses crafted by industry experts
+                Discover our curated tax courses crafted by Nigeria&apos;s leading tax practitioners
               </p>
+
+              {/* Subscription Tip */}
+              <div className="mt-8 inline-flex items-center gap-4 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-2xl shadow-sm animate-fade-in text-left max-w-xl">
+                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                  <Crown className="w-5 h-5 text-amber-500" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-gray-900">LMS Access Tip</p>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Full access to our premium courses and learning materials is exclusive to <span className="font-bold text-amber-600">Tax Expert</span> subscribers.
+                    <a 
+                      href="https://www.taxnigeria.com/pricing" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="ml-2 inline-flex items-center gap-1 text-amber-600 font-bold hover:text-amber-700 underline underline-offset-2"
+                    >
+                      Upgrade or Subscribe Now <ArrowRight className="w-3 h-3" />
+                    </a>
+                  </p>
+                </div>
+              </div>
             </div>
             <Link href="/courses" className="btn-outline btn-full-mobile">
               View All Courses
@@ -165,15 +170,15 @@ export default function HomePage() {
           <div className="text-center mb-12 sm:mb-16">
             <div className="section-badge mx-auto">
               <BookOpen className="w-3.5 h-3.5" />
-              Explore Topics
+              All Tax Topics
             </div>
-            <h2 id="categories-heading" className="section-title">Browse by Category</h2>
+            <h2 id="categories-heading" className="section-title">Browse by Tax Category</h2>
             <p className="section-subtitle mt-3 mx-auto">
-              Find the perfect course in your area of interest
+              Find the perfect course in your area of tax specialisation
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-5">
             {fetchedCategories.map((cat) => (
               <Link
                 key={cat.id}
@@ -182,10 +187,10 @@ export default function HomePage() {
                 style={{ color: "var(--primary)" }}
                 aria-label={`Browse ${cat.name} courses`}
               >
-                <span className="text-2xl sm:text-3xl filter grayscale group-hover:grayscale-0 transition-all">📚</span>
+                <span className="text-2xl sm:text-3xl filter grayscale group-hover:grayscale-0 transition-all">{cat.icon}</span>
                 <div className="text-center sm:text-left">
                   <p className="font-bold text-sm text-gray-800 leading-tight">{cat.name}</p>
-                  <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider font-semibold">View courses</p>
+                  <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider font-semibold">{cat.count} courses</p>
                 </div>
                 <ArrowRight className="hidden sm:block w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </Link>
@@ -204,7 +209,7 @@ export default function HomePage() {
             </div>
             <h2 id="how-it-works-heading" className="section-title">How It Works</h2>
             <p className="section-subtitle mt-3 mx-auto">
-              Start your learning journey in three simple steps
+              Start your tax learning journey in three simple steps
             </p>
           </div>
 
@@ -214,7 +219,6 @@ export default function HomePage() {
 
             {steps.map((step, i) => (
               <div key={step.title} className="relative text-center group">
-                {/* Number */}
                 <div className="relative inline-block mb-6 sm:mb-8">
                   <div className={`w-16 h-16 sm:w-20 sm:h-20 ${step.bg} rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm`}>
                     <step.icon className={`w-7 h-7 sm:w-9 sm:h-9 ${step.iconColor}`} />
@@ -230,7 +234,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12 sm:mt-16">
-            <Link href="/signup" className="btn-primary text-base px-10 py-4 btn-full-mobile">
+            <Link href="/login" className="btn-primary text-base px-10 py-4 btn-full-mobile">
               <GraduationCap className="w-5 h-5" />
               Start Learning for Free
             </Link>
@@ -248,17 +252,17 @@ export default function HomePage() {
                 Success Stories
               </div>
               <h2 id="testimonials-heading" className="section-title">
-                What Our Students Say
+                What Our Learners Say
               </h2>
               <p className="section-subtitle mt-4 mb-10 mx-auto lg:mx-0">
-                Join thousands of learners who transformed their careers with Gizami.
+                Join thousands of Nigerians who have mastered taxation and transformed their careers with TaxNG Academy.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-lg mx-auto lg:mx-0">
                 {[
                   "Expert-led video lessons",
                   "Lifetime course access",
-                  "Industry certificates",
-                  "30-day money-back",
+                  "TaxNG certificates",
+                  "Nigeria-specific content",
                 ].map((feat) => (
                   <div key={feat} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
                     <div className="w-6 h-6 rounded-full bg-[var(--primary)]/10 flex items-center justify-center flex-shrink-0">
@@ -277,6 +281,38 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Why TaxNG */}
+      <section className="section-py" aria-labelledby="why-taxng-heading">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <div className="section-badge mx-auto">
+              <Shield className="w-3.5 h-3.5" />
+              Why TaxNG Academy
+            </div>
+            <h2 id="why-taxng-heading" className="section-title">Nigeria&apos;s Premier Tax Education Platform</h2>
+            <p className="section-subtitle mt-3 mx-auto">
+              Built exclusively for Nigerian tax learners — every lesson, example, and case study is rooted in Nigerian law.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: "🇳🇬", title: "100% Nigeria-Focused", desc: "Every course is built around Nigerian tax laws, FIRS regulations, Finance Acts, and real Nigerian case studies." },
+              { icon: "🎓", title: "Certified Tax Educators", desc: "Learn from ICAN-certified accountants, CITN members, seasoned barristers, and FIRS-trained tax consultants." },
+              { icon: "📱", title: "Learn Anywhere, Anytime", desc: "Mobile-friendly platform so you can study during your commute, lunch break, or from the comfort of your home." },
+              { icon: "🔄", title: "Always Up-to-Date", desc: "Courses are updated after every Finance Act to reflect the latest tax rates, rules, and compliance requirements." },
+              { icon: "✅", title: "Practical & Compliance-Ready", desc: "Real-world exercises, sample tax computations, and filing walkthroughs you can apply immediately." },
+              { icon: "🏆", title: "Recognised Certificates", desc: "TaxNG certificates are trusted by accounting firms, corporate employers, and government agencies across Nigeria." },
+            ].map((item) => (
+              <div key={item.title} className="card p-6 hover:-translate-y-1 transition-transform duration-300">
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Banner */}
       <section className="section-py" aria-labelledby="cta-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -284,32 +320,31 @@ export default function HomePage() {
             {/* Decorations */}
             <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-80 sm:h-80 bg-[var(--accent)]/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
-            
+
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 text-xs sm:text-sm font-medium mb-6 sm:mb-8">
                 <Rocket className="w-4 h-4 text-[var(--accent)]" />
-                Limited Time Offer – 50% Off!
+                Start with free courses today — no credit card needed
               </div>
               <h2 id="cta-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-                Ready to Transform <br className="hidden sm:block" /> Your Career?
+                Ready to Master <br className="hidden sm:block" /> Nigerian Taxation?
               </h2>
               <p className="text-green-50 text-base sm:text-lg mb-10 max-w-xl mx-auto leading-relaxed opacity-90">
-                Join over 500,000 learners. Get unlimited access to all courses, certificates, and expert support.
+                Join over 25,000 Nigerians already learning with TaxNG Academy. Get unlimited access to expert tax courses, certificates, and study resources.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/signup" className="btn-accent text-base px-10 py-4 shadow-xl">
+                <Link href="/login" className="btn-accent text-base px-10 py-4 shadow-xl">
                   <GraduationCap className="w-5 h-5" />
                   Get Started Free
                 </Link>
                 <Link href="/courses" className="btn-outline-white text-base px-10 py-4 backdrop-blur-sm">
-                  Browse Courses
+                  Browse All Courses
                 </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
-
     </main>
   );
 }

@@ -52,6 +52,21 @@ export default function CourseLearnPage() {
           return;
         }
         setUser(authUser);
+        
+        // Check subscription tier
+        const { data: userProfile } = await supabase
+          .from("users")
+          .select("subscription_tier, role")
+          .eq("auth_id", authUser.id)
+          .single();
+
+        const isTaxExpert = userProfile?.subscription_tier === "TaxExpert" || userProfile?.subscription_tier === "taxexpert";
+        const isStaff = userProfile?.role === "admin" || userProfile?.role === "teacher";
+
+        if (!isTaxExpert && !isStaff) {
+          window.location.href = "https://www.taxnigeria.com/pricing";
+          return;
+        }
 
         // Fetch course
         const { data: crs, error: crsErr } = await supabase

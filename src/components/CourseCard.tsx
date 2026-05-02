@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
-import { Star, Users, Clock, BookOpen, Zap, Lock } from "lucide-react";
+import { Star, Users, Clock, BookOpen, Zap } from "lucide-react";
 import type { Course } from "@/lib/mockData";
 
 interface CourseCardProps {
@@ -56,78 +54,12 @@ const badgeColors: Record<string, string> = {
 
 export default function CourseCard({ course, loading }: CourseCardProps) {
   const router = useRouter();
-  const [isEnrolling, setIsEnrolling] = useState(false);
-  const [isEnrolled, setIsEnrolled] = useState(false);
-
-  useEffect(() => {
-    // Check if user is already enrolled in this course
-    const checkEnrollment = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data } = await supabase
-        .from("enrollments")
-        .select("course_id")
-        .eq("user_id", user.id)
-        .eq("course_id", course.id)
-        .maybeSingle();
-      if (data) setIsEnrolled(true);
-    };
-    checkEnrollment();
-  }, [course.id]);
 
   if (loading) return <CourseCardSkeleton />;
 
-  const handleEnroll = async (e: React.MouseEvent) => {
+  const handleEnroll = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (isEnrolling) return;
-    
-    setIsEnrolling(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/login?redirect=" + encodeURIComponent(`/courses/${course.id}`));
-        return;
-      }
-
-      // Handle direct enrollment for free courses; redirect for paid ones
-      const isFree = !course.price || course.price === 0 || course.price === "free";
-      
-      if (!isFree) {
-        // Redirect to detail page for payment
-        router.push(`/courses/${course.id}`);
-        return;
-      }
-
-      // Check if already enrolled
-      const { data: enrol } = await supabase
-        .from("enrollments")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("course_id", course.id)
-        .maybeSingle();
-
-      if (!enrol) {
-        // Enroll in free course
-        const { error } = await supabase
-          .from("enrollments")
-          .insert({
-            user_id: user.id,
-            course_id: course.id,
-            progress: 0,
-            status: "active"
-          });
-        if (error) throw error;
-      }
-
-      // Go to learn page
-      router.push(`/courses/${course.id}/learn`);
-    } catch (err) {
-      console.error("Enrollment error:", err);
-      // fallback to course details
-      router.push(`/courses/${course.id}`);
-    } finally {
-      setIsEnrolling(false);
-    }
+    router.push(`/courses/${course.id}`);
   };
 
   const levelColors = {
@@ -136,13 +68,15 @@ export default function CourseCard({ course, loading }: CourseCardProps) {
     Advanced: "bg-purple-100 text-purple-700",
   };
 
+  const isFree = !course.price || course.price === 0 || course.price === "free";
+
   return (
     <Link href={`/courses/${course.id}`} className="block group">
       <article className="card h-full flex flex-col">
         {/* Image */}
         <div className="relative h-44 overflow-hidden bg-gray-100">
           <Image
-            src={course.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"}
+            src={course.image || "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80"}
             alt={course.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -153,13 +87,21 @@ export default function CourseCard({ course, loading }: CourseCardProps) {
 
           {/* Badge */}
           {course.badge && (
-            <div className={`absolute top-2.5 left-2.5 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold z-10 ${badgeColors[course.badge] || "bg-gray-800 text-white"}`}>
+            <div
+              className={`absolute top-2.5 left-2.5 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold z-10 ${
+                badgeColors[course.badge] || "bg-gray-800 text-white"
+              }`}
+            >
               {course.badge}
             </div>
           )}
 
           {/* Level */}
-          <div className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-medium z-10 ${levelColors[course.level]}`}>
+          <div
+            className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-medium z-10 ${
+              levelColors[course.level]
+            }`}
+          >
             {course.level}
           </div>
 
@@ -212,31 +154,26 @@ export default function CourseCard({ course, loading }: CourseCardProps) {
           {/* Price + CTA */}
           <div className="mt-auto flex items-center justify-between gap-2">
             <div>
-              {course.price === "free" || !course.price || course.price === 0 ? (
+              {isFree ? (
                 <span className="text-lg font-bold text-[var(--primary)]">Free</span>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-gray-800">{Number(course.price).toLocaleString()} XAF</span>
-                  <span className="text-sm text-gray-400 line-through">{(Math.round(Number(course.price) * 1.5)).toLocaleString()} XAF</span>
+                  <span className="text-lg font-bold text-gray-800">
+                    ₦{Number(course.price).toLocaleString()}
+                  </span>
+                  <span className="text-sm text-gray-400 line-through">
+                    ₦{Math.round(Number(course.price) * 1.5).toLocaleString()}
+                  </span>
                 </div>
               )}
             </div>
             <button
-              className={`py-2 px-4 text-xs disabled:opacity-70 ${
-                isEnrolled ? "btn-outline" : "btn-primary"
-              }`}
-              aria-label={isEnrolled ? `Continue ${course.title}` : `Enroll in ${course.title}`}
+              className="btn-primary py-2 px-4 text-xs"
+              aria-label={`Enroll in ${course.title}`}
               onClick={handleEnroll}
-              disabled={isEnrolling}
             >
-              {isEnrolling ? (
-                <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin mr-1" />
-              ) : isEnrolled ? (
-                <span>▶</span>
-              ) : (
-                <Zap className="w-3.5 h-3.5" />
-              )}
-              {isEnrolling ? "Enrolling..." : isEnrolled ? "Continue" : "Enroll Now"}
+              <Zap className="w-3.5 h-3.5" />
+              Enroll Now
             </button>
           </div>
         </div>

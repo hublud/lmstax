@@ -12,11 +12,15 @@ import {
   BookOpen,
   Grid3x3,
   LayoutList,
+  Crown,
+  ArrowRight,
 } from "lucide-react";
 import CourseCard from "@/components/CourseCard";
 import { CourseCardSkeleton } from "@/components/CourseCard";
-import { supabase } from "@/lib/supabase";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { courses as mockCourses, categories as mockCategories } from "@/lib/mockData";
+import { supabase } from "@/lib/supabase";
 
 const priceFilters = ["All", "Free", "Paid"];
 const levelFilters = ["All", "Beginner", "Intermediate", "Advanced"];
@@ -27,6 +31,7 @@ const ratingFilters = [
 ];
 
 export default function CoursesPage() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [priceFilter, setPriceFilter] = useState("All");
@@ -43,46 +48,55 @@ export default function CoursesPage() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Fetch categories
-        const { data: cats, error: catsErr } = await supabase
-          .from("categories")
-          .select("*")
-          .eq("is_active", true);
-        
-        if (cats) setFetchedCategories(cats);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          router.push("/login");
+          return;
+        }
 
-        // Fetch courses with category and instructor info
-        const { data: crs, error: crsErr } = await supabase
+        // Fetch categories (or mock if not available)
+        setFetchedCategories(mockCategories.map((c: any) => ({ id: c.id, name: c.name })));
+        
+        // Fetch courses from Supabase
+        const { data, error } = await supabase
           .from("courses")
-          .select(`
-            *,
-            categories (name),
-            instructor:profiles!courses_instructor_id_fkey (full_name)
-          `)
+          .select("*, users(full_name)")
           .eq("status", "published");
 
-        if (crs) {
-          // Map to our local Course interface
-          const mapped = crs.map((c: any) => ({
+        if (error) {
+          console.error("Error fetching live courses:", error);
+        }
+
+        const liveCourses = data || [];
+        
+        const mapped = liveCourses.map((c: any) => {
+          let parsedContent: any = {};
+          try {
+            if (c.content) {
+              parsedContent = JSON.parse(c.content);
+            }
+          } catch(e) {}
+
+          return {
+            ...c,
             id: c.id,
             title: c.title,
-            instructor: (c as any).instructor?.full_name || "Gizami Instructor",
-            category: c.categories?.name || "Uncategorized",
-            price: c.price === 0 ? "free" : c.price,
-            rating: c.rating,
-            reviews: c.reviews_count || 0,
-            students: c.students_count || 0,
-            image: c.image_url,
-            badge: c.badge,
-            duration: c.duration,
-            lessons: c.lessons_count || 0,
-            level: c.level,
-            description: c.description
-          }));
-          setFetchedCourses(mapped);
-        }
+            description: c.description,
+            instructor: c.users?.full_name || "TaxNG Instructor",
+            category: parsedContent.category || "General Tax",
+            price: parsedContent.price === 0 ? "free" : (parsedContent.price || 5000),
+            image: parsedContent.image_url || "/images/course-placeholder.jpg",
+            level: (c.difficulty_level || "beginner").charAt(0).toUpperCase() + (c.difficulty_level || "beginner").slice(1),
+            rating: parsedContent.rating || 4.8,
+            reviews: parsedContent.reviews || 120,
+            students: parsedContent.students || 1500,
+            lessons: parsedContent.lessons || 12,
+          };
+        });
+        setFetchedCourses(mapped);
+
       } catch (err) {
-        console.error("Error fetching courses:", err);
+        console.error("Error setting mock courses data:", err);
       } finally {
         setIsLoading(false);
       }
@@ -141,6 +155,27 @@ export default function CoursesPage() {
             <p className="text-green-100 text-sm sm:text-base md:text-lg max-w-2xl mx-auto opacity-90">
               Discover {fetchedCourses.length}+ expert-led courses curated to help you master new skills and advance your career.
             </p>
+
+            {/* Subscription Tip */}
+            <div className="mt-8 inline-flex items-center gap-4 p-3 sm:p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl animate-fade-in text-left max-w-xl mx-auto">
+              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                <Crown className="w-5 h-5 text-amber-500" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white">LMS Access Tip</p>
+                <p className="text-xs text-green-50 leading-relaxed">
+                  Full access to the Learning Management System is exclusive to <span className="font-bold text-amber-300">Tax Expert</span> subscribers.
+                  <a 
+                    href="https://www.taxnigeria.com/pricing" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="ml-2 inline-flex items-center gap-1 text-amber-300 font-bold hover:text-amber-400 underline underline-offset-2"
+                  >
+                    Upgrade Now <ArrowRight className="w-3 h-3" />
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
           {/* Search */}
           <div className="max-w-2xl mx-auto px-2 sm:px-0">

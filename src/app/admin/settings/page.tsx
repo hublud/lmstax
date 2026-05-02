@@ -31,12 +31,12 @@ export default function AdminSettingsPage() {
   const [saved, setSaved] = useState(false);
 
   const [general, setGeneral] = useState({
-    siteName: "Gizami",
-    tagline: "Learn Smarter. Grow Faster.",
-    supportEmail: "support@gizami.com",
-    currency: "XAF",
+    siteName: "TaxNG Academy",
+    tagline: "Bridging the Tax Knowledge Gap",
+    supportEmail: "support@taxnigeria.com",
+    currency: "NGN",
     language: "English",
-    timezone: "UTC",
+    timezone: "UTC+1 (WAT)",
   });
 
   const [notifications, setNotifications] = useState({
@@ -121,7 +121,7 @@ export default function AdminSettingsPage() {
                   <div>
                     <label className="form-label">Currency</label>
                     <select className="form-input" value={general.currency} onChange={(e) => setGeneral({ ...general, currency: e.target.value })}>
-                      {["XAF", "USD", "EUR", "NGN", "ZAR"].map((c: string) => <option key={c} value={c}>{c}</option>)}
+                      {["NGN", "USD", "EUR", "GBP"].map((c: string) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <div>
@@ -182,10 +182,9 @@ export default function AdminSettingsPage() {
                   <div>
                     <label className="form-label">Payment Provider</label>
                     <select className="form-input" value={payment.provider} onChange={(e) => setPayment({ ...payment, provider: e.target.value })}>
-                      <option value="payunit">PayUnit (Cameroon)</option>
-                      <option value="stripe">Stripe</option>
                       <option value="paystack">Paystack</option>
                       <option value="flutterwave">Flutterwave</option>
+                      <option value="stripe">Stripe</option>
                     </select>
                   </div>
                   <div>
@@ -211,7 +210,7 @@ export default function AdminSettingsPage() {
                     Platform: {100 - parseInt(payment.instructorShare)}% · Instructor: {payment.instructorShare}%
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    On a 50,000 XAF course: You keep {(50000 * (100 - parseInt(payment.instructorShare)) / 100).toLocaleString()} XAF · Instructor gets {(50000 * parseInt(payment.instructorShare) / 100).toLocaleString()} XAF
+                    On a ₦50,000 course: You keep ₦{(50000 * (100 - parseInt(payment.instructorShare)) / 100).toLocaleString()} · Instructor gets ₦{(50000 * parseInt(payment.instructorShare) / 100).toLocaleString()}
                   </p>
                 </div>
               </div>

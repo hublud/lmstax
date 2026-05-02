@@ -44,9 +44,9 @@ export default function AdminDashboardPage() {
       try {
         // 1. Total Students
         const { count: studentCount } = await supabase
-          .from("profiles")
+          .from("users")
           .select("*", { count: "exact", head: true })
-          .eq("role", "student");
+          .eq("role", "user");
         
         // 2. Total Courses
         const { count: courseCount } = await supabase
@@ -106,7 +106,7 @@ export default function AdminDashboardPage() {
           .select(`
             id,
             created_at,
-            profiles (full_name),
+            users (full_name),
             courses (title)
           `)
           .order("created_at", { ascending: false })
@@ -116,7 +116,7 @@ export default function AdminDashboardPage() {
           const mapped = latestEnrols.map((e: any) => ({
             id: e.id,
             type: "enrollment",
-            text: `${(e.profiles as any)?.full_name || "A student"} enrolled in ${ (e.courses as any)?.title || "a course"}`,
+            text: `${(e.users as any)?.full_name || "A student"} enrolled in ${ (e.courses as any)?.title || "a course"}`,
             time: new Date(e.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }));
           setActivities(mapped);

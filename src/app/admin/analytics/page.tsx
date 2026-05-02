@@ -44,9 +44,9 @@ export default function AdminAnalyticsPage() {
     try {
       // 1. Total Students
       const { count: studentCount } = await supabase
-        .from("profiles")
+        .from("users")
         .select("*", { count: "exact", head: true })
-        .eq("role", "student");
+        .eq("role", "user");
 
       // 2. Fetch Courses to calculate revenue and top courses
       const { data: coursesData } = await supabase

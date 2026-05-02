@@ -19,6 +19,7 @@ import {
   Loader2,
 } from "lucide-react";
 import AdminHeader from "@/components/admin/AdminHeader";
+import { categories as mockCategories } from "@/lib/mockData";
 import { supabase } from "@/lib/supabase";
 
 interface DBCategory {
@@ -46,7 +47,7 @@ const COLOR_OPTIONS = [
   { label: "Red", value: "from-red-500 to-red-400" },
   { label: "Indigo", value: "from-indigo-500 to-indigo-400" },
   { label: "Cyan", value: "from-cyan-500 to-cyan-400" },
-  { label: "Gizami", value: "from-[var(--primary)] to-[var(--primary-light)]" },
+  { label: "TaxNG", value: "from-[var(--primary)] to-[var(--primary-light)]" },
 ];
 
 const emptyForm = {
@@ -74,39 +75,23 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     setIsLoading(true);
     try {
-      // Fetch categories with course counts and enrollment sums
-      // Note: We'll do a simple select and then fetch counts if necessary, 
-      // or use a more advanced join if the schema allows.
-      const { data, error } = await supabase
-        .from("categories")
-        .select(`
-          *,
-          courses (
-            id,
-            enrollments (count)
-          )
-        `);
+      // Use static mock data for headless version
+      const mapped = mockCategories.map((c: any) => ({
+        id: c.id,
+        name: c.name,
+        slug: slugify(c.name),
+        description: `Explore the latest topics and courses in ${c.name}.`,
+        icon: c.icon,
+        color: "from-[var(--primary)] to-[var(--primary-light)]",
+        is_active: true,
+        course_count: c.count || 0,
+        student_count: (c.count || 0) * 120,
+        created_at: new Date().toISOString()
+      }));
+      setCategories(mapped);
 
-      if (error) throw error;
-
-      if (data) {
-        const mapped = data.map((c: any) => {
-          const courses = c.courses || [];
-          const course_count = courses.length;
-          const student_count = courses.reduce((acc: number, course: any) => {
-            return acc + (course.enrollments?.[0]?.count || 0);
-          }, 0);
-
-          return {
-            ...c,
-            course_count,
-            student_count,
-          };
-        });
-        setCategories(mapped);
-      }
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error("Error setting admin categories data:", error);
     } finally {
       setIsLoading(false);
     }
