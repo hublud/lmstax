@@ -16,7 +16,7 @@ export default function AboutPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then((res) => {
+    supabase.auth.getSession().then((res: any) => {
       setIsLoggedIn(!!res.data.session);
     });
   }, []);
