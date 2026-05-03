@@ -15,7 +15,7 @@ export async function getTeacherCourseStats(teacherId: string) {
     if (courseErr) throw courseErr;
     if (!courses || courses.length === 0) return { success: true, data: [] };
 
-    const courseIds = courses.map(c => c.id);
+    const courseIds = courses.map((c: any) => c.id);
 
     // 2. Fetch enrollment counts for these courses
     const { data: enrollments, error: enrollErr } = await supabaseAdmin
@@ -26,9 +26,9 @@ export async function getTeacherCourseStats(teacherId: string) {
     if (enrollErr) throw enrollErr;
 
     // 3. Map them together
-    const stats = courses.map(course => ({
+    const stats = courses.map((course: any) => ({
       ...course,
-      studentCount: enrollments?.filter(e => e.course_id === course.id).length || 0
+      studentCount: enrollments?.filter((e: any) => e.course_id === course.id).length || 0
     }));
 
     return { success: true, data: stats };

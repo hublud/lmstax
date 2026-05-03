@@ -15,6 +15,7 @@ export interface Course {
   description: string;
   tags: string[];
   curriculum?: Module[];
+  isEnrolled?: boolean;
 }
 
 export interface Lesson {

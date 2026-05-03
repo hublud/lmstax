@@ -188,14 +188,14 @@ function DashboardContent() {
 
         if (userEnrollments && userEnrollments.length > 0) {
           // Fetch associated courses separately to avoid join errors
-          const courseIds = userEnrollments.map(en => en.course_id);
+          const enrolledIds = new Set(userEnrollments?.map((e: any) => e.course_id) || []);
           const { data: coursesData } = await supabase
             .from("courses")
             .select("*")
-            .in("id", courseIds);
+            .in("id", Array.from(enrolledIds));
 
           const mapped = userEnrollments.map((en: any) => {
-            const c = coursesData?.find(course => course.id === en.course_id);
+            const c = coursesData?.find((course: any) => course.id === en.course_id);
             let parsedContent: any = {};
             try {
               if (c?.content) {
@@ -203,7 +203,7 @@ function DashboardContent() {
                   ? JSON.parse(c.content) 
                   : c.content;
               }
-            } catch (e) {}
+            } catch (e: any) {}
 
             const totalLessons = parsedContent.lessons_count || 12;
             const progress = en.progress || 0;
@@ -226,8 +226,8 @@ function DashboardContent() {
 
           // 4. Certificates (Calculated from 100% progress)
           const mappedCerts = mapped
-            .filter(c => c.progress >= 100)
-            .map(c => ({
+            .filter((c: any) => c.progress >= 100)
+            .map((c: any) => ({
               id: c.id,
               title: c.title,
               date: c.lastAccessed,

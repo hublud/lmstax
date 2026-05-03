@@ -42,6 +42,8 @@ export default function VideoPlayer({ url, onComplete }: VideoPlayerProps) {
     return rawUrl;
   };
 
+  const embedUrl = getEmbedUrl(url);
+
   const isDirectVideo = 
     url.toLowerCase().endsWith(".mp4") || 
     url.toLowerCase().endsWith(".webm") || 

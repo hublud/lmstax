@@ -54,8 +54,8 @@ export default function HomePage() {
 
   useEffect(() => {
     // Check session so CTA buttons route correctly
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsLoggedIn(!!session);
+    supabase.auth.getSession().then((res: any) => {
+      setIsLoggedIn(!!res.data.session);
     });
 
     const fetchCourses = async () => {

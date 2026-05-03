@@ -32,8 +32,8 @@ export default function HeroSlider() {
 
   useEffect(() => {
     // Check session for smart CTA routing
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsLoggedIn(!!session);
+    supabase.auth.getSession().then((res: any) => {
+      setIsLoggedIn(!!res.data.session);
     });
 
     const timer = setInterval(() => {

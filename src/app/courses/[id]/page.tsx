@@ -119,7 +119,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
             
           if (enrollment) {
             setIsEnrolled(true);
-            setCourse(prev => ({ ...prev, progress: enrollment.progress || 0 }));
+            setCourse((prev: any) => ({ ...prev, progress: enrollment.progress || 0 }));
           }
         }
 

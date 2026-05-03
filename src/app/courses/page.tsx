@@ -85,7 +85,7 @@ export default function CoursesPage() {
           .select("course_id")
           .eq("user_id", user.id);
 
-        const enrolledIds = new Set(userEnrollments?.map(e => e.course_id) || []);
+        const enrolledIds = new Set(userEnrollments?.map((e: any) => e.course_id) || []);
 
         const mapped = liveCourses.map((c: any) => {
           let parsedContent: any = {};
