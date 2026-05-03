@@ -86,10 +86,13 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
             </Link>
             
             <button 
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                window.location.href = "/";
+              }}
               className="w-full py-4 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors"
             >
-              Continue to Academy Dashboard
+              Back to Academy Home
             </button>
           </div>
         </div>

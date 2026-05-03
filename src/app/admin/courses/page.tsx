@@ -47,7 +47,7 @@ export default function AdminCoursesPage() {
     try {
       const { data, error } = await supabase
         .from("courses")
-        .select("*, enrollments(count)");
+        .select("*");
 
       if (error) {
         console.error("Error fetching admin courses:", error);
@@ -58,7 +58,11 @@ export default function AdminCoursesPage() {
       const mapped = liveCourses.map((c: any) => {
         let parsedContent: any = {};
         try {
-          if (c.content) parsedContent = JSON.parse(c.content);
+          if (c.content) {
+            parsedContent = typeof c.content === 'string'
+              ? JSON.parse(c.content)
+              : c.content;
+          }
         } catch (e) {}
 
         const enrollmentsCount = c.enrollments?.[0]?.count || 0;

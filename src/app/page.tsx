@@ -49,39 +49,58 @@ const stats = [
 
 export default function HomePage() {
   const [featuredCourses, setFeaturedCourses] = useState<any[]>([]);
+  const [isCoursesLoading, setIsCoursesLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    // Check session so CTA buttons route correctly
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+
     const fetchCourses = async () => {
-      const { data } = await supabase
-        .from("courses")
-        .select("*, users(full_name)")
-        .eq("status", "published")
-        .limit(8);
+      setIsCoursesLoading(true);
+      try {
+        const { data } = await supabase
+          .from("courses")
+          .select("*")
+          .eq("status", "published")
+          .order("created_at", { ascending: false })
+          .limit(6);
 
-      if (data) {
-        const mapped = data.map((c: any) => {
-          let parsedContent: any = {};
-          try {
-            if (c.content) parsedContent = JSON.parse(c.content);
-          } catch (e) {}
+        if (data) {
+          const mapped = data.map((c: any) => {
+            let parsedContent: any = {};
+            try {
+              if (c.content) {
+                parsedContent = typeof c.content === 'string'
+                  ? JSON.parse(c.content)
+                  : c.content;
+              }
+            } catch (e) {}
 
-          return {
-            ...c,
-            id: c.id,
-            title: c.title,
-            description: c.description,
-            instructor: c.users?.full_name || "TaxNG Instructor",
-            category: parsedContent.category || "General Tax",
-            price: parsedContent.price === 0 ? "free" : (parsedContent.price || 5000),
-            image: parsedContent.image_url || "/images/course-placeholder.jpg",
-            level: (c.difficulty_level || "beginner").charAt(0).toUpperCase() + (c.difficulty_level || "beginner").slice(1),
-            rating: parsedContent.rating || 4.8,
-            reviews: parsedContent.reviews || 120,
-            students: parsedContent.students || 1500,
-            lessons: parsedContent.lessons || 12,
-          };
-        });
-        setFeaturedCourses(mapped);
+            return {
+              ...c,
+              id: c.id,
+              title: c.title,
+              description: c.description,
+              instructor: "TaxNG Instructor",
+              category: parsedContent.category_id || "General Tax",
+              price: parsedContent.price === 0 ? "free" : (parsedContent.price || 5000),
+              image: parsedContent.image_url || "/images/course-placeholder.jpg",
+              level: (c.difficulty_level || "beginner").charAt(0).toUpperCase() + (c.difficulty_level || "beginner").slice(1),
+              rating: parsedContent.rating || 4.8,
+              reviews: parsedContent.reviews || 120,
+              students: parsedContent.students || 1500,
+              lessons: parsedContent.lessons_count || 12,
+            };
+          });
+          setFeaturedCourses(mapped);
+        }
+      } catch (e) {
+        console.error("Error fetching featured courses:", e);
+      } finally {
+        setIsCoursesLoading(false);
       }
     };
     fetchCourses();
@@ -156,11 +175,45 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 tracking-tight">
-            {featuredCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
+          {/* Course grid: 2 cols mobile, 4 cols desktop */}
+          {isCoursesLoading ? (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl border border-[var(--border)] overflow-hidden animate-pulse">
+                  <div className="aspect-video bg-gray-200" />
+                  <div className="p-4 space-y-3">
+                    <div className="h-3 bg-gray-200 rounded-full w-1/3" />
+                    <div className="h-4 bg-gray-200 rounded-full w-full" />
+                    <div className="h-4 bg-gray-200 rounded-full w-2/3" />
+                    <div className="h-3 bg-gray-200 rounded-full w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : featuredCourses.length === 0 ? (
+            <div className="text-center py-20 bg-white rounded-3xl border border-[var(--border)]">
+              <BookOpen className="w-12 h-12 text-gray-200 mx-auto mb-4" />
+              <p className="text-gray-500 font-medium">No published courses yet.</p>
+              <p className="text-sm text-gray-400 mt-1">Check back soon!</p>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 tracking-tight">
+                {featuredCourses.map((course) => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </div>
+              <div className="text-center mt-10">
+                <Link
+                  href="/courses"
+                  className="btn-primary inline-flex items-center gap-2 px-8 py-3.5"
+                >
+                  View All Courses
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -234,9 +287,9 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12 sm:mt-16">
-            <Link href="/login" className="btn-primary text-base px-10 py-4 btn-full-mobile">
+            <Link href={isLoggedIn ? "/dashboard" : "/login"} className="btn-primary text-base px-10 py-4 btn-full-mobile">
               <GraduationCap className="w-5 h-5" />
-              Start Learning for Free
+              {isLoggedIn ? "Go to Dashboard" : "Start Learning for Free"}
             </Link>
           </div>
         </div>
@@ -333,9 +386,9 @@ export default function HomePage() {
                 Join over 25,000 Nigerians already learning with TaxNG Academy. Get unlimited access to expert tax courses, certificates, and study resources.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/login" className="btn-accent text-base px-10 py-4 shadow-xl">
+                <Link href={isLoggedIn ? "/dashboard" : "/login"} className="btn-accent text-base px-10 py-4 shadow-xl">
                   <GraduationCap className="w-5 h-5" />
-                  Get Started Free
+                  {isLoggedIn ? "Go to Dashboard" : "Get Started Free"}
                 </Link>
                 <Link href="/courses" className="btn-outline-white text-base px-10 py-4 backdrop-blur-sm">
                   Browse All Courses

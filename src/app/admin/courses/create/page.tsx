@@ -113,8 +113,18 @@ const defaultModules: Module[] = [
   },
 ];
 
-const levels_list = ["Beginner", "Intermediate", "Advanced"];
+const levels_list = ["beginner", "intermediate", "advanced"];
 const lessonTypes = ["video", "reading", "quiz"] as const;
+
+const DEFAULT_CATEGORIES: DB_Category[] = [
+  { id: "pit", name: "Personal Income Tax" },
+  { id: "cit", name: "Corporate Tax" },
+  { id: "vat", name: "Value Added Tax (VAT)" },
+  { id: "compliance", name: "Tax Compliance & Reporting" },
+  { id: "tech", name: "Tax Technology" },
+  { id: "intl", name: "International Taxation" },
+  { id: "audit", name: "Tax Audit & Investigation" },
+];
 
 interface DB_Category {
   id: string;
@@ -848,7 +858,7 @@ function CreateCoursePageInner() {
     subtitle: "",
     description: "",
     category_id: "",
-    level: "Beginner",
+    level: "beginner",
     language: "English",
     image_url: "",
     status: "draft" as "draft" | "published" | "review",
@@ -876,65 +886,83 @@ function CreateCoursePageInner() {
   const fetchInitialData = async () => {
     setIsLoading(true);
     try {
-      // 1. Fetch Categories
-      const { data: cats } = await supabase.from("categories").select("id, name").eq("is_active", true).order("name");
-      if (cats) setCategories(cats);
+      // 1. Set Categories from defaults
+      setCategories(DEFAULT_CATEGORIES);
 
       // 2. If ID exists, fetch course data
       if (courseId) {
         const { data: course, error: cErr } = await supabase
           .from("courses")
-          .select("*, modules(*, lessons(*))")
+          .select("*")
           .eq("id", courseId)
           .single();
 
         if (course) {
+          let parsedContent: any = {};
+          try {
+            if (course.content) {
+              parsedContent = typeof course.content === "string" 
+                ? JSON.parse(course.content) 
+                : course.content;
+            }
+          } catch (e) {
+            console.error("Error parsing content:", e);
+          }
+
           setCourseInfo({
             title: course.title || "",
-            subtitle: course.subtitle || "",
+            subtitle: parsedContent.subtitle || "",
             description: course.description || "",
-            category_id: course.category_id || "",
-            level: course.level || "Beginner",
-            language: course.language || "English",
-            image_url: course.image_url || "",
+            category_id: parsedContent.category_id || "",
+            level: course.difficulty_level || "beginner",
+            language: "English",
+            image_url: parsedContent.image_url || "",
             status: course.status || "draft",
           });
+
           setPricing({
-            type: course.price > 0 ? "paid" : "free",
-            price: course.price?.toString() || "0",
-            comparePrice: course.compare_price?.toString() || "",
+            type: (parsedContent.price || 0) > 0 ? "paid" : "free",
+            price: (parsedContent.price || 0).toString(),
+            comparePrice: "", // Not stored currently
           });
-          // Sort modules and lessons by 'order'
-          const sortedModules = (course.modules || [])
-            .sort((a: any, b: any) => a.order - b.order)
-            .map((m: any) => ({
-              id: m.id,
-              title: m.title,
-              isOpen: false,
-              lessons: (m.lessons || [])
-                .sort((a: any, b: any) => a.order - b.order)
-                .map((l: any) => ({
-                  id: l.id,
-                  title: l.title,
-                  type: l.type,
-                  duration: l.duration || "0:00",
-                  isFree: l.is_free,
-                  content: {
-                    videoUrl: l.video_url || "",
-                    readingContent: l.content || "",
-                    quizQuestions: l.questions || [],
-                  },
-                })),
-            }));
-          setModules(sortedModules);
+
+          // Load curriculum from content JSON (preferred) or outlines
+          let parsedModules: Module[] = parsedContent.modules || [];
+          if (parsedModules.length === 0 && course.outlines) {
+            try {
+                // Fallback for old records if they were strings
+                const outlines = typeof course.outlines === 'string'
+                  ? JSON.parse(course.outlines)
+                  : course.outlines;
+                
+                if (Array.isArray(outlines) && outlines.length > 0) {
+                  if (typeof outlines[0] === 'string') {
+                    parsedModules = outlines.map((title: string, idx: number) => ({
+                      id: `m${idx}`,
+                      title,
+                      isOpen: true,
+                      lessons: []
+                    }));
+                  } else {
+                    parsedModules = outlines;
+                  }
+                }
+            } catch (e) {
+              console.error("Error parsing outlines:", e);
+            }
+          }
+          
+          setModules(parsedModules.length > 0 ? parsedModules : [
+            { id: "new-m1", title: "Introduction", isOpen: true, lessons: [] }
+          ]);
         }
       } else {
         // New course, use defaults
         setModules([
           { id: "new-m1", title: "Introduction", isOpen: true, lessons: [] }
         ]);
-        if (cats && cats.length > 0) {
-          setCourseInfo(prev => ({ ...prev, category_id: cats[0].id }));
+        if (DEFAULT_CATEGORIES && DEFAULT_CATEGORIES.length > 0) {
+          setCourseInfo(prev => ({ ...prev, category_id: DEFAULT_CATEGORIES[0].id }));
         }
       }
     } catch (error) {
@@ -1036,15 +1064,22 @@ function CreateCoursePageInner() {
 
       const coursePayload = {
         title: courseInfo.title,
-        description: courseInfo.description,
-        instructor_id: user.id,
-        category_id: courseInfo.category_id,
-        price: pricing.type === "free" ? 0 : parseFloat(pricing.price) || 0,
-        image_url: courseInfo.image_url,
-        level: courseInfo.level,
+        description: courseInfo.description || "No description provided.",
+        created_by: user.id,
         status: courseInfo.status,
-        duration: formattedDuration,
-        lessons_count: totalLessons,
+        difficulty_level: courseInfo.level.toLowerCase(), // DB requires lowercase
+        estimated_duration: totalSeconds, // DB expects integer (seconds)
+        outlines: modules.map(m => m.title), // Pass as actual array of strings
+        learning_objectives: [], // Pass as actual empty array
+        content: JSON.stringify({
+          category_id: courseInfo.category_id,
+          price: pricing.type === "free" ? 0 : parseFloat(pricing.price) || 0,
+          image_url: courseInfo.image_url,
+          lessons_count: totalLessons,
+          subtitle: courseInfo.subtitle,
+          currency: "NGN",
+          modules: modules, // Store the full curriculum here too for safety
+        }),
       };
 
       let finalCourseId = courseId;
@@ -1058,81 +1093,15 @@ function CreateCoursePageInner() {
         finalCourseId = newCourse.id;
       }
 
-      // 3. Sync Modules & Lessons
-      // Get existing modules for this course to handle deletions
-      const { data: existingModules } = await supabase.from("modules").select("id").eq("course_id", finalCourseId);
-      const existingModuleIds = existingModules?.map((m: any) => m.id) || [];
-      const currentModuleIds = modules.filter((m: any) => !m.id.startsWith("new-") && !m.id.startsWith("m")).map((m: any) => m.id);
-      const modulesToDelete = existingModuleIds.filter((id: any) => !currentModuleIds.includes(id));
-
-      if (modulesToDelete.length > 0) {
-        await supabase.from("modules").delete().in("id", modulesToDelete);
-      }
-
-      for (let mIdx = 0; mIdx < modules.length; mIdx++) {
-        const module = modules[mIdx];
-        const isNewModule = module.id.startsWith("new-") || module.id.startsWith("m");
-        
-        let moduleId = module.id;
-        const modulePayload = {
-          course_id: finalCourseId,
-          title: module.title,
-          order: mIdx,
-        };
-
-        if (isNewModule) {
-          const { data: newMod, error: mErr } = await supabase.from("modules").insert(modulePayload).select().single();
-          if (mErr) throw mErr;
-          moduleId = newMod.id;
-        } else {
-          const { error: mErr } = await supabase.from("modules").update(modulePayload).eq("id", moduleId);
-          if (mErr) throw mErr;
-        }
-
-        // Sync Lessons for this module
-        const { data: existingLessons } = await supabase.from("lessons").select("id").eq("module_id", moduleId);
-        const existingLessonIds = existingLessons?.map((l: any) => l.id) || [];
-        const currentLessonIds = (module as any).lessons.filter((l: any) => !l.id.startsWith("new-") && !l.id.startsWith("l")).map((l: any) => l.id);
-        const lessonsToDelete = existingLessonIds.filter((id: any) => !currentLessonIds.includes(id));
-
-        if (lessonsToDelete.length > 0) {
-          await supabase.from("lessons").delete().in("id", lessonsToDelete);
-        }
-
-        for (let lIdx = 0; lIdx < module.lessons.length; lIdx++) {
-          const lesson = module.lessons[lIdx];
-          const isNewLesson = lesson.id.startsWith("new-") || lesson.id.startsWith("l");
-          
-          const lessonPayload = {
-            module_id: moduleId,
-            title: lesson.title,
-            type: lesson.type,
-            duration: lesson.duration,
-            order: lIdx,
-            is_free: lesson.isFree,
-            video_url: lesson.content.videoUrl || null,
-            content: lesson.content.readingContent || null,
-            questions: lesson.type === "quiz" ? lesson.content.quizQuestions : null,
-          };
-
-          if (isNewLesson) {
-            const { error: lErr } = await supabase.from("lessons").insert(lessonPayload);
-            if (lErr) throw lErr;
-          } else {
-            const { error: lErr } = await supabase.from("lessons").update(lessonPayload).eq("id", lesson.id);
-            if (lErr) throw lErr;
-          }
-        }
-      }
-
       setSavedSuccess(true);
       if (!courseId) {
         router.push(`/admin/courses/create?id=${finalCourseId}`);
       }
       setTimeout(() => setSavedSuccess(false), 3000);
-    } catch (error) {
-      console.error("Error saving course:", error);
-      alert("Failed to save course. Check console for details.");
+    } catch (error: any) {
+      const msg = error?.message || error?.details || JSON.stringify(error);
+      console.error("Error saving course:", msg, error);
+      alert(`Failed to save course: ${msg}`);
     } finally {
       setIsSaving(false);
     }
@@ -1408,30 +1377,25 @@ function CreateCoursePageInner() {
               {pricing.type === "paid" && (
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="form-label">Price (XAF) *</label>
+                    <label className="form-label">Price (₦) *</label>
                     <div className="relative">
                       <input type="number" className="form-input pr-12" placeholder="50000" value={pricing.price} onChange={(e) => setPricing({ ...pricing, price: e.target.value })} />
-                      <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-xs">XAF</span>
+                      <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-xs">₦</span>
                     </div>
                   </div>
                   <div>
                     <label className="form-label">Compare-at Price (optional)</label>
                     <div className="relative">
                       <input type="number" className="form-input pr-12" placeholder="75000" value={pricing.comparePrice} onChange={(e) => setPricing({ ...pricing, comparePrice: e.target.value })} />
-                      <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-xs">XAF</span>
+                      <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-xs">₦</span>
                     </div>
                     <p className="text-xs text-gray-400 mt-1">Shows a strikethrough original price to highlight discount.</p>
                   </div>
                 </div>
               )}
               <div className="p-4 rounded-2xl bg-[var(--primary)]/5 border border-[var(--primary)]/20">
-                <p className="text-sm font-semibold text-[var(--primary)]">Revenue Split</p>
-                <p className="text-xs text-gray-600 mt-1">Instructor receives 70% · Platform takes 30%</p>
-                {pricing.type === "paid" && pricing.price && (
-                  <p className="text-xs font-bold text-[var(--primary)] mt-2">
-                    Instructor earns: {(parseFloat(pricing.price) * 0.7).toLocaleString()} XAF per enrollment
-                  </p>
-                )}
+                <p className="text-sm font-semibold text-[var(--primary)]">Subscription Access</p>
+                <p className="text-xs text-gray-600 mt-1">This course is accessible to users in the corresponding subscription tier.</p>
               </div>
             </div>
           )}

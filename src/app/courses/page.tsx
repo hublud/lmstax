@@ -68,11 +68,10 @@ export default function CoursesPage() {
           setFetchedCategories(mockCategories.map((c: any) => ({ id: c.id, name: c.name })));
         }
         
-        // Fetch courses from Supabase
+        // Fetch courses from Supabase (all statuses so teachers see their own drafts)
         const { data, error } = await supabase
           .from("courses")
-          .select("*")
-          .eq("status", "published");
+          .select("*");
 
         if (error) {
           console.error("Supabase error fetching live courses:", error.message);
@@ -80,6 +79,14 @@ export default function CoursesPage() {
 
         const liveCourses = data || [];
         
+        // Fetch user enrollments to show 'Continue' instead of 'Enroll'
+        const { data: userEnrollments } = await supabase
+          .from("enrollments")
+          .select("course_id")
+          .eq("user_id", user.id);
+
+        const enrolledIds = new Set(userEnrollments?.map(e => e.course_id) || []);
+
         const mapped = liveCourses.map((c: any) => {
           let parsedContent: any = {};
           try {
@@ -104,6 +111,7 @@ export default function CoursesPage() {
             reviews: parsedContent.reviews || 120,
             students: parsedContent.students || 1500,
             lessons: parsedContent.lessons || 12,
+            isEnrolled: enrolledIds.has(c.id)
           };
         });
         setFetchedCourses(mapped);

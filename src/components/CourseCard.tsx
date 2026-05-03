@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Star, Users, Clock, BookOpen, Zap } from "lucide-react";
+import { Star, Users, Clock, BookOpen, Zap, Play } from "lucide-react";
 import type { Course } from "@/lib/mockData";
 
 interface CourseCardProps {
@@ -151,29 +151,35 @@ export default function CourseCard({ course, loading }: CourseCardProps) {
             </span>
           </div>
 
-          {/* Price + CTA */}
-          <div className="mt-auto flex items-center justify-between gap-2">
-            <div>
-              {isFree ? (
-                <span className="text-lg font-bold text-[var(--primary)]">Free</span>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-gray-800">
-                    ₦{Number(course.price).toLocaleString()}
-                  </span>
-                  <span className="text-sm text-gray-400 line-through">
-                    ₦{Math.round(Number(course.price) * 1.5).toLocaleString()}
-                  </span>
-                </div>
-              )}
-            </div>
+          {/* CTA Button */}
+          <div className="mt-auto pt-2">
             <button
-              className="btn-primary py-2 px-4 text-xs"
-              aria-label={`Enroll in ${course.title}`}
-              onClick={handleEnroll}
+              className={`w-full py-3 px-4 text-sm rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${
+                course.isEnrolled 
+                  ? "bg-green-50 text-green-700 border border-green-200 hover:bg-green-100" 
+                  : "btn-primary shadow-lg shadow-[var(--primary)]/20"
+              }`}
+              aria-label={course.isEnrolled ? `Continue ${course.title}` : `Enroll in ${course.title}`}
+              onClick={(e) => {
+                e.preventDefault();
+                if (course.isEnrolled) {
+                  router.push(`/courses/${course.id}/learn`);
+                } else {
+                  router.push(`/courses/${course.id}`);
+                }
+              }}
             >
-              <Zap className="w-3.5 h-3.5" />
-              Enroll Now
+              {course.isEnrolled ? (
+                <>
+                  <Play className="w-4 h-4 fill-current" />
+                  Continue
+                </>
+              ) : (
+                <>
+                  <Zap className="w-4 h-4" />
+                  {isFree ? "Enroll Now" : `Enroll for ₦${Number(course.price).toLocaleString()}`}
+                </>
+              )}
             </button>
           </div>
         </div>

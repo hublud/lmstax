@@ -13,10 +13,12 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { heroSlides } from "@/lib/mockData";
+import { supabase } from "@/lib/supabase";
 
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const goTo = useCallback(
     (index: number) => {
@@ -29,6 +31,11 @@ export default function HeroSlider() {
   );
 
   useEffect(() => {
+    // Check session for smart CTA routing
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % heroSlides.length);
     }, 5500);
@@ -89,10 +96,13 @@ export default function HeroSlider() {
               {slide.subtext}
             </p>
 
-            {/* CTAs */}
+            {/* CTAs — smart routing based on session */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10 sm:mb-14">
-              <Link href="https://www.taxnigeria.com/pricing" className="btn-accent text-base px-8 py-3.5 w-full sm:w-auto">
-                {slide.ctaPrimary}
+              <Link
+                href={isLoggedIn ? "/dashboard" : "https://www.taxnigeria.com/pricing"}
+                className="btn-accent text-base px-8 py-3.5 w-full sm:w-auto"
+              >
+                {isLoggedIn ? "Go to Dashboard" : slide.ctaPrimary}
               </Link>
               {slide.ctaSecondary && (
                 <Link href="/courses" className="btn-outline-white text-base px-8 py-3.5 w-full sm:w-auto">

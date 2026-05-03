@@ -96,13 +96,7 @@ export default function LoginPage() {
 
   const handleModalClose = () => {
     setShowSubModal(false);
-    // After closing modal, proceed to dashboard as they are still logged in
-    if (tempUserRole === "admin") {
-      router.push("/admin");
-    } else {
-      router.push("/dashboard");
-    }
-    router.refresh();
+    window.location.href = "/";
   };
 
   return (

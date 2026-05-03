@@ -42,16 +42,32 @@ export default function VideoPlayer({ url, onComplete }: VideoPlayerProps) {
     return rawUrl;
   };
 
-  const embedUrl = getEmbedUrl(url);
+  const isDirectVideo = 
+    url.toLowerCase().endsWith(".mp4") || 
+    url.toLowerCase().endsWith(".webm") || 
+    url.toLowerCase().endsWith(".ogg") ||
+    url.includes("cloudinary.com");
 
   return (
     <div className="relative aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl group">
-      <iframe
-        src={embedUrl}
-        className="w-full h-full"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
+      {isDirectVideo ? (
+        <video
+          src={url}
+          controls
+          className="w-full h-full"
+          onEnded={onComplete}
+          poster={url.replace(/\.[^/.]+$/, ".jpg")} // Attempt to use Cloudinary auto-poster if applicable
+        >
+          Your browser does not support the video tag.
+        </video>
+      ) : (
+        <iframe
+          src={embedUrl}
+          className="w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      )}
     </div>
   );
 }

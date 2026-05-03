@@ -47,8 +47,12 @@ export async function proxy(request: NextRequest) {
 
   // 2. Role Guard: If logged in, check for 'taxexpert' tier for all LMS routes
   // Except for public routes like login, auth callback, and pricing (if hosted here)
-  const publicPaths = ['/login', '/auth/callback', '/pricing', '/about', '/contact'];
-  const isPublicPath = publicPaths.some(path => request.nextUrl.pathname.startsWith(path));
+  const publicPaths = ['/', '/login', '/auth/callback', '/pricing', '/about', '/contact', '/courses', '/dashboard'];
+  const isPublicPath = publicPaths.some(path => 
+    path === '/' 
+      ? request.nextUrl.pathname === '/' 
+      : request.nextUrl.pathname.startsWith(path)
+  );
 
   if (user && !isPublicPath) {
     // Fetch user profile tier
@@ -59,10 +63,19 @@ export async function proxy(request: NextRequest) {
       .maybeSingle();
 
     const allowedTiers = ["taxexpert", "admin", "teacher", "staff"];
+    const adminTiers = ["admin", "teacher", "staff"];
     const userTier = profile?.subscription_tier?.toLowerCase();
 
+    // 2.1 Block students from Admin Panel
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      if (!userTier || !adminTiers.includes(userTier)) {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
+    }
+
+    // 2.2 Standard LMS access check
     if (!userTier || !allowedTiers.includes(userTier)) {
-      return NextResponse.redirect(new URL('https://taxnigeria.com/pricing', request.url))
+      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 

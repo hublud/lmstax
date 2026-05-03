@@ -21,6 +21,7 @@ import {
   Flame,
   Target,
   LayoutDashboard,
+  LayoutGrid,
   GraduationCap,
   Download,
   Camera,
@@ -34,13 +35,13 @@ import {
   MessageSquare,
   Menu,
   X,
-  DollarSign,
 } from "lucide-react";
 import { enrolledCourses } from "@/lib/mockData";
 import CertificateGenerator from "@/components/dashboard/CertificateGenerator";
 import LogoSVG from "@/components/LogoSVG";
 import { supabase } from "@/lib/supabase";
 import SubscriptionModal from "@/components/SubscriptionModal";
+import { getTeacherCourseStats } from "@/app/actions/courses";
 
 
 const studentNavItems = [
@@ -164,33 +165,81 @@ function DashboardContent() {
         });
 
         // Fetch teaching data if role is teacher
-        if (isStaff && (profileData?.role === "teacher" || userData?.role === "teacher")) {
-          const { data: coursesTaught } = await supabase
-            .from("courses")
-            .select("*, enrollments(count)")
-            .eq("created_by", authUser.id);
-          setTeachingCourses(coursesTaught || []);
+        const userRole = profileData?.role?.toLowerCase();
+        if (isStaff && userRole === "teacher") {
+          const res = await getTeacherCourseStats(authUser.id);
+          if (res.success) {
+            setTeachingCourses(res.data || []);
+          } else {
+            console.error("Failed to fetch teacher stats:", res.error);
+            setTeachingCourses([]);
+          }
         }
 
-        // Still using mock data for enrollments/certificates for students
-        const mapped = mockEnrolledCourses.map((c: any) => ({
-          ...c,
-          completedLessons: Math.round((c.progress / 100) * 12),
-          totalLessons: 12,
-          lastAccessed: "2 hours ago",
-          nextLesson: "Module 2: Practical Exercises"
-        }));
-        setEnrollments(mapped);
+        // 3. Fetch Real Enrollments for Students
+        const { data: userEnrollments, error: enrollError } = await supabase
+          .from("enrollments")
+          .select("*")
+          .eq("user_id", authUser.id);
 
-        const mappedCerts = mapped.filter(c => c.progress >= 100).map(c => ({
-          id: c.id,
-          title: c.title,
-          date: "Oct 24, 2024",
-          instructor: c.instructor,
-          image: c.image,
-          studentName: profileData.full_name
-        }));
-        setCertificates(mappedCerts);
+        if (enrollError) {
+          console.error("Enrollments fetch error:", enrollError.message);
+        }
+
+        if (userEnrollments && userEnrollments.length > 0) {
+          // Fetch associated courses separately to avoid join errors
+          const courseIds = userEnrollments.map(en => en.course_id);
+          const { data: coursesData } = await supabase
+            .from("courses")
+            .select("*")
+            .in("id", courseIds);
+
+          const mapped = userEnrollments.map((en: any) => {
+            const c = coursesData?.find(course => course.id === en.course_id);
+            let parsedContent: any = {};
+            try {
+              if (c?.content) {
+                parsedContent = typeof c.content === "string" 
+                  ? JSON.parse(c.content) 
+                  : c.content;
+              }
+            } catch (e) {}
+
+            const totalLessons = parsedContent.lessons_count || 12;
+            const progress = en.progress || 0;
+
+            return {
+              id: c?.id || en.course_id,
+              title: c?.title || "Untitled Course",
+              instructor: parsedContent.instructor_name || "TaxNG Instructor",
+              image: c?.image_url || parsedContent.image_url || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
+              progress: progress,
+              totalLessons: totalLessons,
+              completedLessons: Math.round((progress / 100) * totalLessons),
+              lastAccessed: en.last_accessed ? new Date(en.last_accessed).toLocaleDateString() : "Recently",
+              nextLesson: "Module 1: Introduction",
+              category: parsedContent.category_name || "Taxation"
+            };
+          });
+
+          setEnrollments(mapped);
+
+          // 4. Certificates (Calculated from 100% progress)
+          const mappedCerts = mapped
+            .filter(c => c.progress >= 100)
+            .map(c => ({
+              id: c.id,
+              title: c.title,
+              date: c.lastAccessed,
+              instructor: c.instructor,
+              image: c.image,
+              studentName: profileData?.full_name || authUser.email?.split('@')[0]
+            }));
+          setCertificates(mappedCerts);
+        } else {
+          setEnrollments([]);
+          setCertificates([]);
+        }
 
       } catch (err: any) {
         console.error("Dashboard data fetch error:", err.message || err);
@@ -317,14 +366,10 @@ function DashboardContent() {
             ))}
           </nav>
 
-          <div className="p-4 border-t border-[var(--border)] space-y-1">
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-gray-50 transition-all">
-              <LayoutDashboard className="w-4 h-4" />
-              Admin Panel
-            </Link>
+          <div className="p-4 border-t border-[var(--border)] space-y-1 mt-auto">
             <button 
               onClick={handleLogout}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-50 w-full transition-all text-left"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-50 w-full transition-all text-left group"
             >
               <LogOut className="w-4 h-4" />
               Logout
@@ -394,12 +439,11 @@ function DashboardContent() {
                 {isTeacher ? (
                   /* Teacher Overview */
                   <div className="space-y-6 sm:space-y-8">
-                    <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4">
                       {[
                         { label: "Teaching", value: teachingCourses.length, icon: BookOpen, color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
-                        { label: "Total Students", value: teachingCourses.reduce((acc, c) => acc + (c.enrollments?.[0]?.count || 0), 0), icon: Users, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
+                        { label: "Total Students", value: teachingCourses.reduce((acc, c) => acc + (c.studentCount || 0), 0), icon: Users, color: "text-[var(--accent)]", bg: "bg-[var(--accent)]/10" },
                         { label: "Avg. Rating", value: (teachingCourses.reduce((acc, c) => acc + (c.rating || 0), 0) / (teachingCourses.length || 1)).toFixed(1), icon: Star, color: "text-amber-500", bg: "bg-amber-100" },
-                        { label: "Earnings", value: "₦0", icon: DollarSign, color: "text-blue-600", bg: "bg-blue-100" },
                       ].map((stat) => (
                         <div key={stat.label} className="bg-white rounded-2xl border border-[var(--border)] p-4 sm:p-5 hover:border-[var(--primary)]/30 hover:shadow-xl hover:-translate-y-1 transition-all group">
                           <div className={`w-10 h-10 sm:w-11 sm:h-11 ${stat.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
@@ -534,15 +578,21 @@ function DashboardContent() {
                       Achievements
                     </h2>
                     <div className="grid grid-cols-1 gap-3">
-                      {dynamicAchievements.map((a) => (
-                        <div key={a.label} className={`flex items-center gap-3 p-3 rounded-2xl ${a.bg} border border-transparent hover:border-current/10 transition-all`}>
-                          <div className="p-2 rounded-xl bg-white shadow-sm">
-                            <a.icon className={`w-4 h-4 ${a.color}`} />
+                      {dynamicAchievements.length > 0 ? (
+                        dynamicAchievements.map((a) => (
+                          <div key={a.label} className={`flex items-center gap-3 p-3 rounded-2xl ${a.bg} border border-transparent hover:border-current/10 transition-all`}>
+                            <div className="p-2 rounded-xl bg-white shadow-sm">
+                              <a.icon className={`w-4 h-4 ${a.color}`} />
+                            </div>
+                            <span className={`text-xs font-bold ${a.color}`}>{a.label}</span>
+                            <CheckCircle2 className={`w-4 h-4 ${a.color} ml-auto opacity-40`} />
                           </div>
-                          <span className={`text-xs font-bold ${a.color}`}>{a.label}</span>
-                          <CheckCircle2 className={`w-4 h-4 ${a.color} ml-auto opacity-40`} />
+                        ))
+                      ) : (
+                        <div className="text-center py-4 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                          <p className="text-xs text-gray-400">No achievements yet. Keep learning!</p>
                         </div>
-                      ))}
+                      )}
                     </div>
                   </section>
 
@@ -622,13 +672,23 @@ function DashboardContent() {
                           <div className="text-[10px] text-gray-400 font-medium flex items-center gap-1">
                              <Clock className="w-3 h-3" /> {course.lastAccessed}
                           </div>
-                          <Link
-                            href={`/courses/${course.id}/learn`}
-                            className="btn-primary text-xs py-2.5 px-6 rounded-xl flex-shrink-0 w-full sm:w-auto text-center"
-                            aria-label={`Continue ${course.title}`}
-                          >
-                             Resume
-                          </Link>
+                          <div className="flex flex-col gap-2 w-full sm:w-auto">
+                            <Link
+                              href={`/courses/${course.id}/learn`}
+                              className="btn-primary text-xs py-2.5 px-6 rounded-xl flex-shrink-0 text-center"
+                              aria-label={`Continue ${course.title}`}
+                            >
+                               {course.progress >= 100 ? "Review" : "Resume"}
+                            </Link>
+                            {course.progress >= 100 && (
+                              <CertificateGenerator
+                                studentName={profile?.full_name || user?.email?.split('@')[0]}
+                                courseTitle={course.title}
+                                date={course.lastAccessed}
+                                instructorName={course.instructor}
+                              />
+                            )}
+                          </div>
                       </div>
                     </div>
                   ))}
@@ -670,9 +730,9 @@ function DashboardContent() {
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-base sm:text-lg text-gray-800 leading-tight line-clamp-2">{course.title}</h3>
                         <div className="flex items-center gap-4 mt-3">
-                           <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                             <Users className="w-3.5 h-3.5" /> {course.enrollments?.[0]?.count || 0} Students
-                           </div>
+                            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                              <Users className="w-3.5 h-3.5" /> {course.studentCount || 0} Students
+                            </div>
                            <div className="flex items-center gap-1.5 text-xs text-gray-500">
                              <Star className="w-3.5 h-3.5 text-amber-500" /> {course.rating || "No ratings"}
                            </div>
@@ -1027,7 +1087,7 @@ function DashboardContent() {
 
       <SubscriptionModal 
         isOpen={showSubModal} 
-        onClose={() => setShowSubModal(false)} 
+        onClose={() => { window.location.href = "/"; }} 
       />
     </div>
   );

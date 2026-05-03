@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
@@ -22,10 +22,10 @@ import {
   PlayCircle,
   ArrowLeft,
 } from "lucide-react";
-import { useEffect } from "react";
 import { courses as mockCourses } from "@/lib/mockData";
 import { useRouter } from "next/navigation";
 import PaymentModal from "@/components/PaymentModal";
+import { supabase } from "@/lib/supabase";
 
 export default function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -45,40 +45,86 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
     const fetchCourseData = async () => {
       setIsLoading(true);
       try {
-        // Use static mock data for headless version
-        const foundCourse = mockCourses.find(c => c.id === id);
-        
-        if (foundCourse) {
-          setCourse(foundCourse);
-          
-          // Generate a mock curriculum if not present
-          const mockCurriculum = [
-            {
-              id: "m1",
-              title: "Module 1: Getting Started",
-              lessons: [
-                { id: "l1", title: "Introduction to the Course", duration: "10m", is_preview: true },
-                { id: "l2", title: "Understanding the Basics", duration: "25m", is_preview: false },
-              ]
-            },
-            {
-              id: "m2",
-              title: "Module 2: Core Concepts",
-              lessons: [
-                { id: "l3", title: "Nigerian Tax Legal Framework", duration: "45m", is_preview: false },
-                { id: "l4", title: "Practical Compliance Steps", duration: "30m", is_preview: false },
-              ]
-            }
-          ];
-          setCurriculumData(mockCurriculum);
+        // 1. Fetch live data from Supabase
+        const { data: dbCourse, error: courseError } = await supabase
+          .from("courses")
+          .select("*")
+          .eq("id", id)
+          .maybeSingle();
+
+        if (courseError) throw courseError;
+
+        if (dbCourse) {
+          // 1.1 Fetch instructor info separately to avoid complex join errors
+          const { data: instructorData } = await supabase
+            .from("users")
+            .select("full_name, avatar_url, bio")
+            .eq("auth_id", dbCourse.created_by)
+            .maybeSingle();
+
+          // Parse curriculum from JSON content
+          let parsedContent: any = {};
+          try {
+            parsedContent = typeof dbCourse.content === "string" 
+              ? JSON.parse(dbCourse.content) 
+              : dbCourse.content || {};
+          } catch (e) {
+            console.warn("Could not parse course content JSON:", e);
+          }
+
+          // Map DB course to UI structure
+          const mappedCourse = {
+            ...dbCourse,
+            price: parsedContent.price || 0,
+            image_url: dbCourse.image_url || parsedContent.image_url || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
+            duration: dbCourse.estimated_duration ? `${Math.floor(dbCourse.estimated_duration / 3600)}h ${Math.floor((dbCourse.estimated_duration % 3600) / 60)}m` : "Self-paced",
+            lessons_count: parsedContent.lessons_count || 0,
+            level: dbCourse.difficulty_level || "Beginner",
+            instructor_name: instructorData?.full_name || "TaxNG Instructor",
+            instructor_avatar: instructorData?.avatar_url || null,
+          };
+
+          setCourse(mappedCourse);
+          setCurriculumData(parsedContent.modules || []);
+        } else {
+          // 2. Fallback to static mock data if not in DB
+          const foundMock = mockCourses.find(c => c.id === id);
+          if (foundMock) {
+            setCourse(foundMock);
+            setCurriculumData([
+              {
+                id: "m1",
+                title: "Module 1: Getting Started",
+                lessons: [
+                  { id: "l1", title: "Introduction to the Course", duration: "10m", is_preview: true },
+                  { id: "l2", title: "Understanding the Basics", duration: "25m", is_preview: false },
+                ]
+              }
+            ]);
+          }
         }
 
-        // Mock user session
-        setUser({ id: "mock-user-123", email: "student@taxnigeria.com" });
-        setIsEnrolled(false); // Default to not enrolled for mock
+        // 3. Get current user session
+        const { data: { user: authUser } } = await supabase.auth.getUser();
+        if (authUser) {
+          setUser(authUser);
+          // Check enrollment (simplified for now)
+          // Check enrollment and progress
+          const { data: enrollment } = await supabase
+            .from("enrollments")
+            .select("id, progress")
+            .eq("course_id", id)
+            .eq("user_id", authUser.id)
+            .maybeSingle();
+            
+          if (enrollment) {
+            setIsEnrolled(true);
+            setCourse(prev => ({ ...prev, progress: enrollment.progress || 0 }));
+          }
+        }
 
       } catch (err) {
-        console.error("Error setting mock course details:", err);
+        console.error("Error fetching course details:", err);
       } finally {
         setIsLoading(false);
       }
@@ -216,15 +262,16 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-gray-700">
-                  {/* Instructor Avatar Placeholder */}
-                  <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-xs">
-                    GI
-                  </div>
+                <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white font-bold text-xs">
+                  {course.instructor_avatar ? (
+                    <Image src={course.instructor_avatar} alt={course.instructor_name} fill className="object-cover" />
+                  ) : (
+                    course.instructor_name?.charAt(0) || "T"
+                  )}
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Created by</p>
-                  <p className="text-white font-medium">TaxNG Instructor</p>
+                  <p className="text-white font-medium">{course.instructor_name}</p>
                 </div>
               </div>
 
@@ -288,35 +335,24 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
               <div className="bg-white rounded-2xl border border-[var(--border)] p-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">What you&apos;ll learn</h2>
                 <div className="grid sm:grid-cols-2 gap-3">
-                  {[
-                    "Build real-world projects from scratch",
-                    "Industry best practices and patterns",
-                    "Deploy to production environments",
-                    "Problem-solving and debugging skills",
-                    "Work with professional tools",
-                    "Build an impressive portfolio",
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3 h-3 text-[var(--primary)]" />
+                  {(course.outlines || []).length > 0 ? (
+                    course.outlines.map((item: string) => (
+                      <div key={item} className="flex items-start gap-3">
+                        <div className="w-5 h-5 rounded-full bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3 text-[var(--primary)]" />
+                        </div>
+                        <span className="text-sm text-gray-700">{item}</span>
                       </div>
-                      <span className="text-sm text-gray-700">{item}</span>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-400 italic">No objectives listed for this course.</p>
+                  )}
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-[var(--border)]">
                   <h2 className="text-xl font-bold text-gray-800 mb-3">Course Description</h2>
-                  <div className="text-gray-600 text-sm leading-relaxed space-y-3">
-                    <p>{course.description}</p>
-                    <p>
-                      This comprehensive course takes you from absolute beginner to proficient practitioner.
-                      Through hands-on projects and real-world examples, you&apos;ll develop skills that employers are actively looking for.
-                    </p>
-                    <p>
-                      Each module is carefully structured to build upon previous knowledge, ensuring a smooth and effective learning experience.
-                      You&apos;ll have access to all course materials, community support, and regular updates.
-                    </p>
+                  <div className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">
+                    {course.description}
                   </div>
                 </div>
 
@@ -464,9 +500,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
 
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-4">
-                  {course.price === 0 ? (
-                    <span className="text-3xl font-extrabold text-[var(--primary)]">Free</span>
-                  ) : (
+                  {course.price > 0 && (
                     <>
                       <span className="text-3xl font-extrabold text-gray-800">₦{course.price?.toLocaleString()}</span>
                       <span className="text-lg text-gray-400 line-through">₦{(Math.round((course.price || 0) * 1.5)).toLocaleString()}</span>
@@ -478,7 +512,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                 <button 
                   onClick={handleEnroll}
                   disabled={isEnrolling}
-                  className="btn-primary w-full mb-3 text-base py-4 justify-center disabled:opacity-70"
+                  className="btn-primary w-full mb-6 text-base py-4 justify-center disabled:opacity-70"
                 >
                   {isEnrolling ? (
                     <>
@@ -486,18 +520,13 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                       Processing...
                     </>
                   ) : isEnrolled ? (
-                    "▶ Continue Learning"
+                    course?.progress >= 100 ? "Review Course" : "Continue Learning"
                   ) : isFree ? (
-                    "⚡ Enroll Free"
+                    "Enroll"
                   ) : (
-                    `💳 Enroll for ₦${course.price?.toLocaleString()}`
+                    `Enroll for ₦${course.price?.toLocaleString()}`
                   )}
                 </button>
-                <button className="btn-outline w-full mb-4 text-base py-3.5 justify-center">
-                  Add to Wishlist
-                </button>
-
-                <p className="text-center text-xs text-gray-400 mb-4">30-Day Money-Back Guarantee</p>
 
                 <div className="border-t border-[var(--border)] pt-4">
                   <h3 className="font-semibold text-sm text-gray-700 mb-3">This course includes:</h3>

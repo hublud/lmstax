@@ -1,5 +1,9 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { GraduationCap, Users, BookOpen, Award, Target, Heart, Zap, Globe, ArrowRight, Shield } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 const values = [
   { icon: Target, title: "Mission-Driven", desc: "Every decision is guided by our mission to make Nigerian tax knowledge accessible, practical, and affordable for every citizen.", color: "text-[var(--primary)]", bg: "bg-[var(--primary)]/10" },
@@ -9,6 +13,14 @@ const values = [
 ];
 
 export default function AboutPage() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--bg)" }}>
       {/* Hero */}
@@ -110,8 +122,8 @@ export default function AboutPage() {
           <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] rounded-3xl p-10 text-white text-center">
             <h2 className="text-3xl font-extrabold mb-3">Ready to Master Nigerian Taxation?</h2>
             <p className="text-green-100 mb-6">Start learning today and join thousands of Nigerians bridging the tax knowledge gap with TaxNG Academy.</p>
-            <Link href="/login" className="btn-accent text-base px-8 py-3.5">
-              Get Started Free
+            <Link href={isLoggedIn ? "/dashboard" : "/login"} className="btn-accent text-base px-8 py-3.5">
+              {isLoggedIn ? "Go to Dashboard" : "Get Started Free"}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

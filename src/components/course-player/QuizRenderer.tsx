@@ -50,7 +50,6 @@ export default function QuizRenderer({ questions, isLastLesson, onComplete }: Qu
       setIsSubmitted(false);
     } else {
       setShowResults(true);
-      onComplete(score); // Score is already updated from handleSubmit
     }
   };
 

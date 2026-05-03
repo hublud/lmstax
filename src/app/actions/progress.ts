@@ -8,12 +8,13 @@ export async function updateProgress(userId: string, courseId: string, progress:
 
     const { error } = await supabaseAdmin
       .from("enrollments")
-      .update({ 
+      .upsert({ 
+        user_id: userId,
+        course_id: courseId,
         progress,
-        last_accessed: new Date().toISOString()
-      })
-      .eq("user_id", userId)
-      .eq("course_id", courseId);
+        last_accessed: new Date().toISOString(),
+        status: 'enrolled'
+      }, { onConflict: 'user_id,course_id' });
 
     if (error) throw error;
     return { success: true };

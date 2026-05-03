@@ -1,3 +1,4 @@
+import { createBrowserClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
 // Recursive proxy to handle any level of supabase calls during build
@@ -23,7 +24,7 @@ export const getCookieOptions = () => {
   };
 };
 
-// Helper to get supabase client safely
+// Helper to get supabase client safely for Browser/Client side
 export const getSupabase = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -34,18 +35,16 @@ export const getSupabase = () => {
   }
 
   try {
-    return createClient(url, key, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-      },
+    // Using createBrowserClient ensures cookies are set correctly for middleware
+    return createBrowserClient(url, key, {
+      cookieOptions: getCookieOptions(),
     });
   } catch (e) {
     return createSilentProxy();
   }
 };
 
-// Helper for Admin/Service Role tasks
+// Helper for Admin/Service Role tasks (Server Side Only)
 export const getSupabaseAdmin = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -55,7 +54,12 @@ export const getSupabaseAdmin = () => {
   }
 
   try {
-    return createClient(url, key);
+    return createClient(url, key, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    });
   } catch (e) {
     return createSilentProxy();
   }

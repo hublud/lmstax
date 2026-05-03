@@ -64,14 +64,14 @@ export default function CourseLearnPage() {
         const isStaff = userProfile?.role === "admin" || userProfile?.role === "teacher";
 
         if (!isTaxExpert && !isStaff) {
-          window.location.href = "https://www.taxnigeria.com/pricing";
+          window.location.href = "/";
           return;
         }
 
         // Fetch course
         const { data: crs, error: crsErr } = await supabase
           .from("courses")
-          .select("*, categories(name)")
+          .select("*")
           .eq("id", id)
           .single();
           
@@ -79,29 +79,76 @@ export default function CourseLearnPage() {
           console.error("Course fetch error:", crsErr);
           setLoadError(crsErr.message);
         }
-        if (crs) setCourse(crs);
-
-        // Fetch curriculum (modules + lessons)
-        const { data: mods, error: modsErr } = await supabase
-          .from("modules")
-          .select(`
-            *,
-            lessons (*)
-          `)
-          .eq("course_id", id)
-          .order("order", { ascending: true });
+        if (crs) {
+          setCourse(crs);
           
-        if (modsErr) {
-          console.error("Modules fetch error:", modsErr);
-          setLoadError(modsErr.message);
+          // Fetch category name separately if category_id exists
+          if (crs.category_id) {
+            const { data: catData } = await supabase
+              .from("categories")
+              .select("name")
+              .eq("id", crs.category_id)
+              .maybeSingle();
+            if (catData) {
+              setCourse((prev: any) => ({ ...prev, category: catData }));
+            }
+          }
         }
+
+        // 2. Fetch curriculum (modules + lessons)
+        // First try the JSON content from the course record (New System)
+        let sortedMods: any[] = [];
         
-        if (mods) {
-          // Sort lessons within modules
-          const sortedMods = mods.map((m: any) => ({
-            ...m,
-            lessons: m.lessons?.sort((a: any, b: any) => a.order - b.order) || []
-          }));
+        if (crs?.content) {
+          try {
+            const parsedContent = typeof crs.content === "string" 
+              ? JSON.parse(crs.content) 
+              : crs.content;
+            
+            if (parsedContent.modules && Array.isArray(parsedContent.modules)) {
+              sortedMods = parsedContent.modules.map((m: any, mIdx: number) => ({
+                ...m,
+                id: m.id || `m-${mIdx}`,
+                lessons: (m.lessons || []).map((l: any, lIdx: number) => ({
+                  ...l,
+                  id: l.id || `l-${mIdx}-${lIdx}`,
+                  order: l.order || lIdx
+                }))
+              }));
+            }
+          } catch (e) {
+            console.error("Error parsing course content JSON:", e);
+          }
+        }
+
+        // If no JSON modules, try the legacy modules table (Fallback)
+        if (sortedMods.length === 0) {
+          const { data: legacyMods, error: modsErr } = await supabase
+            .from("modules")
+            .select(`
+              *,
+              lessons (*)
+            `)
+            .eq("course_id", id)
+            .order("order", { ascending: true });
+            
+          if (!modsErr && legacyMods) {
+            sortedMods = legacyMods.map((m: any) => ({
+              ...m,
+              lessons: m.lessons?.sort((a: any, b: any) => a.order - b.order) || []
+            }));
+          } else if (modsErr && modsErr.code !== 'PGRST116') {
+             // Only set error if not just a missing table (which is expected for new courses)
+             if (modsErr.message.includes("not find the table")) {
+               console.log("No legacy modules table found, using course content.");
+             } else {
+               console.error("Legacy modules fetch error:", modsErr);
+               setLoadError(modsErr.message);
+             }
+          }
+        }
+
+        if (sortedMods.length > 0) {
           setCurriculum(sortedMods);
           
           // Set initial lesson
@@ -161,13 +208,20 @@ export default function CourseLearnPage() {
     const alreadyCompleted = completedLessons.includes(lessonId);
 
     try {
-      // 1. Record completion
+      // 1. Record completion in DB
       if (!alreadyCompleted) {
         const { error: compErr } = await supabase
           .from("lesson_completions")
-          .insert({ user_id: user.id, lesson_id: lessonId });
+          .upsert({ 
+            user_id: user.id, 
+            course_id: id,
+            lesson_id: lessonId,
+            completed_at: new Date().toISOString()
+          }, { onConflict: 'user_id,course_id,lesson_id' });
         
-        if (compErr) throw compErr;
+        if (compErr) {
+          console.warn("Could not save lesson completion:", compErr.message);
+        }
       }
 
       // 2. Update local state
@@ -185,7 +239,7 @@ export default function CourseLearnPage() {
       
       const res = await updateProgress(user.id, id, nextProgress);
       if (!res.success) {
-        console.error("Failed to update progress:", res.error);
+        console.error("Failed to update progress in DB:", res.error);
       }
 
     } catch (err) {
@@ -315,16 +369,28 @@ export default function CourseLearnPage() {
                 )}
               </div>
 
-              <button 
-                onClick={handleNext}
-                disabled={allLessons.findIndex(l => l.id === currentLessonId) === allLessons.length - 1}
-                className="flex flex-col gap-1 items-end group text-right disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Next</span>
-                <span className="text-sm font-semibold text-gray-700 group-hover:text-[var(--primary)] transition-colors">
-                  {allLessons[allLessons.findIndex(l => l.id === currentLessonId) + 1]?.title || "Finish"}
-                </span>
-              </button>
+              {allLessons.findIndex(l => l.id === currentLessonId) === allLessons.length - 1 && completedLessons.includes(currentLessonId || "") ? (
+                <button 
+                  onClick={() => router.push("/dashboard?tab=certificates")}
+                  className="flex flex-col gap-1 items-end group text-right"
+                >
+                  <span className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-widest">Course Completed</span>
+                  <span className="text-sm font-semibold text-[var(--primary)] hover:opacity-80 transition-opacity flex items-center gap-1.5 bg-[var(--primary)]/10 px-3 py-1.5 rounded-xl">
+                    Get Certificate <Award className="w-4 h-4" />
+                  </span>
+                </button>
+              ) : (
+                <button 
+                  onClick={handleNext}
+                  disabled={allLessons.findIndex(l => l.id === currentLessonId) === allLessons.length - 1}
+                  className="flex flex-col gap-1 items-end group text-right disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Next</span>
+                  <span className="text-sm font-semibold text-gray-700 group-hover:text-[var(--primary)] transition-colors">
+                    {allLessons[allLessons.findIndex(l => l.id === currentLessonId) + 1]?.title || "Finish"}
+                  </span>
+                </button>
+              )}
             </div>
           </div>
         </main>
