@@ -2117,9 +2117,9 @@
       "source_file": "scratch/check_categories.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_categories_mjs",
-      "target": "scratch_check_categories_checkcategories",
-      "confidence_score": 1.0
+      "target": "scratch_check_categories_checkcategories"
     },
     {
       "relation": "contains",
@@ -2127,9 +2127,9 @@
       "source_file": "scratch/check_column_types.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_column_types_mjs",
-      "target": "scratch_check_column_types_checktypes",
-      "confidence_score": 1.0
+      "target": "scratch_check_column_types_checktypes"
     },
     {
       "relation": "contains",
@@ -2137,9 +2137,9 @@
       "source_file": "scratch/check_completions_schema.mjs",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_completions_schema_mjs",
-      "target": "scratch_check_completions_schema_checkschema",
-      "confidence_score": 1.0
+      "target": "scratch_check_completions_schema_checkschema"
     },
     {
       "relation": "contains",
@@ -2147,9 +2147,9 @@
       "source_file": "scratch/check_course.js",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_course_js",
-      "target": "scratch_check_course_checkcourse",
-      "confidence_score": 1.0
+      "target": "scratch_check_course_checkcourse"
     },
     {
       "relation": "contains",
@@ -2157,9 +2157,9 @@
       "source_file": "scratch/check_courses_schema.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_courses_schema_mjs",
-      "target": "scratch_check_courses_schema_checkschema",
-      "confidence_score": 1.0
+      "target": "scratch_check_courses_schema_checkschema"
     },
     {
       "relation": "contains",
@@ -2167,9 +2167,9 @@
       "source_file": "scratch/check_course_owner.js",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_course_owner_js",
-      "target": "scratch_check_course_owner_check",
-      "confidence_score": 1.0
+      "target": "scratch_check_course_owner_check"
     },
     {
       "relation": "contains",
@@ -2177,9 +2177,9 @@
       "source_file": "scratch/check_course_status.js",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_course_status_js",
-      "target": "scratch_check_course_status_check",
-      "confidence_score": 1.0
+      "target": "scratch_check_course_status_check"
     },
     {
       "relation": "contains",
@@ -2187,9 +2187,9 @@
       "source_file": "scratch/check_curriculum.js",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_curriculum_js",
-      "target": "scratch_check_curriculum_checkcurriculum",
-      "confidence_score": 1.0
+      "target": "scratch_check_curriculum_checkcurriculum"
     },
     {
       "relation": "contains",
@@ -2197,9 +2197,9 @@
       "source_file": "scratch/check_curriculum_schema.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_curriculum_schema_mjs",
-      "target": "scratch_check_curriculum_schema_checkcurriculum",
-      "confidence_score": 1.0
+      "target": "scratch_check_curriculum_schema_checkcurriculum"
     },
     {
       "relation": "contains",
@@ -2207,9 +2207,9 @@
       "source_file": "scratch/check_not_null.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_not_null_mjs",
-      "target": "scratch_check_not_null_checknotnull",
-      "confidence_score": 1.0
+      "target": "scratch_check_not_null_checknotnull"
     },
     {
       "relation": "contains",
@@ -2217,9 +2217,9 @@
       "source_file": "scratch/check_not_null_v2.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_not_null_v2_mjs",
-      "target": "scratch_check_not_null_v2_checknotnull",
-      "confidence_score": 1.0
+      "target": "scratch_check_not_null_v2_checknotnull"
     },
     {
       "relation": "contains",
@@ -2227,9 +2227,9 @@
       "source_file": "scratch/check_not_null_v3.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_not_null_v3_mjs",
-      "target": "scratch_check_not_null_v3_checknotnull",
-      "confidence_score": 1.0
+      "target": "scratch_check_not_null_v3_checknotnull"
     },
     {
       "relation": "contains",
@@ -2237,9 +2237,9 @@
       "source_file": "scratch/check_profiles_schema.js",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_profiles_schema_js",
-      "target": "scratch_check_profiles_schema_checkschema",
-      "confidence_score": 1.0
+      "target": "scratch_check_profiles_schema_checkschema"
     },
     {
       "relation": "contains",
@@ -2247,9 +2247,9 @@
       "source_file": "scratch/check_rls.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_rls_mjs",
-      "target": "scratch_check_rls_checkrls",
-      "confidence_score": 1.0
+      "target": "scratch_check_rls_checkrls"
     },
     {
       "relation": "contains",
@@ -2257,9 +2257,9 @@
       "source_file": "scratch/check_role.mjs",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_role_mjs",
-      "target": "scratch_check_role_checkuserrole",
-      "confidence_score": 1.0
+      "target": "scratch_check_role_checkuserrole"
     },
     {
       "relation": "contains",
@@ -2267,9 +2267,9 @@
       "source_file": "scratch/check_schema.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_check_schema_mjs",
-      "target": "scratch_check_schema_checkschema",
-      "confidence_score": 1.0
+      "target": "scratch_check_schema_checkschema"
     },
     {
       "relation": "contains",
@@ -2277,9 +2277,9 @@
       "source_file": "scratch/create_admin.js",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_create_admin_js",
-      "target": "scratch_create_admin_run",
-      "confidence_score": 1.0
+      "target": "scratch_create_admin_run"
     },
     {
       "relation": "contains",
@@ -2287,9 +2287,9 @@
       "source_file": "scratch/db_check.js",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_db_check_js",
-      "target": "scratch_db_check_check",
-      "confidence_score": 1.0
+      "target": "scratch_db_check_check"
     },
     {
       "relation": "contains",
@@ -2297,9 +2297,9 @@
       "source_file": "scratch/debug_teacher_courses.mjs",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_debug_teacher_courses_mjs",
-      "target": "scratch_debug_teacher_courses_checkteachercourses",
-      "confidence_score": 1.0
+      "target": "scratch_debug_teacher_courses_checkteachercourses"
     },
     {
       "relation": "contains",
@@ -2307,9 +2307,9 @@
       "source_file": "scratch/find_teacher.mjs",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_find_teacher_mjs",
-      "target": "scratch_find_teacher_checkspecificemail",
-      "confidence_score": 1.0
+      "target": "scratch_find_teacher_checkspecificemail"
     },
     {
       "relation": "contains",
@@ -2317,9 +2317,9 @@
       "source_file": "scratch/fix_courses_rls.mjs",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_fix_courses_rls_mjs",
-      "target": "scratch_fix_courses_rls_fixrls",
-      "confidence_score": 1.0
+      "target": "scratch_fix_courses_rls_fixrls"
     },
     {
       "relation": "contains",
@@ -2327,9 +2327,9 @@
       "source_file": "scratch/get_magic_link.js",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_get_magic_link_js",
-      "target": "scratch_get_magic_link_getlink",
-      "confidence_score": 1.0
+      "target": "scratch_get_magic_link_getlink"
     },
     {
       "relation": "contains",
@@ -2337,9 +2337,9 @@
       "source_file": "scratch/get_student_link.js",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_get_student_link_js",
-      "target": "scratch_get_student_link_getlink",
-      "confidence_score": 1.0
+      "target": "scratch_get_student_link_getlink"
     },
     {
       "relation": "contains",
@@ -2347,9 +2347,9 @@
       "source_file": "scratch/hydrate_course.js",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_hydrate_course_js",
-      "target": "scratch_hydrate_course_hydratecourse",
-      "confidence_score": 1.0
+      "target": "scratch_hydrate_course_hydratecourse"
     },
     {
       "relation": "contains",
@@ -2357,9 +2357,9 @@
       "source_file": "scratch/init_db.js",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_init_db_js",
-      "target": "scratch_init_db_initdb",
-      "confidence_score": 1.0
+      "target": "scratch_init_db_initdb"
     },
     {
       "relation": "contains",
@@ -2367,9 +2367,9 @@
       "source_file": "scratch/inspect_tables.js",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_inspect_tables_js",
-      "target": "scratch_inspect_tables_inspect",
-      "confidence_score": 1.0
+      "target": "scratch_inspect_tables_inspect"
     },
     {
       "relation": "contains",
@@ -2377,9 +2377,9 @@
       "source_file": "scratch/inspect_tables_v2.js",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_inspect_tables_v2_js",
-      "target": "scratch_inspect_tables_v2_inspect",
-      "confidence_score": 1.0
+      "target": "scratch_inspect_tables_v2_inspect"
     },
     {
       "relation": "contains",
@@ -2387,9 +2387,9 @@
       "source_file": "scratch/list_all_tables.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_list_all_tables_mjs",
-      "target": "scratch_list_all_tables_listtables",
-      "confidence_score": 1.0
+      "target": "scratch_list_all_tables_listtables"
     },
     {
       "relation": "contains",
@@ -2397,9 +2397,9 @@
       "source_file": "scratch/list_courses.js",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_list_courses_js",
-      "target": "scratch_list_courses_check",
-      "confidence_score": 1.0
+      "target": "scratch_list_courses_check"
     },
     {
       "relation": "contains",
@@ -2407,9 +2407,9 @@
       "source_file": "scratch/peek_courses.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_peek_courses_mjs",
-      "target": "scratch_peek_courses_peek",
-      "confidence_score": 1.0
+      "target": "scratch_peek_courses_peek"
     },
     {
       "relation": "contains",
@@ -2417,9 +2417,9 @@
       "source_file": "scratch/seed_african_content.js",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_seed_african_content_js",
-      "target": "scratch_seed_african_content_seed",
-      "confidence_score": 1.0
+      "target": "scratch_seed_african_content_seed"
     },
     {
       "relation": "contains",
@@ -2427,9 +2427,9 @@
       "source_file": "scratch/setup_accounts.mjs",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_setup_accounts_mjs",
-      "target": "scratch_setup_accounts_setupaccounts",
-      "confidence_score": 1.0
+      "target": "scratch_setup_accounts_setupaccounts"
     },
     {
       "relation": "contains",
@@ -2437,9 +2437,9 @@
       "source_file": "scratch/setup_teacher.mjs",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_setup_teacher_mjs",
-      "target": "scratch_setup_teacher_createorupdateteacher",
-      "confidence_score": 1.0
+      "target": "scratch_setup_teacher_createorupdateteacher"
     },
     {
       "relation": "contains",
@@ -2447,9 +2447,9 @@
       "source_file": "scratch/setup_test_env.js",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_setup_test_env_js",
-      "target": "scratch_setup_test_env_setup",
-      "confidence_score": 1.0
+      "target": "scratch_setup_test_env_setup"
     },
     {
       "relation": "contains",
@@ -2457,9 +2457,9 @@
       "source_file": "scratch/test_course_join.mjs",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_test_course_join_mjs",
-      "target": "scratch_test_course_join_testjoin",
-      "confidence_score": 1.0
+      "target": "scratch_test_course_join_testjoin"
     },
     {
       "relation": "contains",
@@ -2467,9 +2467,9 @@
       "source_file": "scratch/test_save_course.mjs",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_test_save_course_mjs",
-      "target": "scratch_test_save_course_testfinalsave",
-      "confidence_score": 1.0
+      "target": "scratch_test_save_course_testfinalsave"
     },
     {
       "relation": "contains",
@@ -2477,9 +2477,9 @@
       "source_file": "scratch/upgrade_test_student.mjs",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_upgrade_test_student_mjs",
-      "target": "scratch_upgrade_test_student_upgradeuser",
-      "confidence_score": 1.0
+      "target": "scratch_upgrade_test_student_upgradeuser"
     },
     {
       "relation": "contains",
@@ -2487,9 +2487,9 @@
       "source_file": "scratch/verify_teacher.mjs",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scratch_verify_teacher_mjs",
-      "target": "scratch_verify_teacher_verify",
-      "confidence_score": 1.0
+      "target": "scratch_verify_teacher_verify"
     },
     {
       "relation": "imports",
@@ -2498,9 +2498,9 @@
       "source_file": "src/middleware.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_middleware_ts",
-      "target": "lib_supabase_getcookieoptions",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getcookieoptions"
     },
     {
       "relation": "contains",
@@ -2508,9 +2508,9 @@
       "source_file": "src/middleware.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_middleware_ts",
-      "target": "src_middleware_middleware",
-      "confidence_score": 1.0
+      "target": "src_middleware_middleware"
     },
     {
       "relation": "calls",
@@ -2529,9 +2529,9 @@
       "source_file": "src/app/layout.tsx",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_layout_tsx",
-      "target": "app_layout_rootlayout",
-      "confidence_score": 1.0
+      "target": "app_layout_rootlayout"
     },
     {
       "relation": "contains",
@@ -2539,9 +2539,9 @@
       "source_file": "src/app/page.tsx",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_page_tsx",
-      "target": "app_page_fetchcourses",
-      "confidence_score": 1.0
+      "target": "app_page_fetchcourses"
     },
     {
       "relation": "imports",
@@ -2550,9 +2550,9 @@
       "source_file": "src/app/actions/auth-bypass.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_auth_bypass_ts",
-      "target": "lib_supabase_getsupabaseadmin",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getsupabaseadmin"
     },
     {
       "relation": "contains",
@@ -2560,9 +2560,9 @@
       "source_file": "src/app/actions/auth-bypass.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_auth_bypass_ts",
-      "target": "actions_auth_bypass_authbypass",
-      "confidence_score": 1.0
+      "target": "actions_auth_bypass_authbypass"
     },
     {
       "relation": "imports",
@@ -2571,9 +2571,9 @@
       "source_file": "src/app/signup/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_signup_page_tsx",
-      "target": "actions_auth_bypass_authbypass",
-      "confidence_score": 1.0
+      "target": "actions_auth_bypass_authbypass"
     },
     {
       "relation": "imports",
@@ -2582,9 +2582,9 @@
       "source_file": "src/app/actions/courses.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_courses_ts",
-      "target": "lib_supabase_getsupabaseadmin",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getsupabaseadmin"
     },
     {
       "relation": "contains",
@@ -2592,9 +2592,9 @@
       "source_file": "src/app/actions/courses.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_courses_ts",
-      "target": "actions_courses_getteachercoursestats",
-      "confidence_score": 1.0
+      "target": "actions_courses_getteachercoursestats"
     },
     {
       "relation": "imports",
@@ -2603,9 +2603,9 @@
       "source_file": "src/app/dashboard/page.tsx",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_dashboard_page_tsx",
-      "target": "actions_courses_getteachercoursestats",
-      "confidence_score": 1.0
+      "target": "actions_courses_getteachercoursestats"
     },
     {
       "relation": "calls",
@@ -2636,9 +2636,9 @@
       "source_file": "src/app/actions/progress.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_progress_ts",
-      "target": "lib_supabase_getsupabaseadmin",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getsupabaseadmin"
     },
     {
       "relation": "contains",
@@ -2646,9 +2646,9 @@
       "source_file": "src/app/actions/progress.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_progress_ts",
-      "target": "actions_progress_updateprogress",
-      "confidence_score": 1.0
+      "target": "actions_progress_updateprogress"
     },
     {
       "relation": "imports",
@@ -2657,9 +2657,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_learn_page_tsx",
-      "target": "actions_progress_updateprogress",
-      "confidence_score": 1.0
+      "target": "actions_progress_updateprogress"
     },
     {
       "relation": "calls",
@@ -2690,9 +2690,9 @@
       "source_file": "src/app/actions/user.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_user_ts",
-      "target": "lib_supabase_getsupabaseadmin",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getsupabaseadmin"
     },
     {
       "relation": "contains",
@@ -2700,9 +2700,9 @@
       "source_file": "src/app/actions/user.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_actions_user_ts",
-      "target": "actions_user_getuserprofile",
-      "confidence_score": 1.0
+      "target": "actions_user_getuserprofile"
     },
     {
       "relation": "imports",
@@ -2711,9 +2711,9 @@
       "source_file": "src/app/login/page.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_login_page_tsx",
-      "target": "actions_user_getuserprofile",
-      "confidence_score": 1.0
+      "target": "actions_user_getuserprofile"
     },
     {
       "relation": "calls",
@@ -2743,9 +2743,9 @@
       "source_file": "src/app/admin/layout.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_layout_tsx",
-      "target": "admin_layout_adminlayout",
-      "confidence_score": 1.0
+      "target": "admin_layout_adminlayout"
     },
     {
       "relation": "contains",
@@ -2753,9 +2753,9 @@
       "source_file": "src/app/admin/page.tsx",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_page_tsx",
-      "target": "admin_page_admindashboardpage",
-      "confidence_score": 1.0
+      "target": "admin_page_admindashboardpage"
     },
     {
       "relation": "contains",
@@ -2763,9 +2763,9 @@
       "source_file": "src/app/admin/analytics/page.tsx",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_analytics_page_tsx",
-      "target": "analytics_page_fetchanalytics",
-      "confidence_score": 1.0
+      "target": "analytics_page_fetchanalytics"
     },
     {
       "relation": "contains",
@@ -2773,9 +2773,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_categories_page_tsx",
-      "target": "categories_page_slugify",
-      "confidence_score": 1.0
+      "target": "categories_page_slugify"
     },
     {
       "relation": "contains",
@@ -2783,9 +2783,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_categories_page_tsx",
-      "target": "categories_page_fetchcategories",
-      "confidence_score": 1.0
+      "target": "categories_page_fetchcategories"
     },
     {
       "relation": "contains",
@@ -2793,9 +2793,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_categories_page_tsx",
-      "target": "categories_page_opencreate",
-      "confidence_score": 1.0
+      "target": "categories_page_opencreate"
     },
     {
       "relation": "contains",
@@ -2803,9 +2803,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L120",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_categories_page_tsx",
-      "target": "categories_page_openedit",
-      "confidence_score": 1.0
+      "target": "categories_page_openedit"
     },
     {
       "relation": "contains",
@@ -2813,9 +2813,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L126",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_categories_page_tsx",
-      "target": "categories_page_handlesave",
-      "confidence_score": 1.0
+      "target": "categories_page_handlesave"
     },
     {
       "relation": "contains",
@@ -2823,9 +2823,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L161",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_categories_page_tsx",
-      "target": "categories_page_handledelete",
-      "confidence_score": 1.0
+      "target": "categories_page_handledelete"
     },
     {
       "relation": "contains",
@@ -2833,9 +2833,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L173",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_categories_page_tsx",
-      "target": "categories_page_toggleactive",
-      "confidence_score": 1.0
+      "target": "categories_page_toggleactive"
     },
     {
       "relation": "calls",
@@ -2844,9 +2844,9 @@
       "source_file": "src/app/admin/categories/page.tsx",
       "source_location": "L133",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "categories_page_handlesave",
-      "target": "categories_page_slugify",
-      "confidence_score": 1.0
+      "target": "categories_page_slugify"
     },
     {
       "relation": "contains",
@@ -2854,9 +2854,9 @@
       "source_file": "src/app/admin/certificates/page.tsx",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_certificates_page_tsx",
-      "target": "certificates_page_certificatepreview",
-      "confidence_score": 1.0
+      "target": "certificates_page_certificatepreview"
     },
     {
       "relation": "contains",
@@ -2864,9 +2864,9 @@
       "source_file": "src/app/admin/certificates/page.tsx",
       "source_location": "L227",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_certificates_page_tsx",
-      "target": "certificates_page_setdefault",
-      "confidence_score": 1.0
+      "target": "certificates_page_setdefault"
     },
     {
       "relation": "contains",
@@ -2874,9 +2874,9 @@
       "source_file": "src/app/admin/certificates/page.tsx",
       "source_location": "L232",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_certificates_page_tsx",
-      "target": "certificates_page_toggletemplateactive",
-      "confidence_score": 1.0
+      "target": "certificates_page_toggletemplateactive"
     },
     {
       "relation": "contains",
@@ -2884,9 +2884,9 @@
       "source_file": "src/app/admin/courses/page.tsx",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_page_tsx",
-      "target": "courses_page_fetchcourses",
-      "confidence_score": 1.0
+      "target": "courses_page_fetchcourses"
     },
     {
       "relation": "contains",
@@ -2894,9 +2894,9 @@
       "source_file": "src/app/admin/courses/page.tsx",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_page_tsx",
-      "target": "courses_page_handledelete",
-      "confidence_score": 1.0
+      "target": "courses_page_handledelete"
     },
     {
       "relation": "calls",
@@ -2915,9 +2915,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L183",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_updateoption",
-      "confidence_score": 1.0
+      "target": "create_page_updateoption"
     },
     {
       "relation": "contains",
@@ -2925,9 +2925,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L190",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_addoption",
-      "confidence_score": 1.0
+      "target": "create_page_addoption"
     },
     {
       "relation": "contains",
@@ -2935,9 +2935,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L196",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_removeoption",
-      "confidence_score": 1.0
+      "target": "create_page_removeoption"
     },
     {
       "relation": "contains",
@@ -2945,9 +2945,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L447",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_addquestion",
-      "confidence_score": 1.0
+      "target": "create_page_addquestion"
     },
     {
       "relation": "contains",
@@ -2955,9 +2955,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L466",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_updatequestion",
-      "confidence_score": 1.0
+      "target": "create_page_updatequestion"
     },
     {
       "relation": "contains",
@@ -2965,9 +2965,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L474",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_deletequestion",
-      "confidence_score": 1.0
+      "target": "create_page_deletequestion"
     },
     {
       "relation": "contains",
@@ -2975,9 +2975,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L482",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_inserttextatcursor",
-      "confidence_score": 1.0
+      "target": "create_page_inserttextatcursor"
     },
     {
       "relation": "contains",
@@ -2985,9 +2985,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L886",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_fetchinitialdata",
-      "confidence_score": 1.0
+      "target": "create_page_fetchinitialdata"
     },
     {
       "relation": "contains",
@@ -2995,9 +2995,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L975",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_togglemodule",
-      "confidence_score": 1.0
+      "target": "create_page_togglemodule"
     },
     {
       "relation": "contains",
@@ -3005,9 +3005,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L978",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_addmodule",
-      "confidence_score": 1.0
+      "target": "create_page_addmodule"
     },
     {
       "relation": "contains",
@@ -3015,9 +3015,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L983",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_addfromlibrary",
-      "confidence_score": 1.0
+      "target": "create_page_addfromlibrary"
     },
     {
       "relation": "contains",
@@ -3025,9 +3025,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L1001",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_deletemodule",
-      "confidence_score": 1.0
+      "target": "create_page_deletemodule"
     },
     {
       "relation": "contains",
@@ -3035,9 +3035,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L1004",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_addlesson",
-      "confidence_score": 1.0
+      "target": "create_page_addlesson"
     },
     {
       "relation": "contains",
@@ -3045,9 +3045,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L1021",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_deletelesson",
-      "confidence_score": 1.0
+      "target": "create_page_deletelesson"
     },
     {
       "relation": "contains",
@@ -3055,9 +3055,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L1028",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_updatelesson",
-      "confidence_score": 1.0
+      "target": "create_page_updatelesson"
     },
     {
       "relation": "contains",
@@ -3065,9 +3065,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L1037",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_updatemoduletitle",
-      "confidence_score": 1.0
+      "target": "create_page_updatemoduletitle"
     },
     {
       "relation": "contains",
@@ -3075,9 +3075,9 @@
       "source_file": "src/app/admin/courses/create/page.tsx",
       "source_location": "L1042",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_courses_create_page_tsx",
-      "target": "create_page_handlesave",
-      "confidence_score": 1.0
+      "target": "create_page_handlesave"
     },
     {
       "relation": "contains",
@@ -3085,9 +3085,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "create_page_updateoption",
-      "confidence_score": 1.0
+      "target": "create_page_updateoption"
     },
     {
       "relation": "contains",
@@ -3095,9 +3095,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "create_page_addoption",
-      "confidence_score": 1.0
+      "target": "create_page_addoption"
     },
     {
       "relation": "contains",
@@ -3105,9 +3105,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "create_page_removeoption",
-      "confidence_score": 1.0
+      "target": "create_page_removeoption"
     },
     {
       "relation": "contains",
@@ -3115,9 +3115,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L163",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "create_page_addquestion",
-      "confidence_score": 1.0
+      "target": "create_page_addquestion"
     },
     {
       "relation": "contains",
@@ -3125,9 +3125,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L171",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "create_page_updatequestion",
-      "confidence_score": 1.0
+      "target": "create_page_updatequestion"
     },
     {
       "relation": "contains",
@@ -3135,9 +3135,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L174",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "create_page_deletequestion",
-      "confidence_score": 1.0
+      "target": "create_page_deletequestion"
     },
     {
       "relation": "contains",
@@ -3145,9 +3145,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L177",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "create_page_handlesave",
-      "confidence_score": 1.0
+      "target": "create_page_handlesave"
     },
     {
       "relation": "calls",
@@ -3177,9 +3177,9 @@
       "source_file": "src/app/admin/messages/page.tsx",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_messages_page_tsx",
-      "target": "messages_page_markread",
-      "confidence_score": 1.0
+      "target": "messages_page_markread"
     },
     {
       "relation": "contains",
@@ -3187,9 +3187,9 @@
       "source_file": "src/app/admin/messages/page.tsx",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_messages_page_tsx",
-      "target": "messages_page_handleselect",
-      "confidence_score": 1.0
+      "target": "messages_page_handleselect"
     },
     {
       "relation": "contains",
@@ -3197,9 +3197,9 @@
       "source_file": "src/app/admin/messages/page.tsx",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_messages_page_tsx",
-      "target": "messages_page_deletemessage",
-      "confidence_score": 1.0
+      "target": "messages_page_deletemessage"
     },
     {
       "relation": "calls",
@@ -3208,9 +3208,9 @@
       "source_file": "src/app/admin/messages/page.tsx",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "messages_page_handleselect",
-      "target": "messages_page_markread",
-      "confidence_score": 1.0
+      "target": "messages_page_markread"
     },
     {
       "relation": "contains",
@@ -3218,9 +3218,9 @@
       "source_file": "src/app/admin/modules/page.tsx",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_modules_page_tsx",
-      "target": "modules_page_getmodulelibrary",
-      "confidence_score": 1.0
+      "target": "modules_page_getmodulelibrary"
     },
     {
       "relation": "contains",
@@ -3228,9 +3228,9 @@
       "source_file": "src/app/admin/modules/page.tsx",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_modules_page_tsx",
-      "target": "modules_page_savemodulelibrary",
-      "confidence_score": 1.0
+      "target": "modules_page_savemodulelibrary"
     },
     {
       "relation": "contains",
@@ -3238,9 +3238,9 @@
       "source_file": "src/app/admin/modules/page.tsx",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_modules_page_tsx",
-      "target": "modules_page_handledelete",
-      "confidence_score": 1.0
+      "target": "modules_page_handledelete"
     },
     {
       "relation": "contains",
@@ -3248,9 +3248,9 @@
       "source_file": "src/app/admin/modules/page.tsx",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_modules_page_tsx",
-      "target": "modules_page_handleduplicate",
-      "confidence_score": 1.0
+      "target": "modules_page_handleduplicate"
     },
     {
       "relation": "imports",
@@ -3259,9 +3259,9 @@
       "source_file": "src/app/admin/modules/create/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_modules_create_page_tsx",
-      "target": "modules_page_getmodulelibrary",
-      "confidence_score": 1.0
+      "target": "modules_page_getmodulelibrary"
     },
     {
       "relation": "imports",
@@ -3270,9 +3270,9 @@
       "source_file": "src/components/admin/ModulePickerModal.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_admin_modulepickermodal_tsx",
-      "target": "modules_page_getmodulelibrary",
-      "confidence_score": 1.0
+      "target": "modules_page_getmodulelibrary"
     },
     {
       "relation": "calls",
@@ -3281,9 +3281,9 @@
       "source_file": "src/app/admin/modules/page.tsx",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "modules_page_handledelete",
-      "target": "modules_page_savemodulelibrary",
-      "confidence_score": 1.0
+      "target": "modules_page_savemodulelibrary"
     },
     {
       "relation": "calls",
@@ -3292,9 +3292,9 @@
       "source_file": "src/app/admin/modules/page.tsx",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "modules_page_handleduplicate",
-      "target": "modules_page_savemodulelibrary",
-      "confidence_score": 1.0
+      "target": "modules_page_savemodulelibrary"
     },
     {
       "relation": "imports",
@@ -3303,9 +3303,9 @@
       "source_file": "src/app/admin/modules/create/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_modules_create_page_tsx",
-      "target": "modules_page_savemodulelibrary",
-      "confidence_score": 1.0
+      "target": "modules_page_savemodulelibrary"
     },
     {
       "relation": "calls",
@@ -3324,9 +3324,9 @@
       "source_file": "src/app/admin/quizzes/page.tsx",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_page_tsx",
-      "target": "quizzes_page_getquizlibrary",
-      "confidence_score": 1.0
+      "target": "quizzes_page_getquizlibrary"
     },
     {
       "relation": "contains",
@@ -3334,9 +3334,9 @@
       "source_file": "src/app/admin/quizzes/page.tsx",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_page_tsx",
-      "target": "quizzes_page_savequizlibrary",
-      "confidence_score": 1.0
+      "target": "quizzes_page_savequizlibrary"
     },
     {
       "relation": "contains",
@@ -3344,9 +3344,9 @@
       "source_file": "src/app/admin/quizzes/page.tsx",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_page_tsx",
-      "target": "quizzes_page_handledelete",
-      "confidence_score": 1.0
+      "target": "quizzes_page_handledelete"
     },
     {
       "relation": "contains",
@@ -3354,9 +3354,9 @@
       "source_file": "src/app/admin/quizzes/page.tsx",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_page_tsx",
-      "target": "quizzes_page_handleduplicate",
-      "confidence_score": 1.0
+      "target": "quizzes_page_handleduplicate"
     },
     {
       "relation": "contains",
@@ -3364,9 +3364,9 @@
       "source_file": "src/app/admin/quizzes/page.tsx",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_page_tsx",
-      "target": "quizzes_page_totalpoints",
-      "confidence_score": 1.0
+      "target": "quizzes_page_totalpoints"
     },
     {
       "relation": "imports",
@@ -3375,9 +3375,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "quizzes_page_getquizlibrary",
-      "confidence_score": 1.0
+      "target": "quizzes_page_getquizlibrary"
     },
     {
       "relation": "calls",
@@ -3386,9 +3386,9 @@
       "source_file": "src/app/admin/quizzes/page.tsx",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "quizzes_page_handledelete",
-      "target": "quizzes_page_savequizlibrary",
-      "confidence_score": 1.0
+      "target": "quizzes_page_savequizlibrary"
     },
     {
       "relation": "calls",
@@ -3397,9 +3397,9 @@
       "source_file": "src/app/admin/quizzes/page.tsx",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "quizzes_page_handleduplicate",
-      "target": "quizzes_page_savequizlibrary",
-      "confidence_score": 1.0
+      "target": "quizzes_page_savequizlibrary"
     },
     {
       "relation": "imports",
@@ -3408,9 +3408,9 @@
       "source_file": "src/app/admin/quizzes/create/page.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_quizzes_create_page_tsx",
-      "target": "quizzes_page_savequizlibrary",
-      "confidence_score": 1.0
+      "target": "quizzes_page_savequizlibrary"
     },
     {
       "relation": "calls",
@@ -3429,9 +3429,9 @@
       "source_file": "src/app/admin/students/page.tsx",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_students_page_tsx",
-      "target": "students_page_fetchstudents",
-      "confidence_score": 1.0
+      "target": "students_page_fetchstudents"
     },
     {
       "relation": "contains",
@@ -3439,9 +3439,9 @@
       "source_file": "src/app/admin/students/page.tsx",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_students_page_tsx",
-      "target": "students_page_handlerolechange",
-      "confidence_score": 1.0
+      "target": "students_page_handlerolechange"
     },
     {
       "relation": "calls",
@@ -3450,9 +3450,9 @@
       "source_file": "src/app/admin/students/page.tsx",
       "source_location": "L135",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "students_page_handlerolechange",
-      "target": "students_page_fetchstudents",
-      "confidence_score": 1.0
+      "target": "students_page_fetchstudents"
     },
     {
       "relation": "calls",
@@ -3471,9 +3471,9 @@
       "source_file": "src/app/admin/teachers/page.tsx",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_teachers_page_tsx",
-      "target": "teachers_page_fetchteachers",
-      "confidence_score": 1.0
+      "target": "teachers_page_fetchteachers"
     },
     {
       "relation": "contains",
@@ -3481,9 +3481,9 @@
       "source_file": "src/app/admin/teachers/page.tsx",
       "source_location": "L129",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_admin_teachers_page_tsx",
-      "target": "teachers_page_handlerolechange",
-      "confidence_score": 1.0
+      "target": "teachers_page_handlerolechange"
     },
     {
       "relation": "calls",
@@ -3492,9 +3492,9 @@
       "source_file": "src/app/admin/teachers/page.tsx",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "teachers_page_handlerolechange",
-      "target": "teachers_page_fetchteachers",
-      "confidence_score": 1.0
+      "target": "teachers_page_fetchteachers"
     },
     {
       "relation": "calls",
@@ -3513,9 +3513,9 @@
       "source_file": "src/app/api/payment/initiate/route.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_api_payment_initiate_route_ts",
-      "target": "initiate_route_post",
-      "confidence_score": 1.0
+      "target": "initiate_route_post"
     },
     {
       "relation": "imports",
@@ -3524,9 +3524,9 @@
       "source_file": "src/app/api/payment/webhook/route.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_api_payment_webhook_route_ts",
-      "target": "lib_supabase_getsupabaseadmin",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getsupabaseadmin"
     },
     {
       "relation": "contains",
@@ -3534,9 +3534,9 @@
       "source_file": "src/app/api/payment/webhook/route.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_api_payment_webhook_route_ts",
-      "target": "webhook_route_post",
-      "confidence_score": 1.0
+      "target": "webhook_route_post"
     },
     {
       "relation": "contains",
@@ -3544,9 +3544,9 @@
       "source_file": "src/app/api/payment/webhook/route.ts",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_api_payment_webhook_route_ts",
-      "target": "webhook_route_get",
-      "confidence_score": 1.0
+      "target": "webhook_route_get"
     },
     {
       "relation": "calls",
@@ -3565,9 +3565,9 @@
       "source_file": "src/app/auth/callback/page.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_auth_callback_page_tsx",
-      "target": "callback_page_authcallbackpage",
-      "confidence_score": 1.0
+      "target": "callback_page_authcallbackpage"
     },
     {
       "relation": "contains",
@@ -3575,9 +3575,9 @@
       "source_file": "src/app/courses/page.tsx",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_page_tsx",
-      "target": "courses_page_fetchdata",
-      "confidence_score": 1.0
+      "target": "courses_page_fetchdata"
     },
     {
       "relation": "contains",
@@ -3585,9 +3585,9 @@
       "source_file": "src/app/courses/page.tsx",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_page_tsx",
-      "target": "courses_page_clearfilters",
-      "confidence_score": 1.0
+      "target": "courses_page_clearfilters"
     },
     {
       "relation": "contains",
@@ -3595,9 +3595,9 @@
       "source_file": "src/app/courses/[id]/page.tsx",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_page_tsx",
-      "target": "id_page_fetchcoursedata",
-      "confidence_score": 1.0
+      "target": "id_page_fetchcoursedata"
     },
     {
       "relation": "contains",
@@ -3605,9 +3605,9 @@
       "source_file": "src/app/courses/[id]/page.tsx",
       "source_location": "L138",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_page_tsx",
-      "target": "id_page_handleenroll",
-      "confidence_score": 1.0
+      "target": "id_page_handleenroll"
     },
     {
       "relation": "contains",
@@ -3615,9 +3615,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_learn_page_tsx",
-      "target": "learn_page_initplayer",
-      "confidence_score": 1.0
+      "target": "learn_page_initplayer"
     },
     {
       "relation": "contains",
@@ -3625,9 +3625,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L190",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_learn_page_tsx",
-      "target": "learn_page_handlenext",
-      "confidence_score": 1.0
+      "target": "learn_page_handlenext"
     },
     {
       "relation": "contains",
@@ -3635,9 +3635,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L197",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_learn_page_tsx",
-      "target": "learn_page_handleprev",
-      "confidence_score": 1.0
+      "target": "learn_page_handleprev"
     },
     {
       "relation": "contains",
@@ -3645,9 +3645,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L204",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_learn_page_tsx",
-      "target": "learn_page_markascomplete",
-      "confidence_score": 1.0
+      "target": "learn_page_markascomplete"
     },
     {
       "relation": "contains",
@@ -3655,9 +3655,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L330",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_courses_id_learn_page_tsx",
-      "target": "learn_page_async",
-      "confidence_score": 1.0
+      "target": "learn_page_async"
     },
     {
       "relation": "calls",
@@ -3666,9 +3666,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L336",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "learn_page_async",
-      "target": "learn_page_handlenext",
-      "confidence_score": 1.0
+      "target": "learn_page_handlenext"
     },
     {
       "relation": "calls",
@@ -3677,9 +3677,9 @@
       "source_file": "src/app/courses/[id]/learn/page.tsx",
       "source_location": "L332",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "learn_page_async",
-      "target": "learn_page_markascomplete",
-      "confidence_score": 1.0
+      "target": "learn_page_markascomplete"
     },
     {
       "relation": "contains",
@@ -3687,9 +3687,9 @@
       "source_file": "src/app/dashboard/page.tsx",
       "source_location": "L72",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_dashboard_page_tsx",
-      "target": "dashboard_page_progressring",
-      "confidence_score": 1.0
+      "target": "dashboard_page_progressring"
     },
     {
       "relation": "contains",
@@ -3697,9 +3697,9 @@
       "source_file": "src/app/dashboard/page.tsx",
       "source_location": "L127",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_dashboard_page_tsx",
-      "target": "dashboard_page_fetchuserdata",
-      "confidence_score": 1.0
+      "target": "dashboard_page_fetchuserdata"
     },
     {
       "relation": "contains",
@@ -3707,9 +3707,9 @@
       "source_file": "src/app/dashboard/page.tsx",
       "source_location": "L254",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_dashboard_page_tsx",
-      "target": "dashboard_page_handlelogout",
-      "confidence_score": 1.0
+      "target": "dashboard_page_handlelogout"
     },
     {
       "relation": "contains",
@@ -3717,9 +3717,9 @@
       "source_file": "src/app/login/page.tsx",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_login_page_tsx",
-      "target": "login_page_handlesubmit",
-      "confidence_score": 1.0
+      "target": "login_page_handlesubmit"
     },
     {
       "relation": "contains",
@@ -3727,9 +3727,9 @@
       "source_file": "src/app/login/page.tsx",
       "source_location": "L77",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_login_page_tsx",
-      "target": "login_page_handlegooglelogin",
-      "confidence_score": 1.0
+      "target": "login_page_handlegooglelogin"
     },
     {
       "relation": "contains",
@@ -3737,9 +3737,9 @@
       "source_file": "src/app/login/page.tsx",
       "source_location": "L94",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_login_page_tsx",
-      "target": "login_page_handlemodalclose",
-      "confidence_score": 1.0
+      "target": "login_page_handlemodalclose"
     },
     {
       "relation": "contains",
@@ -3747,9 +3747,9 @@
       "source_file": "src/app/payment/callback/page.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_payment_callback_page_tsx",
-      "target": "callback_page_confirm",
-      "confidence_score": 1.0
+      "target": "callback_page_confirm"
     },
     {
       "relation": "contains",
@@ -3757,9 +3757,9 @@
       "source_file": "src/app/signup/page.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app_signup_page_tsx",
-      "target": "signup_page_handlesubmit",
-      "confidence_score": 1.0
+      "target": "signup_page_handlesubmit"
     },
     {
       "relation": "contains",
@@ -3767,9 +3767,9 @@
       "source_file": "src/components/Footer.tsx",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_footer_tsx",
-      "target": "components_footer_footer",
-      "confidence_score": 1.0
+      "target": "components_footer_footer"
     },
     {
       "relation": "contains",
@@ -3777,9 +3777,9 @@
       "source_file": "src/components/HeroSlider.tsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_heroslider_tsx",
-      "target": "components_heroslider_heroslider",
-      "confidence_score": 1.0
+      "target": "components_heroslider_heroslider"
     },
     {
       "relation": "contains",
@@ -3787,9 +3787,9 @@
       "source_file": "src/components/Navbar.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_navbar_tsx",
-      "target": "components_navbar_handlescroll",
-      "confidence_score": 1.0
+      "target": "components_navbar_handlescroll"
     },
     {
       "relation": "contains",
@@ -3797,9 +3797,9 @@
       "source_file": "src/components/Navbar.tsx",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_navbar_tsx",
-      "target": "components_navbar_checkuser",
-      "confidence_score": 1.0
+      "target": "components_navbar_checkuser"
     },
     {
       "relation": "contains",
@@ -3807,9 +3807,9 @@
       "source_file": "src/components/PaymentModal.tsx",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_paymentmodal_tsx",
-      "target": "components_paymentmodal_handlepay",
-      "confidence_score": 1.0
+      "target": "components_paymentmodal_handlepay"
     },
     {
       "relation": "contains",
@@ -3817,9 +3817,9 @@
       "source_file": "src/components/SubscriptionModal.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_subscriptionmodal_tsx",
-      "target": "components_subscriptionmodal_subscriptionmodal",
-      "confidence_score": 1.0
+      "target": "components_subscriptionmodal_subscriptionmodal"
     },
     {
       "relation": "contains",
@@ -3827,9 +3827,9 @@
       "source_file": "src/components/admin/AdminSidebar.tsx",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_admin_adminsidebar_tsx",
-      "target": "admin_adminsidebar_formatcount",
-      "confidence_score": 1.0
+      "target": "admin_adminsidebar_formatcount"
     },
     {
       "relation": "contains",
@@ -3837,9 +3837,9 @@
       "source_file": "src/components/admin/AdminSidebar.tsx",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_admin_adminsidebar_tsx",
-      "target": "admin_adminsidebar_fetchdata",
-      "confidence_score": 1.0
+      "target": "admin_adminsidebar_fetchdata"
     },
     {
       "relation": "contains",
@@ -3847,9 +3847,9 @@
       "source_file": "src/components/admin/AdminSidebar.tsx",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_admin_adminsidebar_tsx",
-      "target": "admin_adminsidebar_isactive",
-      "confidence_score": 1.0
+      "target": "admin_adminsidebar_isactive"
     },
     {
       "relation": "contains",
@@ -3857,9 +3857,9 @@
       "source_file": "src/components/admin/ModulePickerModal.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_admin_modulepickermodal_tsx",
-      "target": "admin_modulepickermodal_toggle",
-      "confidence_score": 1.0
+      "target": "admin_modulepickermodal_toggle"
     },
     {
       "relation": "contains",
@@ -3867,9 +3867,9 @@
       "source_file": "src/components/admin/ModulePickerModal.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_admin_modulepickermodal_tsx",
-      "target": "admin_modulepickermodal_handleadd",
-      "confidence_score": 1.0
+      "target": "admin_modulepickermodal_handleadd"
     },
     {
       "relation": "contains",
@@ -3877,9 +3877,9 @@
       "source_file": "src/components/course-player/LessonSidebar.tsx",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_lessonsidebar_tsx",
-      "target": "course_player_lessonsidebar_togglemodule",
-      "confidence_score": 1.0
+      "target": "course_player_lessonsidebar_togglemodule"
     },
     {
       "relation": "contains",
@@ -3887,9 +3887,9 @@
       "source_file": "src/components/course-player/LessonSidebar.tsx",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_lessonsidebar_tsx",
-      "target": "course_player_lessonsidebar_getlessonicon",
-      "confidence_score": 1.0
+      "target": "course_player_lessonsidebar_getlessonicon"
     },
     {
       "relation": "contains",
@@ -3897,9 +3897,9 @@
       "source_file": "src/components/course-player/PlayerHeader.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_playerheader_tsx",
-      "target": "course_player_playerheader_playerheader",
-      "confidence_score": 1.0
+      "target": "course_player_playerheader_playerheader"
     },
     {
       "relation": "contains",
@@ -3907,9 +3907,9 @@
       "source_file": "src/components/course-player/QuizRenderer.tsx",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_quizrenderer_tsx",
-      "target": "course_player_quizrenderer_handleoptionclick",
-      "confidence_score": 1.0
+      "target": "course_player_quizrenderer_handleoptionclick"
     },
     {
       "relation": "contains",
@@ -3917,9 +3917,9 @@
       "source_file": "src/components/course-player/QuizRenderer.tsx",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_quizrenderer_tsx",
-      "target": "course_player_quizrenderer_checkiscorrect",
-      "confidence_score": 1.0
+      "target": "course_player_quizrenderer_checkiscorrect"
     },
     {
       "relation": "contains",
@@ -3927,9 +3927,9 @@
       "source_file": "src/components/course-player/QuizRenderer.tsx",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_quizrenderer_tsx",
-      "target": "course_player_quizrenderer_handlesubmit",
-      "confidence_score": 1.0
+      "target": "course_player_quizrenderer_handlesubmit"
     },
     {
       "relation": "contains",
@@ -3937,9 +3937,9 @@
       "source_file": "src/components/course-player/QuizRenderer.tsx",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_quizrenderer_tsx",
-      "target": "course_player_quizrenderer_handlenext",
-      "confidence_score": 1.0
+      "target": "course_player_quizrenderer_handlenext"
     },
     {
       "relation": "contains",
@@ -3947,9 +3947,9 @@
       "source_file": "src/components/course-player/QuizRenderer.tsx",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_quizrenderer_tsx",
-      "target": "course_player_quizrenderer_handlereset",
-      "confidence_score": 1.0
+      "target": "course_player_quizrenderer_handlereset"
     },
     {
       "relation": "calls",
@@ -3958,9 +3958,9 @@
       "source_file": "src/components/course-player/QuizRenderer.tsx",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "course_player_quizrenderer_handlesubmit",
-      "target": "course_player_quizrenderer_checkiscorrect",
-      "confidence_score": 1.0
+      "target": "course_player_quizrenderer_checkiscorrect"
     },
     {
       "relation": "contains",
@@ -3968,9 +3968,9 @@
       "source_file": "src/components/course-player/ReadingContent.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_readingcontent_tsx",
-      "target": "course_player_readingcontent_readingcontent",
-      "confidence_score": 1.0
+      "target": "course_player_readingcontent_readingcontent"
     },
     {
       "relation": "contains",
@@ -3978,9 +3978,9 @@
       "source_file": "src/components/course-player/VideoPlayer.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_course_player_videoplayer_tsx",
-      "target": "course_player_videoplayer_getembedurl",
-      "confidence_score": 1.0
+      "target": "course_player_videoplayer_getembedurl"
     },
     {
       "relation": "contains",
@@ -3988,9 +3988,9 @@
       "source_file": "src/components/dashboard/CertificateGenerator.tsx",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_components_dashboard_certificategenerator_tsx",
-      "target": "dashboard_certificategenerator_handledownload",
-      "confidence_score": 1.0
+      "target": "dashboard_certificategenerator_handledownload"
     },
     {
       "relation": "contains",
@@ -3998,9 +3998,9 @@
       "source_file": "src/lib/supabase.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_lib_supabase_ts",
-      "target": "lib_supabase_createsilentproxy",
-      "confidence_score": 1.0
+      "target": "lib_supabase_createsilentproxy"
     },
     {
       "relation": "contains",
@@ -4008,9 +4008,9 @@
       "source_file": "src/lib/supabase.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_lib_supabase_ts",
-      "target": "lib_supabase_getcookieoptions",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getcookieoptions"
     },
     {
       "relation": "contains",
@@ -4018,9 +4018,9 @@
       "source_file": "src/lib/supabase.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_lib_supabase_ts",
-      "target": "lib_supabase_getsupabase",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getsupabase"
     },
     {
       "relation": "contains",
@@ -4028,9 +4028,9 @@
       "source_file": "src/lib/supabase.ts",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_lib_supabase_ts",
-      "target": "lib_supabase_getsupabaseadmin",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getsupabaseadmin"
     },
     {
       "relation": "calls",
@@ -4039,9 +4039,9 @@
       "source_file": "src/lib/supabase.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_supabase_getsupabase",
-      "target": "lib_supabase_createsilentproxy",
-      "confidence_score": 1.0
+      "target": "lib_supabase_createsilentproxy"
     },
     {
       "relation": "calls",
@@ -4050,9 +4050,9 @@
       "source_file": "src/lib/supabase.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_supabase_getsupabaseadmin",
-      "target": "lib_supabase_createsilentproxy",
-      "confidence_score": 1.0
+      "target": "lib_supabase_createsilentproxy"
     },
     {
       "relation": "calls",
@@ -4061,11 +4061,10 @@
       "source_file": "src/lib/supabase.ts",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_supabase_getsupabase",
-      "target": "lib_supabase_getcookieoptions",
-      "confidence_score": 1.0
+      "target": "lib_supabase_getcookieoptions"
     }
   ],
-  "hyperedges": [],
-  "built_at_commit": "5014cb96050d91cf8129e206346f5bd239043d24"
+  "hyperedges": []
 }
