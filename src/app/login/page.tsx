@@ -9,6 +9,7 @@ import { Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import LogoSVG from "@/components/LogoSVG";
 import SubscriptionModal from "@/components/SubscriptionModal";
+import { getUserProfile } from "@/app/actions/user";
 
 
 export default function LoginPage() {
@@ -34,15 +35,11 @@ export default function LoginPage() {
       if (error) throw error;
 
       if (data.user) {
-        // Fetch user profile from the main platform users table
-        const { data: userProfile, error: profileError } = await supabase
-          .from("users")
-          .select("role, subscription_tier")
-          .eq("auth_id", data.user.id)
-          .single();
+        // Fetch user profile using server action (bypasses RLS issues on client immediately after login)
+        const { data: userProfile, error: profileError } = await getUserProfile(data.user.id);
 
         if (profileError) {
-          // Fallback or handle error if user doesn't exist in the users table yet
+          console.error("Profile fetch error:", profileError);
           throw new Error("Unable to verify user account permissions.");
         }
 

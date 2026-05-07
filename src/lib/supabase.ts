@@ -14,13 +14,14 @@ const createSilentProxy = (): any => {
 };
 
 // Shared cookie options for SSO between taxnigeria.com and academy.taxnigeria.com
-export const getCookieOptions = () => {
-  const isProd = process.env.NODE_ENV === "production";
+export const getCookieOptions = (hostname?: string) => {
+  // Only set domain if actually on taxnigeria.com (prevents loops on Vercel preview URLs)
+  const isTaxNigeriaDomain = hostname?.endsWith("taxnigeria.com") || false;
   return {
-    domain: isProd ? ".taxnigeria.com" : undefined, // Shared domain in prod, localhost in dev
+    ...(isTaxNigeriaDomain ? { domain: ".taxnigeria.com" } : {}),
     path: "/",
     sameSite: "lax" as const,
-    secure: isProd,
+    secure: process.env.NODE_ENV === "production",
   };
 };
 
@@ -35,9 +36,17 @@ export const getSupabase = () => {
   }
 
   try {
+    const hostname = typeof window !== "undefined" ? window.location.hostname : undefined;
     // Using createBrowserClient ensures cookies are set correctly for middleware
     return createBrowserClient(url, key, {
-      cookieOptions: getCookieOptions(),
+      cookieOptions: getCookieOptions(hostname),
+      auth: {
+        // Disabling browser-side auto-refresh prevents duplicate /token calls 
+        // that cause infinite loops. Middleware handles refresh.
+        autoRefreshToken: false,
+        persistSession: true,
+        detectSessionInUrl: true,
+      }
     });
   } catch (e) {
     return createSilentProxy();

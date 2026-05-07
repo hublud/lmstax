@@ -1,0 +1,434 @@
+{
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\eslint.config.mjs": {
+    "mtime": 1777923787.8350413,
+    "hash": "6c4307ffa009658f5c97f5629094c0c2"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\fix_users_table_rls.sql": {
+    "mtime": 1777927540.1356525,
+    "hash": "48f97fef39370d7f72fdcff41df6cff0"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\next.config.ts": {
+    "mtime": 1777923787.8360393,
+    "hash": "586bd683f1fa2d651c5259bd64ae451d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\postcss.config.mjs": {
+    "mtime": 1777923787.8635323,
+    "hash": "481fac0fdecd70e1821cc30b86030c1a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\supabase_rls_fix.sql": {
+    "mtime": 1777923788.4274092,
+    "hash": "315714883ded76bd3af3a7aea377071d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_categories.mjs": {
+    "mtime": 1777923787.9489949,
+    "hash": "5aabf7b9d090c13d404d5cb2bac71112"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_column_types.mjs": {
+    "mtime": 1777923787.9545033,
+    "hash": "93f21696307001619d40e16c16807841"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_completions_schema.mjs": {
+    "mtime": 1777923787.9565027,
+    "hash": "0d0caa63c6a3cabc1fc5685833015e47"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_course.js": {
+    "mtime": 1777923787.9625006,
+    "hash": "fd30bef1905c274afaee7b8ed19af5fa"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_courses_schema.mjs": {
+    "mtime": 1777923787.967497,
+    "hash": "529b64bd90bd3a0c4960d1550ca5907b"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_course_owner.js": {
+    "mtime": 1777923787.964498,
+    "hash": "01ae559e6b1a503e34c6c10c12781cf3"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_course_status.js": {
+    "mtime": 1777923787.965498,
+    "hash": "952be9f8fa42a297a9041441cc9ece4d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_curriculum.js": {
+    "mtime": 1777923787.9714942,
+    "hash": "159c5086064266e154a80d5ff094b345"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_curriculum_schema.mjs": {
+    "mtime": 1777923787.9774916,
+    "hash": "a680628d52702b46430dced9f4f0e0d5"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_not_null.mjs": {
+    "mtime": 1777923787.9820006,
+    "hash": "5e6770c58368494937f20667b7f013fa"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_not_null_v2.mjs": {
+    "mtime": 1777923787.9865096,
+    "hash": "24e768bd37cfdd8188a921e81469c447"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_not_null_v3.mjs": {
+    "mtime": 1777923787.987015,
+    "hash": "9f6a5bd60dcfc0b9d1beae45cfaf4a4e"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_profiles_schema.js": {
+    "mtime": 1777923787.9960558,
+    "hash": "cc3fbfafeebfd1c4ca3b304a3d808978"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_rls.mjs": {
+    "mtime": 1777923787.999181,
+    "hash": "171b8f32e753c8f25fcdf3f481affe05"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_role.mjs": {
+    "mtime": 1777923788.002685,
+    "hash": "b37a5f14e09a2af58896fe66e1e12b13"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\check_schema.mjs": {
+    "mtime": 1777923788.0061958,
+    "hash": "4dc8f43fc706b27299557aeae0137d00"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\create_admin.js": {
+    "mtime": 1777923788.006709,
+    "hash": "d9a2ae211c3877ca3342521fe43f51c6"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\create_payments_table.sql": {
+    "mtime": 1777923788.0077128,
+    "hash": "a33bb7e5961aeb44583963a36e550e8a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\db_check.js": {
+    "mtime": 1777923788.0127103,
+    "hash": "df901cfd4de9bc6d87f77f6a8b61c034"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\debug_teacher_courses.mjs": {
+    "mtime": 1777923788.0157077,
+    "hash": "b7cc32a5aaf935ab6d5cedf32a710458"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\find_teacher.mjs": {
+    "mtime": 1777923788.0177066,
+    "hash": "3f5a57eafa535f903c3225c0ddd4167b"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\fix_courses_rls.mjs": {
+    "mtime": 1777923788.0202153,
+    "hash": "36d5142676f266f7202e3e0799c8468b"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\get_magic_link.js": {
+    "mtime": 1777923788.0222147,
+    "hash": "0f5c1cd5aa4b3b7c63e01511915aa55d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\get_student_link.js": {
+    "mtime": 1777923788.0232131,
+    "hash": "e69582b4d8af03489597b7da14f99072"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\hydrate_course.js": {
+    "mtime": 1777923788.0242133,
+    "hash": "a94f683caa4f8da869c056dab92bf8f3"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\init_db.js": {
+    "mtime": 1777923788.0523233,
+    "hash": "7ef223a7dbc10f91a945c6cc69085b48"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\inspect_tables.js": {
+    "mtime": 1777923788.053328,
+    "hash": "27dae047a05624318a5becbe57a87741"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\inspect_tables_v2.js": {
+    "mtime": 1777923788.0553265,
+    "hash": "1e2be41039405ddac6da1d5e860f968e"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\list_all_tables.mjs": {
+    "mtime": 1777923788.0563264,
+    "hash": "3003b28e643c91f9eb52a0bc0bf1f54d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\list_courses.js": {
+    "mtime": 1777923788.0623236,
+    "hash": "8e4a01491546620dd259ef8328803bbb"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\peek_courses.mjs": {
+    "mtime": 1777923788.063323,
+    "hash": "d609392e3d5aefb2d85c2550a85497d4"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\seed_african_content.js": {
+    "mtime": 1777923788.0703175,
+    "hash": "0d6434f4d8c1062e07f54d4d7aa15911"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\setup_accounts.mjs": {
+    "mtime": 1777923788.0723171,
+    "hash": "cc25485940bb222e5e78d0173575b291"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\setup_teacher.mjs": {
+    "mtime": 1777923788.073317,
+    "hash": "cb4c4fbed366ec077b112731043801a9"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\setup_test_env.js": {
+    "mtime": 1777923788.074316,
+    "hash": "7e93b8f076e154ac3b68472a8a65de95"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\test_course_join.mjs": {
+    "mtime": 1777923788.0783148,
+    "hash": "8dfc666b5a7cb6bdeacf164a6ae4a382"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\test_save_course.mjs": {
+    "mtime": 1777923788.0793128,
+    "hash": "48c595fd298e3614ecb304405609d58f"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\upgrade_test_student.mjs": {
+    "mtime": 1777923788.0813115,
+    "hash": "a8276a3c8a16b538ab6f136c9a5aabc2"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\scratch\\verify_teacher.mjs": {
+    "mtime": 1777923788.0823116,
+    "hash": "315f103d1243ff9b3dff59a9eadd183f"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\middleware.ts": {
+    "mtime": 1777928581.6564727,
+    "hash": "9ec1c02835a413661fae01f96e058f11"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\layout.tsx": {
+    "mtime": 1777923788.327753,
+    "hash": "2dfd10cd27dbece4a430475c07f6bb02"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\page.tsx": {
+    "mtime": 1777923788.33938,
+    "hash": "d73e29b6558138b18312d79654c9627c"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\about\\page.tsx": {
+    "mtime": 1777923788.097227,
+    "hash": "e9b2029f76965493153ce486e4041bf9"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\actions\\auth-bypass.ts": {
+    "mtime": 1777923788.1022236,
+    "hash": "5470ca5d959b58f058734e1b194344d3"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\actions\\courses.ts": {
+    "mtime": 1777923788.1032233,
+    "hash": "355e56313b92429b1fb53a8e969bdb8f"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\actions\\progress.ts": {
+    "mtime": 1777923788.104223,
+    "hash": "9d86022e2b7897604470249b087cb90b"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\actions\\user.ts": {
+    "mtime": 1777928467.4030879,
+    "hash": "28146b743e0b00e484d009be5a2af1cf"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\layout.tsx": {
+    "mtime": 1777923788.165381,
+    "hash": "7cfdc0dead78bb8caa58df86c6481299"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\page.tsx": {
+    "mtime": 1777923788.1773753,
+    "hash": "357179a2990f88a3b4cd2da8a7c6275d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\analytics\\page.tsx": {
+    "mtime": 1777923788.1468587,
+    "hash": "757581a67bb80d0383be61ed2836aa45"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\categories\\page.tsx": {
+    "mtime": 1777923788.1508727,
+    "hash": "4112605a7c0b11ebef9f688a8f6be251"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\certificates\\page.tsx": {
+    "mtime": 1777923788.1518762,
+    "hash": "667dab175dcf937ef592e91971ae30b4"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\courses\\page.tsx": {
+    "mtime": 1777923788.1643815,
+    "hash": "75264923c4019d938f3f20c6587b0780"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\courses\\create\\page.tsx": {
+    "mtime": 1777923788.1598735,
+    "hash": "171317456c8a76d7e18267efefbded37"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\messages\\page.tsx": {
+    "mtime": 1777923788.1673794,
+    "hash": "e44fb83a6e88fa6b799ea1b46a886b7d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\modules\\page.tsx": {
+    "mtime": 1777923788.175375,
+    "hash": "08ccd887014695311d19f9cea2ef97a1"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\modules\\create\\page.tsx": {
+    "mtime": 1777923788.1743762,
+    "hash": "ce16a4280293cbd91b0f397541e236ca"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\quizzes\\page.tsx": {
+    "mtime": 1777923788.1946845,
+    "hash": "f33217a31eda128f3dd47deac1d31841"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\quizzes\\create\\page.tsx": {
+    "mtime": 1777923788.188599,
+    "hash": "e5761dbcfb15e7adf869f0e56d0b79f6"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\settings\\page.tsx": {
+    "mtime": 1777923788.1976812,
+    "hash": "8959cd2772ecde2cb725c4ab235bbac9"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\students\\page.tsx": {
+    "mtime": 1777923788.2036786,
+    "hash": "8f289a65f5b6139d231a2ab59613c623"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\admin\\teachers\\page.tsx": {
+    "mtime": 1777923788.2046776,
+    "hash": "3bb70de75af6c25809e96bfb2771d656"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\api\\payment\\initiate\\route.ts": {
+    "mtime": 1777923788.2151837,
+    "hash": "42ff353f30a7554ad6517d260f6215c3"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\api\\payment\\webhook\\route.ts": {
+    "mtime": 1777923788.218182,
+    "hash": "20a0309107f2e717f8883e7f2e8c8f8a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\auth\\callback\\page.tsx": {
+    "mtime": 1777923788.2276902,
+    "hash": "7fb726661c98a81e77939b81b99f2ce3"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\courses\\page.tsx": {
+    "mtime": 1777923788.2408485,
+    "hash": "013486775daee9a0db9caf2baf43e9a3"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\courses\\[id]\\page.tsx": {
+    "mtime": 1777923788.2372966,
+    "hash": "6f306ba605436f45a24b85f8cc441447"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\courses\\[id]\\learn\\page.tsx": {
+    "mtime": 1777923788.2306893,
+    "hash": "f6bbdd8d2c421d8983e54a57a2a96db3"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\dashboard\\page.tsx": {
+    "mtime": 1777923788.3197575,
+    "hash": "14378723645ee3818c2c0859a4c79649"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\login\\page.tsx": {
+    "mtime": 1777928496.700004,
+    "hash": "9846eb07da541764c4ac072fb7e3fbf6"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\payment\\callback\\page.tsx": {
+    "mtime": 1777923788.3453808,
+    "hash": "7e663c5cfc17506b643535c37c090a0a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\app\\signup\\page.tsx": {
+    "mtime": 1777923788.3493786,
+    "hash": "e7ac72917794985a1e678ad75026d101"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\CourseCard.tsx": {
+    "mtime": 1777923788.3679016,
+    "hash": "269f5ef8400384fd84a48e340a6bc53a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\Footer.tsx": {
+    "mtime": 1777923788.3789153,
+    "hash": "fb736fd99a714ea9bfdef9c059b8bd09"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\HeroSlider.tsx": {
+    "mtime": 1777923788.3819191,
+    "hash": "336714b1e1fdf730e83811842c52dfdf"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\LogoSVG.tsx": {
+    "mtime": 1777923788.3839176,
+    "hash": "0518f5390ab6bf06b9261f7664e78d88"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\Navbar.tsx": {
+    "mtime": 1777923788.384917,
+    "hash": "dbbedb5193c85b152dc1f64d7cc255e7"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\PaymentModal.tsx": {
+    "mtime": 1777923788.3873818,
+    "hash": "cf1d40fa75799db727616f3e7a8751a0"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\SubscriptionModal.tsx": {
+    "mtime": 1777923788.3883853,
+    "hash": "c3bd8384e8827df086307cbf19b52cf6"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\TestimonialCard.tsx": {
+    "mtime": 1777923788.389385,
+    "hash": "f693f6b453174ca6900cc46498ac0086"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\admin\\AdminHeader.tsx": {
+    "mtime": 1777923788.394383,
+    "hash": "1e94689780ad110a9216d535b6e21feb"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\admin\\AdminSidebar.tsx": {
+    "mtime": 1777923788.396381,
+    "hash": "2cdebc7c1f2b68b1df2f3e1452ddea04"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\admin\\ModulePickerModal.tsx": {
+    "mtime": 1777923788.3973804,
+    "hash": "c9890cf750412e7945c27b6addfc0c17"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\course-player\\LessonSidebar.tsx": {
+    "mtime": 1777923788.4003782,
+    "hash": "93bacc729e5154a8e4d53dd114baeb6a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\course-player\\PlayerHeader.tsx": {
+    "mtime": 1777923788.4053757,
+    "hash": "cc07c60bd988ab1a4d857f9c65525c98"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\course-player\\QuizRenderer.tsx": {
+    "mtime": 1777923788.4128842,
+    "hash": "62cb8462dd9e3c2f483b21ad82019a8a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\course-player\\ReadingContent.tsx": {
+    "mtime": 1777923788.4133904,
+    "hash": "521fc661dddd6ce6b8b42e643de58834"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\course-player\\VideoPlayer.tsx": {
+    "mtime": 1777923788.4143944,
+    "hash": "2c4fd587b61bdcd95631015452b15078"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\components\\dashboard\\CertificateGenerator.tsx": {
+    "mtime": 1777923788.4173927,
+    "hash": "d937d2a6be811194ce721a1e9a8a2744"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\lib\\adminMockData.ts": {
+    "mtime": 1777923788.4188986,
+    "hash": "5e862985f109e97bb7ef20a58c4abdf9"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\lib\\mockData.ts": {
+    "mtime": 1777923788.4209015,
+    "hash": "564c23b33a454b0b68781d640f3c357a"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\src\\lib\\supabase.ts": {
+    "mtime": 1777928530.6144147,
+    "hash": "08a7dc6ea4222be2eb5a497fd2494374"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\AGENTS.md": {
+    "mtime": 1777923787.8250463,
+    "hash": "9346a4897ff955555ddedb7bebf77adb"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\CLAUDE.md": {
+    "mtime": 1777923787.8330412,
+    "hash": "771faa62feb60b7de901a397aebb29b0"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\README.md": {
+    "mtime": 1777923787.8340406,
+    "hash": "9162add00befbcdb432430f405c4ad8d"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\favicon-icon.png": {
+    "mtime": 1777923787.882032,
+    "hash": "b5618acc58d64456baf1a9da08dd0f25"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\file.svg": {
+    "mtime": 1777923787.925007,
+    "hash": "d09f95206c3fa0bb9bd9fefabfd0ea71"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\globe.svg": {
+    "mtime": 1777923787.9350016,
+    "hash": "2aaafa6a49b6563925fe440891e32717"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\logo-gizami.png": {
+    "mtime": 1777923787.9370005,
+    "hash": "44bf068b78640e3c20527ad4deb8a0b9"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\logo-taxng.png": {
+    "mtime": 1777923787.9380002,
+    "hash": "44bf068b78640e3c20527ad4deb8a0b9"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\next.svg": {
+    "mtime": 1777923787.9399984,
+    "hash": "8e061864f388b47f33a1c3780831193e"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\vercel.svg": {
+    "mtime": 1777923787.9409986,
+    "hash": "c0af2f507b369b085b35ef4bbe3bcf1e"
+  },
+  "C:\\Users\\Dell\\Desktop\\Projects\\lmstax\\public\\window.svg": {
+    "mtime": 1777923787.945996,
+    "hash": "a2760511c65806022ad20adf74370ff3"
+  }
+}
